@@ -17,9 +17,9 @@ bootstrap drift have both bitten here already.
 | Tree | Path | Notes |
 | --- | --- | --- |
 | Primary (arm64) | `/Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/swift-macosx-arm64` | RelWithDebInfo + assertions; use this |
-| LLVM/lit tools | `.../Ninja-RelWithDebInfoAssert/llvm-macosx-arm64/bin` | `llvm-lit`, `FileCheck` |
+| LLVM/lit tools | `./Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/llvm-macosx-arm64/bin` | `llvm-lit`, `FileCheck` |
 | Secondary | `/Users/madushan/Documents/Github/swiftlang/build/buildbot_osx/swift-macosx-arm64` | older bot-style tree; only if primary is broken |
-| Toolchains | `.../swiftlang/toolchains/*.xctoolchain` | issue-87765 experiment artifacts |
+| Toolchains | `./Users/madushan/Documents/Github/swiftlang/toolchains/*.xctoolchain` | issue-87765 experiment artifacts |
 
 Swift source checkout: `/Users/madushan/Documents/Github/swiftlang/swift`.
 This tree bootstraps with HOSTTOOLS: everything is compiled by the installed
@@ -91,7 +91,7 @@ Fix + contract: see `references/environments.md`.
 ### Module version skew — SEEN 2026-08-25
 
 Symptom: every test fails instantly with
-`module compiled with Swift 6.5 cannot be imported by the Swift 6.4 compiler: .../lib/swift/macosx/Swift.swiftmodule`.
+`module compiled with Swift 6.5 cannot be imported by the Swift 6.4 compiler: ./Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/swift-macosx-arm64/lib/swift/macosx/Swift.swiftmodule`.
 
 Cause: HOSTTOOLS bootstrap; stdlib objects were built by a different Xcode
 than the current ninja state expects.

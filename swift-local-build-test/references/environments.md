@@ -32,7 +32,7 @@ Verified failure signatures when mispaired:
   identifiers in generated `TypeNodes.inc`. Fix by building tablegen tools
   + headers in the LLVM tree FIRST:
   ```bash
-  ninja -C .../llvm-macosx-arm64 llvm-tblgen llvm-min-tblgen clang-tblgen \
+  ninja -C ./Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/llvm-macosx-arm64 llvm-tblgen llvm-min-tblgen clang-tblgen \
         llvm-headers clang-tablegen-targets \
         include/llvm/Analysis/analysis_gen include/llvm/IR/intrinsics_gen
   ```
@@ -65,7 +65,7 @@ branch. Note: `$var:path` in zsh needs braces (`${var}:path`) — zsh treats
   intrinsics missing mean the tablegen outputs are stale/absent. Regenerate
   (verified):
   ```bash
-  ninja -C .../llvm-macosx-arm64 include/llvm/Analysis/analysis_gen \
+  ninja -C ./Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/llvm-macosx-arm64 include/llvm/Analysis/analysis_gen \
         include/llvm/IR/intrinsics_gen
   ```
   Note: at this revision `Intrinsics.inc` does not exist by design —
@@ -74,8 +74,8 @@ branch. Note: `$var:path` in zsh needs braces (`${var}:path`) — zsh treats
 ## Verified Test Invocation
 
 ```bash
-LIT=.../Ninja-RelWithDebInfoAssert/llvm-macosx-arm64/bin/llvm-lit
-CFG=.../Ninja-RelWithDebInfoAssert/swift-macosx-arm64/test-macosx-arm64/lit.site.cfg
+LIT=./Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/llvm-macosx-arm64/bin/llvm-lit
+CFG=./Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/swift-macosx-arm64/test-macosx-arm64/lit.site.cfg
 $LIT -sv --param swift_site_config=$CFG <path under swift/test/>
 ```
 Note: the lit site config has NO `.py` extension in this tree.
