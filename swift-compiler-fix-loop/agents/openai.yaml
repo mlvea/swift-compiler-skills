@@ -1,0 +1,4 @@
+interface:
+  display_name: "Swift Compiler Fix Loop"
+  short_description: "Investigate, fix, verify, and record Swift compiler bugs"
+  default_prompt: "Use $swift-compiler-fix-loop to investigate a Swift compiler issue, fix it in the Swift checkout, verify it, and record the durable case notes."
