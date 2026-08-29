@@ -11,7 +11,8 @@ protocol conformances, existentials, parameter packs, opaque types.
   (SE-0309, SE-0328, SE-0346, SE-0353). Do not "fix" diagnostics by
   treating them as the same.
 - Inverse constraints (`~Copyable`, `~Escapable`) are part of the
-  generic signature, not a SIL-only property.
+  generic signature, not a SIL-only property. SIL copy/destroy of
+  those types is `ownership`.
 - Associated-type inference must not succeed by picking an unrelated
   default that fails later in SILGen.
 
@@ -45,9 +46,12 @@ protocol conformances, existentials, parameter packs, opaque types.
 - SE-0142 / 0157 (where clauses, associated types)
 - SE-0309 existentials for all protocols
 - SE-0335 existential any
-- SE-0346/0353 implicit opening
+- SE-0346 lightweight primary associated types (`P<T>` is not an
+  existential constructor)
+- SE-0352 implicit opening of existentials
+- SE-0353 constrained existentials (`any Collection<Int>`)
 - SE-0347 opaque parameter syntax
-- SE-0361 implicit lifetime
+- SE-0361 bound generic extensions
 - SE-0393/0398/0399 packs
 - SE-0390 / SE-0446 `~Copyable` / `~Escapable` as signature constraints
 
@@ -63,4 +67,6 @@ implementation.
 ## Abstain
 
 Concrete overload ranking with no generic signature involved;
-pure isolation; ABI layout without signature change.
+pure isolation; ABI layout without signature change; SIL
+borrow/consume/`copy_value` of `~Copyable` without a signature change
+(`ownership`).

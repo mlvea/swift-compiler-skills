@@ -23,7 +23,7 @@ What to inspect:
 Sources: `lib/Serialization/`, module cache behavior in frontend options.
 Bug classes: deserialization crash on valid module (format skew),
 missing cross-module references (CMO reading serialized SIL), stale-cache
-false errors. Test dirs: `test/Serialization/`, `test/Module/`.
+false errors. Test dirs: `test/Serialization/`, `test/ModuleInterface/`.
 Rule: when changing serialization format, bump format version and keep the
 reader backward compatible; run cross-module tests both fresh and with a
 prebuilt module cache.
@@ -31,8 +31,7 @@ prebuilt module cache.
 ## AutoDiff
 
 Sources: `lib/SILOptimizer/Differentiation/` (`PullbackCloner.cpp`,
-`JVPCloner.cpp`, `LinearMapInfo.cpp`), tests `test/AutoDiff/`,
-`validation-test/AutoDiff/`.
+`JVPCloner.cpp`, `LinearMapInfo.cpp`), tests `test/AutoDiff/`.
 What to inspect: derivative registration, pullback dominance, implicit
 differentiability attributes vs generic validation, IRGen linear-map
 structs. Decide from THIS reducer, not from a listed issue's patch.

@@ -33,7 +33,7 @@ Commonly rejected language ideas: https://github.com/swiftlang/swift-evolution/b
 | Optimizer change, same language semantics | `none` |
 | New accepted programs, new surface syntax, new stdlib API | `needs-proposal` (or `needs-pitch` if tiny/obvious) |
 | Existing programs change meaning (source-breaking) | `needs-proposal` unless gated as upcoming-feature |
-| ABI / mangling / layout change for resilient types | `needs-proposal` plus `irgen-abi` / `library-evolution` block |
+| ABI / mangling / layout change for resilient types | `needs-proposal` plus `irgen-abi` / `library-evolution` block. Closed-world: if `docs/LibraryEvolution.rst` does not list the change as permitted, it is a break. |
 | Tightening a hole in an **unreleased** or experimental feature | `none` if still flag-gated |
 | Implementing an **accepted** SE that is not in the tree | compiler work, not a new proposal; cite the SE |
 

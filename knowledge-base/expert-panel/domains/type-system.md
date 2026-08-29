@@ -14,6 +14,16 @@ application, solver diagnostics. Location hints: stage playbook
   (`matchCallArgumentsImpl`). Cascades are recovery bugs, not a new
   primary check.
 - Request-evaluator purity: no new global type-checker state.
+- `docs/TypeChecker.md` is the constraint spec. Subtype `X < Y` is
+  not transitive: `X < Optional<X>` and `Optional<X> < any P` do not
+  imply `X < any P`. Do not add transitivity shortcuts in `CSSimplify`.
+- `ConformsTo` is stricter than `X < any P`. An existential `any P`
+  does not generally conform to `P` (exceptions: `any Error`,
+  Objective-C protocol existentials). Existential erasure is not a
+  conformance.
+- Solution application cannot fail. If applying a solved system fails,
+  constraint generation or solving is wrong — do not paper over it in
+  application.
 
 ## Plan review
 
@@ -23,6 +33,8 @@ application, solver diagnostics. Location hints: stage playbook
   bogus solution instead of a new diagnostic case?
 - Does the plan add a special-case in `CSSimplify` that should be a
   general constraint?
+- Does it rely on subtype transitivity, or treat `X < any P` as
+  `ConformsTo`?
 
 ## PR review
 
@@ -44,6 +56,10 @@ application, solver diagnostics. Location hints: stage playbook
 - Fixes land in `CSFix` / diagnostics, not a one-off in `CSGen`
   (review pattern on swift#91656).
 - No `if (isStdlibModule)` special case in `CSSimplify` (swift#86773).
+- Constraint kinds stay distinct (`docs/TypeChecker.md`): tuple
+  shuffles are Conversion (`<c`); pointer conversions are
+  ArgumentConversion (`<a`); neither is Subtype (`<`).
+- No new failure return from solution application.
 
 ## Evolution
 
@@ -51,11 +67,13 @@ application, solver diagnostics. Location hints: stage playbook
   (https://github.com/swiftlang/swift-evolution/blob/main/commonly_proposed.md).
 - Overload ranking and implicit conversion changes need a pitch.
 
-## Forum / SE
+## Forum
 
 - Diagnostic quality threads treat "failed to produce diagnostic" as a
   solver-salvage bug, not an IR/SIL problem.
-- SE-0117 / result-type scoring history: do not quietly re-rank.
+- SE-0117 / result-type scoring history: do not quietly re-rank. The
+  solver must still pick the most specific solution
+  (`docs/TypeChecker.md`).
 
 ## Abstain
 

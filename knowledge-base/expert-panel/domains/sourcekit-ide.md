@@ -38,6 +38,12 @@ swift-ide-test. Evolution process does **not** cover IDE design
 None for pure IDE behavior. If completion starts accepting a new
 language form, that form still needs the language gate.
 
+## Forum
+
+process.md: IDE design is not language evolution. This seat still
+cannot report a type that batch `-typecheck` would reject, or hide an
+error batch mode emits.
+
 ## Abstain
 
 No IDE/SourceKit/index/refactor path. Batch-compiler diagnostics

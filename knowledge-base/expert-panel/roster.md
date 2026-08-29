@@ -17,7 +17,7 @@ hand-pick a chair when the script returned one.
 | `ownership` | OSSA, borrow/consume, move-only, ownership verifier |
 | `sil-optimizer` | Pass soundness, specialization, ARC opts |
 | `irgen-abi` | LLVM IR, layout, witness tables, mangling, ABI |
-| `runtime` | Casts, refcounting, metadata, bridging entrypoints |
+| `runtime` | Casts, refcounting, metadata, reflection, threading, backtrace, bridging |
 | `clang-importer` | C/ObjC/C++ import, PrintAsClang, FRT |
 | `parser-diagnostics` | Parse, recovery, diagnostic wording |
 | `sourcekit-ide` | Completion, cursor info, index, refactoring |
@@ -64,6 +64,9 @@ must keep these chairs:
 | `lib/SILGen/SILGenExpr.cpp` + `lib/Sema/CSSimplify.cpp` | silgen | silgen | type-system |
 | `test/embedded/existential-generic-error.swift` + `lib/SILOptimizer/Utils/Generics.cpp` | irgen | embedded | sil-optimizer |
 | `lib/IRGen/GenCast.cpp` | runtime | irgen-abi | runtime |
+| `docs/SIL/Ownership.md` | silgen | ownership | silgen |
+| `lib/ClangImporter/DWARFImporter.cpp` | importer | debug-info | clang-importer |
+| `test/Generics/inverse.swift` | sema | generics | type-system |
 
 ## Not in the panel
 

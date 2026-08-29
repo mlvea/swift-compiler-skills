@@ -16,6 +16,16 @@ upcoming-feature flags, source compatibility.
   silent Sema change.
 - Feature flags in `Features.def` are language configuration →
   evolution process applies (process.md).
+- ABI-public change not listed as permitted in
+  `docs/LibraryEvolution.rst` is a binary break by default. That
+  document is closed-world: anything not listed is unsafe. Named
+  defaults: new protocol requirement without a defaulted available
+  implementation; adding or removing `@frozen` on an existing
+  ABI-public struct or enum is forbidden.
+- Default-argument expressions of ABI-public functions are implicitly
+  `@_alwaysEmitIntoClient`. They must not reference non-`public`
+  entities even if those entities are `@usableFromInline` /
+  `@inlinable` — a caller must be able to write the default explicitly.
 
 ## Plan review
 
@@ -44,6 +54,12 @@ upcoming-feature flags, source compatibility.
 process.md summary-acceptance examples include gating a change behind
 an upcoming-feature flag after source-compatibility problems. That is
 the approved escape hatch — use it rather than shipping the break.
+
+## Forum
+
+The ABI contract is `docs/LibraryEvolution.rst` plus process.md, not
+reviewer folklore. "Looks source-compatible" is not ABI-safe. Pitches:
+https://forums.swift.org/c/evolution/pitches/5
 
 ## Abstain
 

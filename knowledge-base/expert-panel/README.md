@@ -16,5 +16,11 @@ marking a PR ready).
 | `evolution-gate.md` | Bugfix vs language change |
 | `domains/<id>.md` | Per-seat review brief (loaded by that seat only) |
 
+Every domain brief uses the same headings: **Protects**, **Plan
+review**, **PR review**, **Reject unless**, **Evolution**, **Forum**,
+**Abstain**. `Protects` and `Reject unless` are fail-closed: a
+violation is `block` unless the artifact cites the exception in the
+same official doc.
+
 Skill entry: `swift-expert-panel/SKILL.md`.
 Seating: `swift-expert-panel/scripts/seat.py`.

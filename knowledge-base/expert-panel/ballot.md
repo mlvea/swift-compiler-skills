@@ -22,9 +22,14 @@ object. No other keys required.
 Rules:
 
 - `in_scope: abstain` ⇒ `verdict: abstain`, empty blockers.
-- `block` requires a named invariant and evidence.
+- `block` requires a named invariant from this seat's `Protects` /
+  `Reject unless`, or an official doc path listed in the brief, plus
+  evidence.
 - `approve` with empty evidence is invalid; cite the files read.
 - Do not comment on domains you were not seated for.
+- Fail-closed: if a named invariant is violated and the artifact does
+  not cite the exception in that same official doc, `verdict` is
+  `block`, not `approve` with a concern.
 
 ## Chair verdict
 

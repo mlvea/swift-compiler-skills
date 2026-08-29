@@ -9,10 +9,17 @@ seat votes to move the fix — it does not invent SILGen error nodes.
   crash here are Sema holes (fix-loop heuristic 1).
 - Cleanups and `ManagedValue` ownership must match the formal
   convention of the lowered type. "It runs at -Onone" is not enough.
+- SIL type lowering (`docs/SIL/Types.md`) preserves abstraction:
+  an unconstrained generic parameter stays indirect even after
+  substitution with a loadable type. Declaration lowering need not
+  equal lowering of the declaration's formal type.
 - Bridging and error conversion (`E2→E1` typed throws, NSError) are
   language rules; unimplemented lowering of a *valid* AST is a bug,
   unimplemented lowering of an *invalid* AST is a Sema miss.
 - No `unimplemented()` on user-reachable syntax.
+- Formal variable access must emit `begin_access`/`end_access`
+  (SE-0176, `docs/SIL/SILMemoryAccess.md`). Missing markers are
+  accepts-invalid exclusivity, not an optimizer problem.
 
 ## Plan review
 
@@ -27,8 +34,13 @@ seat votes to move the fix — it does not invent SILGen error nodes.
 
 - `test/SILGen/` FileCheck on the relevant instruction sequence, not
   only "doesn't crash".
-- New apply/closure conventions must match `docs/SIL*.md` and OSSA
-  conventions (`ownership` adjacent).
+- New apply/closure conventions must match `docs/SIL/SIL.md`,
+  `docs/SIL/SILFunctionConventions.md`, and OSSA
+  (`docs/SIL/Ownership.md`; `ownership` adjacent).
+- Concurrency *emission* (`SILGenConcurrency.cpp`) is in scope here;
+  isolation *checking* is `concurrency`. `@isolated(any)` must survive
+  as SIL function-type ABI (`partial_apply [isolated_any]`,
+  `function_extract_isolation`).
 
 ## Reject unless
 

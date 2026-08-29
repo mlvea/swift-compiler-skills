@@ -303,3 +303,76 @@ tweak (stage-only domains no longer flood the panel).
 
 Rejected: seating every domain that shares a pipeline stage. That
 produced 4-seat panels on a single CSSimplify.cpp edit.
+
+## 2026-08-29 epoch 10 (panel brief path and invariant corrections)
+
+Evidence: swiftlang/swift main tree listing (`test/` has
+`ModuleInterface/` and `AutoDiff/`, not `Module/` or
+`validation-test/AutoDiff/`; `test/SIL/OwnershipVerifier/`;
+`docs/SIL/`; wasm products under
+`utils/swift_build_support/swift_build_support/products/`);
+SE-0352 vs SE-0346/0353; SE-0430 implemented as `sending`;
+`docs/SIL/Ownership.md`, `docs/LibraryEvolution.rst`,
+`docs/ABI/TypeMetadata.rst`, `docs/HowToUpdateDebugInfo.md`,
+SE-0176.
+
+Proposed + Accepted (execution-gated GitHub tree listing + seating
+replay):
+- Stale test/doc globs in briefs, `seats.json`, pipeline-map,
+  cookbook, cross-cutting playbook.
+- SE numbering in generics/concurrency; `sending` not `transferring`.
+- Specialist defaults: OSSA exactly-once lifetime-ending uses,
+  exclusivity, metadata identity, LibraryEvolution closed-world ABI,
+  debug salvage/undef.
+- Conditional sit/abstain aligned with primary-file seating.
+
+Gate: execution (paths exist on main) + replay (six roster chairs
+unchanged).
+Held-out: same six `seat.py` chairs as epoch 9.
+
+Rejected: claiming any seat is now stronger than a human specialist.
+This epoch only removes false paths and adds documented invariants.
+
+## 2026-08-29 epoch 11 (specialist-bar panel rewrite)
+
+Evidence: local swift docs `docs/TypeChecker.md` (subtype not
+transitive; `ConformsTo` stricter than `X < any P`; solution
+application cannot fail), `docs/SIL/Ownership.md` (lexical lifetimes,
+deinit barriers, guaranteed interior pointers),
+`docs/SIL/SILMemoryAccess.md` (SE-0176 access markers),
+`docs/ABI/TypeMetadata.rst` (complete vs abstract; never backtrack),
+`docs/LibraryEvolution.rst` (closed-world; `@frozen` add/remove
+forbidden; ABI-public defaults are `@_alwaysEmitIntoClient`),
+`docs/HowToUpdateDebugInfo.md` (never speculate; salvage on delete).
+Seating mismatches: `docs/SIL/` was silgen-primary (stole
+`Ownership.md`); `test/Generics/inverse*` was ownership-primary
+(stole signature-only inverse tests); `DWARFImporter*` vs
+`clang-importer`; driver-primary serialization without abstain.
+
+Proposed + Accepted:
+- Fail-closed specialist bar in `swift-expert-panel/SKILL.md`,
+  `chair-protocol.md`, `ballot.md`, and workflow prompts: named
+  `Protects` / `Reject unless` violations are `block` unless the
+  artifact cites the exception in the same official doc.
+- Remaining closed-world invariants encoded in domain briefs.
+- All 18 briefs now have Protects / Plan review / PR review /
+  Reject unless / Evolution / Forum / Abstain (conditionals no longer
+  merge Plan/PR).
+- `seats.json`: silgen primary is specific `docs/SIL/*.md` files;
+  ownership owns `Ownership.md` + `SILMemoryAccess.md`; inverse tests
+  chair as generics; debug-info neighbor `clang-importer`; ARC SIL
+  docs to sil-optimizer.
+
+Gate: execution (`python3 -m json.tool seats.json`; workflow
+`swift-expert-panel` `validate_only` canned-host path passed) +
+replay (`seat.py` on nine roster rows: original six chairs unchanged,
+plus Ownership.md → ownership, DWARFImporter.cpp → debug-info,
+`test/Generics/inverse.swift` → generics). Extra: Types.md → silgen,
+Casting.cpp under `stdlib/public/runtime/` → runtime not stdlib.
+
+Held-out: original six roster chairs identical to epochs 9–10.
+
+Rejected: a measured claim that these seats outperform a human
+specialist. The bar is fail-closed application of documented
+invariants that a hurried human pass skips, not a SkillOpt win in
+this domain.

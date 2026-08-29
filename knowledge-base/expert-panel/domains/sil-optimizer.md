@@ -13,6 +13,13 @@ LICM/SROA, SwiftCompilerSources optimizer.
   (`debug-info` adjacent, `docs/HowToUpdateDebugInfo.md`).
 - Specialization must not drop where-clause constraints or
   inverse-constraint requirements.
+- Transforms that assume exclusivity without matching
+  `begin_access` / static / dynamic enforcement are a miscompile
+  (SE-0176). OSSA lifetime-ending uses stay jointly post-dominating
+  (`ownership` adjacent, `docs/SIL/Ownership.md`).
+- `AccessPath` visitor customization is book-keeping; it must not
+  change `AccessStorage` meaning (`docs/SIL/SILMemoryAccess.md`).
+- Do not shrink lexical lifetimes across deinit barriers (`ownership`).
 
 ## Plan review
 

@@ -15,6 +15,14 @@ mangling, ABI stability.
 - IRGen assertions often fire on SIL that is already illegal; check
   that the producing SIL pass is not the real bug (`pipeline-map`
   heuristic 9).
+- Metadata pointer identity (`docs/ABI/TypeMetadata.rst`): request
+  **complete** metadata for ordinary generic calls, metatype/`Self`
+  values, and opaque existentials. Request abstract metadata only when
+  constructing other metadata. Do not present abstract-only or
+  layout-complete metadata to those three uses.
+- Closed-world ABI: if `docs/LibraryEvolution.rst` does not permit
+  the layout/mangling/witness change, it is a break (`library-evolution`
+  adjacent).
 
 ## Plan review
 
@@ -43,6 +51,12 @@ mangling, ABI stability.
 SE-0260 library evolution: resilient by default; `@frozen` is a
 forever layout promise. ABI / `docs/ABI/`. C-compatible `@objc`
 layout is also `clang-importer`.
+
+## Forum
+
+Mangling, layout, and witness-table shape are shipping contracts.
+"Internal refactor" that remangles or reorders a resilient type is an
+ABI incident (SE-0260, `docs/LibraryEvolution.rst`).
 
 ## Abstain
 

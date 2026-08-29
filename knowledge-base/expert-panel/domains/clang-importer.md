@@ -57,3 +57,4 @@ https://forums.swift.org/t/c-interop-function-uses-foreign-reference-type-error-
 ## Abstain
 
 No import, `@objc` representability, APINotes, or PrintAsClang change.
+`DWARFImporter*` debug-type import → `debug-info`.

@@ -47,7 +47,10 @@ charter seats abstain themselves.
    the same way. Each agent:
    - Reads only `knowledge-base/expert-panel/domains/<id>.md`,
      `evolution-gate.md`, `ballot.md`, and the artifact (with tools).
-   - Empty `blockers` is valid only after that inspection.
+   - Empty `blockers` is valid only after inspecting `Protects` and
+     `Reject unless`. Those rules are **fail-closed**: a violation is
+     `block` unless the artifact cites the exception in the same
+     official doc the brief names.
    - **Abstains** when outside its charter. Abstention is success.
    - Does not discuss other domains' hypothetical votes.
 
@@ -68,3 +71,7 @@ charter seats abstain themselves.
 - User-visible language/stdlib behavior changes go through
   `evolution-gate.md` even if framed as a bugfix.
 - Do not restate stage playbooks. Experts judge *acceptability*.
+- Named invariants in a seated brief beat a plausible local patch.
+  Closed-world defaults (not listed in the official doc ⇒ break;
+  solution application cannot fail; OSSA exactly-once; never drop a
+  debug variable) are the bar a hurried human pass skips.

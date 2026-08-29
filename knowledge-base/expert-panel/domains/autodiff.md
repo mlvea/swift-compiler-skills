@@ -12,9 +12,15 @@ registration. Sit only on a primary file hit.
 - Linear-map structs have IRGen layout constraints (`irgen-abi`
   adjacent).
 
-## Plan / PR
+## Plan review
 
-- Tests in `test/AutoDiff/` or `validation-test/AutoDiff/`.
+- Sit only if differentiation files or attributes are in the change.
+- Does the registered derivative's generic signature match the
+  original, or did validation get skipped?
+
+## PR review
+
+- Tests in `test/AutoDiff/`.
 - `@differentiable` / `derivative(of:)` reducers, not only SIL dumps.
 
 ## Reject unless
@@ -26,6 +32,11 @@ registration. Sit only on a primary file hit.
 
 AutoDiff is still partially experimental; flag-gated behavior may
 change without LSG, but public stdlib differentiation API cannot.
+
+## Forum
+
+SIL transform / pullback bugs are compiler defects. New public
+`Differentiation` stdlib API is evolution (`stdlib` adjacent).
 
 ## Abstain
 

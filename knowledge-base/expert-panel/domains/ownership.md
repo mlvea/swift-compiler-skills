@@ -12,22 +12,40 @@ noncopyable, address lowering, SIL ownership verifier.
   optimizer that "knows" the copy is dead.
 - Borrow scopes must dominate all uses and end exactly once on each
   path.
+- OSSA (`docs/SIL/Ownership.md`): every value (except on a dead-end
+  block post-dominated by `unreachable`) has exactly one lifetime-ending
+  use on each path to `return`/`throw`; those uses jointly post-dominate
+  non-lifetime-ending uses. Weakening that to land a pass is a
+  leak/UAF class.
+- SE-0176 exclusivity: two accesses to the same variable must not
+  overlap unless both are reads. Overlapping `inout` is accepts-invalid.
+- Lexical lifetimes (`docs/SIL/Ownership.md`): destroys of
+  `begin_borrow [lexical]`, `move_value [lexical]`, lexical function
+  arguments, and `alloc_stack [lexical]` must not move across deinit
+  barriers. Check `ValueBase::isLexical` before shrinking a lifetime.
+  Inlining inserts lexical borrow/move for `@guaranteed`/`@owned`
+  arguments that are not already lexical.
+- Interior-pointer instructions take only `@guaranteed` operands;
+  transitive address uses are liveness of that operand. Unknown
+  instructions must fail the verifier (no silent "safe" default).
+  `pointer_to_address` is an explicit escape; do not extend that
+  pointer's lifetime.
 
 ## Plan review
 
 - Is the assert an ownership verifier error? Then find the producing
   pass (SILGen vs mandatory vs opt), not the verifier line.
 - Does the plan insert `copy_value` to "make it work"? That is usually
-  a lifetime bug, not a fix.
+  a lifetime bug, not a fix. Does it move a lexical destroy across a
+  deinit barrier, or treat an interior pointer as an ordinary address?
 - Address lowering / opaque values: is the representation change
   local to mandatory SIL?
 
 ## PR review
 
-- `.sil` tests that run the verifier (`// REQUIRED: sil-ownership` or
-  the directory's existing convention).
-- Neighboring move-only tests in `test/SILOptimizer/moveonly*` and
-  `test/Sema/moveonly*`.
+- Ownership-verifier tests live in `test/SIL/OwnershipVerifier/`
+  (`-sil-ownership-verifier-enable-testing`), plus move-only neighbors
+  in `test/SILOptimizer/moveonly*` and `test/Sema/moveonly*`.
 - No `#ifdef` or feature-flag around verifier checks for convenience.
 
 ## Reject unless
@@ -46,11 +64,18 @@ noncopyable, address lowering, SIL ownership verifier.
 - SE-0446 `~Escapable` / lifetime dependence (do not implement
   lifetime dependence by raw pointer in stdlib)
 
-Ownership manifesto / OSSA:
+## Forum
+
+OSSA is the spec, not an optimizer convenience. Weakening the verifier
+or skipping lexical/deinit-barrier rules to land a pass is the usual
+hurried-review miss:
 https://forums.swift.org/t/sil-ownership-model-proposal-refreshed/16872
 https://forums.swift.org/t/proposal-sil-ownership-model-verifier/4665
 
 ## Abstain
 
-No borrow/consume/move-only/OSSA/verifier change. Pure Sema
-diagnostics with no SIL ownership.
+No borrow/consume/move-only/OSSA/verifier/exclusivity change. Pure
+Sema diagnostics with no SIL ownership. Inverse constraints that only
+change a generic signature (`test/Generics/inverse*`) chair as
+`generics`; this seat sits when SIL lowering of those types is in the
+diff.

@@ -87,7 +87,7 @@ assert candidates with `CHECK:` lines copied from neighbors.
 | Generics/requirements | `test/Generics/`, `test/AssociatedTypeInference/` |
 | Concurrency/isolation (Sema) | `test/Concurrency/` |
 | SILGen | `test/SILGen/` |
-| Mandatory passes / region isolation / move-only | `test/SILOptimizer/`, `test/MoveOnly/`, `test/Concurrency/` |
+| Mandatory passes / region isolation / move-only | `test/SILOptimizer/`, `test/SIL/OwnershipVerifier/`, `test/Concurrency/` |
 | Optimizer passes | `test/SILOptimizer/<PassName>/` |
 | IRGen/ABI | `test/IRGen/`, `test/ABI/` |
 | Runtime/casting | `test/Runtime/`, `test/Casting/`, `test/stdlib/` |

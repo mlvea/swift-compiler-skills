@@ -41,6 +41,12 @@ New syntax, new attributes, or new effects keywords need a proposal
 and usually a feature flag in `Features.def` (`library-evolution`
 adjacent).
 
+## Forum
+
+Syntax bikesheds in commonly_proposed.md (brace/indent, dropping
+semicolons, replacing `?:`, renaming `guard`) stay rejected. Parser
+"helpfulness" that needs type context belongs in Sema, or nowhere.
+
 ## Abstain
 
 Solver-only or SIL-only changes with no diagnostic string / parse

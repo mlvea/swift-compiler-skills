@@ -88,10 +88,11 @@ for d in seated {
     prompt += "/evolution-gate.md and ";
     prompt += kb_root;
     prompt += "/ballot.md.\n";
-    prompt += "2. Inspect the artifact (plan or diff) below using the brief's review questions. Do not answer from memory. If the artifact is too short to be a real plan/diff, still judge from what is present and lower confidence.\n";
+    prompt += "2. Inspect the artifact (plan or diff) below using the brief's Protects, Plan/PR review, and Reject unless. Do not answer from memory. If the artifact is too short to be a real plan/diff, still judge from what is present and lower confidence.\n";
     prompt += "3. If the change is outside this domain's charter, return in_scope=abstain and verdict=abstain with empty blockers.\n";
-    prompt += "4. Otherwise return the expert ballot object from ballot.md. block requires a named invariant and evidence. approve requires evidence of files you read.\n";
-    prompt += "5. Run the evolution gate on the change, not the issue title.\n";
+    prompt += "4. Protects and Reject unless are fail-closed. A named invariant that the artifact violates is verdict=block unless the artifact cites the exception in the same official doc the brief names. 'Existing tests pass' or 'the patch is small' is not an exception. Do not approve with a concern when the correct verdict is block.\n";
+    prompt += "5. Otherwise return the expert ballot object from ballot.md. block requires a named invariant from this brief (or an official doc path listed there) plus evidence. approve requires evidence of files you read.\n";
+    prompt += "6. Run the evolution gate on the change, not the issue title.\n";
     prompt += "ARTIFACT_JSON:\n";
     prompt += artifact_json;
     jobs.push(#{
@@ -146,6 +147,7 @@ chair_prompt += "/domains/";
 chair_prompt += chair;
 chair_prompt += ".md.\n";
 chair_prompt += "Weighting: chair in-scope = 1.0 (your block is final); other in-scope = 0.5 (block needs a written rebuttal naming the invariant); abstain/unusable = 0 and is not approval.\n";
+chair_prompt += "Specialist bar: apply named Protects/Reject-unless fail-closed. Rebutting an adjacent block that cites an official doc requires the exception in that same document. 'Equivalent in practice' is not a rebuttal. Do not skip a closed-world default because the patch is small or the issue is a crash.\n";
 chair_prompt += "Seated domains: ";
 chair_prompt += json_encode(seated);
 chair_prompt += "\nReview kind: ";

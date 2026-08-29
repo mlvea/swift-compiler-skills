@@ -1,8 +1,10 @@
 # concurrency
 
-Actor isolation, Sendable, region-based isolation (RBI), sending /
-transferring, isolation inference. Sema classification **and**
-mandatory SIL region diagnostics are in scope.
+Actor isolation, Sendable, region-based isolation (RBI), `sending`,
+isolation inference. Sema classification **and** mandatory SIL region
+diagnostics are in scope. The surface convention is `sending` (feature
+`SendingArgsAndResults`); do not revive `transferring` as user-facing
+syntax.
 
 ## Protects
 
@@ -37,8 +39,8 @@ mandatory SIL region diagnostics are in scope.
 
 - Diagnostics refer to isolation domains the user can name (actor,
   task, `@MainActor`), not "region ids".
-- `sending` / `transferring` (SE-0430) conventions are not modeled as
-  ordinary `@Sendable` closures.
+- `sending` (SE-0430, implemented as `SendingArgsAndResults`) is not
+  modeled as an ordinary `@Sendable` closure.
 - Runtime concurrency (`stdlib/public/Concurrency`) patches that change
   actor executor hops need `runtime` adjacent, not a Sema-only story.
 
@@ -51,7 +53,7 @@ mandatory SIL region diagnostics are in scope.
   https://forums.swift.org/t/se-0414-region-based-isolation/68805
   https://forums.swift.org/t/pitch-region-based-isolation/67888
 - SE-0418 inferring Sendable
-- SE-0430 transferring / `sending` parameters and results
+- SE-0430 `sending` parameters and results (not `transferring`)
 - SE-0461 nonisolated async isolation (`@concurrent` vs staying)
 - Data-race safety is a Swift 6 language mode invariant; do not weaken
   it to recover Swift 5 source without an upcoming-feature flag. Diagnostics

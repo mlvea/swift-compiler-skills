@@ -54,6 +54,20 @@ Write the rebuttal, if any, as one paragraph per adjacent blocker. "Out
 of scope" is not a rebuttal unless the adjacent ballot should have
 abstained.
 
+## Specialist bar
+
+Briefs encode closed-world documented invariants. Apply them
+fail-closed:
+
+- A `Protects` / `Reject unless` violation is `block`. Use
+  `request-changes` only when the layer is right but incomplete (test,
+  diagnostic placement).
+- Rebutting an adjacent `block` that names an official doc requires
+  citing the exception in **that same document**. "Equivalent in
+  practice" / "existing tests pass" is not a rebuttal.
+- The chair does not skip a closed-world default because the patch is
+  small or the issue is a crash.
+
 ## Output
 
 Use the chair schema in `ballot.md`. The rationale names domain ids.

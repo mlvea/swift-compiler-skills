@@ -12,6 +12,15 @@ backtrace, bridging entrypoints.
 - Metadata for generic / tuple / existential types must match IRGen
   layout. Diverging the two is an ABI incident.
 - Overflow in size/layout math traps; it must not wrap.
+- Type-metadata pointers are identity: two metadata pointers compare
+  equal iff the types are equivalent (`docs/ABI/TypeMetadata.rst`).
+  Metadata never backtracks state; complete remains complete. Ordinary
+  generic arguments (except metadata/witness access functions),
+  metatype values including `Self`, and opaque existentials require
+  **complete** metadata — not abstract or layout-complete.
+- Reflection, threading, and backtrace entry points are this seat
+  when those files change; they must stay safe for concurrent first
+  use.
 
 ## Plan review
 
@@ -42,6 +51,13 @@ backtrace, bridging entrypoints.
 
 Runtime implementation of accepted language rules is not evolution.
 New runtime-visible protocols or cast semantics are.
+
+## Forum
+
+A cast that succeeds "for convenience" is not better bridging.
+Bridging must not invent conformances the type system would refuse
+(85111 class). `any Error: Error` is the documented self-conformance
+exception, not a pattern to copy.
 
 ## Abstain
 

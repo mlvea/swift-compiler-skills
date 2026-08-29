@@ -1,8 +1,9 @@
 # embedded (conditional)
 
-Embedded Swift (restricted runtime, specialized witnesses) and
-Wasm/WASI hooks. Sit on `test/embedded/` or wasm product files, or
-when the plan is explicitly Embedded.
+Embedded Swift (restricted runtime, specialized witnesses,
+no-allocation paths) and Wasm/WASI hooks. Sit only on a primary file
+hit (`test/embedded/`, `lib/Sema/TypeCheckEmbedded*`, wasm/wasi
+product files).
 
 ## Protects
 
@@ -12,13 +13,29 @@ when the plan is explicitly Embedded.
   utilities (`Generics.cpp`) with `test/embedded/` coverage (#91566).
 - Wasm lacks ObjC runtime; typed-throws async lowering cannot assume
   it (#89320 class).
+- `-no-allocations` / no-allocation Embedded must not grow a path
+  that requires the full runtime allocator.
 
-## Plan / PR
+## Plan review
 
 - Repro with `-enable-experimental-feature Embedded` (or the current
   equivalent flag in-tree).
+- Runtime/metadata call on an Embedded path, or a hole in a shared
+  SIL utility (`Generics.cpp`)? Shared utility stays general, with
+  `test/embedded/` coverage.
+
+## PR review
+
+- `test/embedded/` (or the wasm/wasi product test already in tree).
 - Do not encode `embedded` as a special case at a SIL verifier
-  assert; fix the producing pass's general check.
+  assert; restore the producing pass's general check.
+
+## Reject unless
+
+- Do not encode `embedded` as a special case at a SIL verifier assert;
+  restore the producing pass's general check (#90931 class).
+- Do not mix Embedded ABI (`$e` mangling, unstable) with full Swift
+  metadata on the same path.
 
 ## Evolution
 
@@ -27,6 +44,13 @@ is `Mutex`). Expanding or shrinking the Embedded subset is a language-
 mode change for that compilation model. Metadata-using runtime calls
 on an Embedded path are a compiler bug, not a subset expansion.
 
+## Forum
+
+Embedded has no full runtime by default. That is the compilation
+model, not a missing convenience. Wasm has no ObjC runtime — typed
+throws / async lowering must not assume one.
+
 ## Abstain
 
-No Embedded/Wasm files and no Embedded feature flag in the plan.
+No primary Embedded/Wasm files. An Embedded feature flag in the plan
+text is not enough to sit; seating requires a primary glob hit.

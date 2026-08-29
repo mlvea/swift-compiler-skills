@@ -44,7 +44,7 @@
       "kind": "core",
       "charter": "Generic signatures, requirement machine, associated type inference, protocol conformances, existentials, parameter packs, opaque types.",
       "stages": ["sema"],
-      "neighbors": ["type-system", "silgen", "irgen-abi", "embedded"],
+      "neighbors": ["type-system", "silgen", "ownership", "irgen-abi", "embedded"],
       "primary": [
         "lib/AST/RequirementMachine/",
         "lib/AST/*Generic*",
@@ -131,12 +131,17 @@
         "lib/SILGen/",
         "include/swift/SIL/SILBuilder.h",
         "test/SILGen/",
-        "docs/SIL*"
+        "docs/SIL/SIL.md",
+        "docs/SIL/Types.md",
+        "docs/SIL/SILFunctionConventions.md",
+        "docs/SIL/SILInitializerConventions.md",
+        "docs/SIL/Instructions.md"
       ],
       "adjacent": [
         "lib/SIL/",
         "include/swift/SIL/",
-        "test/sil*"
+        "test/sil*",
+        "docs/SIL/"
       ],
       "keywords": [
         "SILGen",
@@ -163,8 +168,9 @@
         "test/SILOptimizer/moveonly*",
         "test/SILOptimizer/noimplicitcopy*",
         "test/Sema/moveonly*",
-        "test/Generics/inverse*",
-        "test/MoveOnly/"
+        "test/SIL/OwnershipVerifier/",
+        "docs/SIL/Ownership.md",
+        "docs/SIL/SILMemoryAccess.md"
       ],
       "adjacent": [
         "lib/SIL/",
@@ -184,7 +190,10 @@
         "borrowing",
         "consume",
         "SIL verification",
-        "ownership"
+        "ownership",
+        "deinit barrier",
+        "interior pointer",
+        "lexical lifetime"
       ]
     },
     {
@@ -199,7 +208,9 @@
         "SwiftCompilerSources/",
         "benchmark/",
         "test/SILOptimizer/",
-        "docs/Optimizer*"
+        "docs/Optimizer*",
+        "docs/SIL/ARCOptimization.md",
+        "docs/SIL/SIL-Utilities.md"
       ],
       "adjacent": [
         "lib/SIL/",
@@ -275,7 +286,9 @@
         "metadata",
         "runtime crash",
         "EXC_BAD_ACCESS",
-        "bridging"
+        "bridging",
+        "reflection",
+        "backtrace"
       ]
     },
     {
@@ -424,7 +437,7 @@
         "lib/DriverTool/",
         "include/swift/Driver/",
         "test/Serialization/",
-        "test/Module/",
+        "test/ModuleInterface/",
         "test/ScanDependencies/",
         "test/Driver/"
       ],
@@ -446,7 +459,7 @@
       "kind": "core",
       "charter": "SIL debug values, DWARF emission, debugger correctness after optimization.",
       "stages": ["debuginfo", "sil-opts", "irgen"],
-      "neighbors": ["sil-optimizer", "irgen-abi"],
+      "neighbors": ["sil-optimizer", "irgen-abi", "clang-importer"],
       "primary": [
         "lib/SIL/IR/SILDebug*",
         "include/swift/SIL/SILDebug*",
@@ -454,7 +467,8 @@
         "lib/IRGen/*Debug*",
         "lib/ClangImporter/DWARFImporter*",
         "test/DebugInfo/",
-        "docs/HowToUpdateDebugInfo.md"
+        "docs/HowToUpdateDebugInfo.md",
+        "docs/SIL/DebugBasicBlocks.md"
       ],
       "adjacent": [
         "lib/IRGen/",
@@ -478,8 +492,7 @@
         "lib/SILOptimizer/Differentiation/",
         "stdlib/public/Differentiation/",
         "stdlib/private/DifferentiationUnittest/",
-        "test/AutoDiff/",
-        "validation-test/AutoDiff/"
+        "test/AutoDiff/"
       ],
       "adjacent": [],
       "keywords": [
@@ -524,8 +537,10 @@
       "neighbors": ["sil-optimizer", "irgen-abi", "generics"],
       "primary": [
         "test/embedded/",
-        "utils/swift_build_support/products/wasm*",
-        "utils/swift_build_support/products/wasi*"
+        "lib/Sema/TypeCheckEmbedded*",
+        "utils/swift_build_support/swift_build_support/products/wasm*",
+        "utils/swift_build_support/swift_build_support/products/wasi*",
+        "utils/swift_build_support/swift_build_support/products/emscripten*"
       ],
       "adjacent": [
         "lib/SILOptimizer/Utils/Generics.cpp",
