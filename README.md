@@ -1,5 +1,9 @@
 # swift-compiler-skills
 
+<p align="center">
+  <img src="docs/suite-overview.svg" alt="An issue flows through triage, a stage playbook, plan-time expert panel, patch and tests, PR-time expert panel, then the curator writes lessons back into the knowledge base." width="100%">
+</p>
+
 Agent skills for finding, triaging, and fixing bugs in the Swift compiler
 (`swiftlang/swift`) — with a validation-gated self-improvement loop adapted
 from [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt).
@@ -14,10 +18,10 @@ to open. They do not decide the patch for a different issue.
 
 | Skill | Use when |
 | --- | --- |
-| [`swift-compiler-fix-loop/`](swift-compiler-fix-loop/SKILL.md) | End-to-end fix of one issue: triage → reproduce → patch → regression tests → verify → durable case notes. The default entry point. |
+| [`swift-compiler-fix-loop/`](swift-compiler-fix-loop/SKILL.md) | End-to-end fix of one issue: triage → reproduce → **plan panel** → patch → tests → **PR panel** → durable case notes. The default entry point. |
 | [`swift-issue-triage/`](swift-issue-triage/SKILL.md) | Classify an issue into pipeline stage + failure family from *this* issue's stack/repro *before* touching code. |
 | [`swift-local-build-test/`](swift-local-build-test/SKILL.md) | Build targets, run lit tests, manage worktrees; the verified environment contract for this machine. |
-| [`swift-expert-panel/`](swift-expert-panel/SKILL.md) | After a plan or PR exists: seat compiler-domain reviewers, collect independent ballots, chair-weighted verdict. |
+| [`swift-expert-panel/`](swift-expert-panel/SKILL.md) | Required after the written plan (before compiler edits) and again on the diff (before marking a PR ready). Also on demand for a plan, PR, or diff. |
 | [`swift-knowledge-curator/`](swift-knowledge-curator/SKILL.md) | After fixes (or failures): evolve these skills with bounded, validation-gated edits. |
 
 Shared knowledge base (loaded on demand):
@@ -63,9 +67,56 @@ Adapt those paths in the SKILL.mds if you relocate them.
 2. `swift-issue-triage/SKILL.md` — run the triage procedure before any fix
 3. `knowledge-base/<playbook for the triaged stage>`
 4. `swift-local-build-test/SKILL.md` — for every build/test command
-5. After the plan and again before the PR is marked ready:
-   `swift-expert-panel/SKILL.md`
+5. `swift-expert-panel/SKILL.md` — **plan review after step 4, PR review after step 8** (see below)
 6. On completion (success *or* failure): `swift-knowledge-curator/SKILL.md`
+
+## Expert panel: when and how
+
+The panel is **required** in the fix loop, not optional polish. Playbooks
+say where to look; the panel says whether the plan or patch is acceptable
+in the domains it touches.
+
+**When (required)**
+
+| Gate | When | Artifact | Do not proceed until |
+| --- | --- | --- | --- |
+| Plan review | After the bug is explained (fix-loop step 4), **before any compiler source edit** | Written invariant, broken assumption, path, intended change, likely files | Chair `approve` |
+| PR review | After local tests pass and the patch is prepared (fix-loop step 8), **before marking the PR ready** | Diff + PR description + changed files | Chair `approve` |
+
+**When (on demand):** the user asks to review a plan, diff, PR URL, or
+case file — same procedure.
+
+**Skip only** if the change is comment-only, docs-only, or
+test-expectation-only **and** does not encode a language rule. If
+unsure, sit.
+
+**How**
+
+1. Seat (do not pick domains by hand):
+
+```bash
+python3 swift-expert-panel/scripts/seat.py --stage <triage-stage> \
+  --text-file <plan-or-pr-body> -- <changed files relative to the swift checkout>
+```
+
+2. Independent ballots: one read-only agent per `seated` domain. Each
+   loads only `knowledge-base/expert-panel/domains/<id>.md` plus
+   `evolution-gate.md` and the artifact. Out-of-charter seats **abstain**.
+3. Chair: one more agent, the script's `chair` domain. It issues the
+   only verdict the loop obeys (`chair-protocol.md`).
+4. Obey the verdict:
+   - `approve` — continue
+   - `request-changes` — apply `must_address`, then **re-sit**
+   - `block` — do not implement / do not mark the PR ready
+5. Record seating JSON, ballots, and chair verdict in the case file
+   under `## Expert panel`.
+
+On Grok, after `seat.py`: `/swift-expert-panel` or
+`/workflow swift-expert-panel` with `{kind, chair, seated, artifact, files}`.
+On other hosts, follow `swift-expert-panel/SKILL.md` with parallel
+subagents.
+
+Full procedure: [`swift-expert-panel/SKILL.md`](swift-expert-panel/SKILL.md).
 
 ## Design Principles
 

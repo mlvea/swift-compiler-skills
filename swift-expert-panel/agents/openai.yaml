@@ -1,4 +1,4 @@
 interface:
   display_name: "Swift Expert Panel"
-  short_description: "Domain review of a compiler plan or PR"
-  default_prompt: "Use $swift-expert-panel to seat compiler-domain reviewers, collect independent ballots, and issue a chair-weighted verdict on this plan or PR."
+  short_description: "Required plan review before edits, and PR review before marking ready"
+  default_prompt: "Use $swift-expert-panel. Sit after the written plan (before compiler edits) and again on the diff (before marking the PR ready). Seat with seat.py, collect independent domain ballots, chair-weighted verdict."

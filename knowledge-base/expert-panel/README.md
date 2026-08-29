@@ -3,6 +3,10 @@
 Review judgment for compiler plans and PRs. Complementary to
 stage playbooks (location) and resolved-issue patterns (file-search).
 
+When and how to sit: `swift-expert-panel/SKILL.md` (required after the
+written plan, before compiler edits; and again on the diff, before
+marking a PR ready).
+
 | File | Role |
 | --- | --- |
 | `seats.json` | Machine seating table (globs, neighbors, keywords) |

@@ -1,74 +1,70 @@
 ---
 name: swift-expert-panel
-description: Domain expert panel that reviews a Swift compiler fix plan or PR. Seats are compiler domains, independent ballots, weighted chair verdict. Use when asked to review a plan or PR, "ask the panel", "expert panel", or after a fix-loop plan/PR is ready.
+description: Domain expert panel that reviews a Swift compiler fix plan or PR. Required after a written plan (before compiler edits) and again on the diff (before marking a PR ready). Also use on demand for "ask the panel", "expert panel", or review this plan/PR/diff.
 ---
 
 # Swift Expert Panel
 
 Supplementary review, not a second triage. Playbooks say where to look;
 this panel says whether the change is acceptable in the domains it
-touches.
+touches. Seats are compiler domains (`type-system`, `concurrency`,
+`sil-optimizer`).
 
-Seats are compiler domains (`type-system`, `concurrency`, `sil-optimizer`).
+## When (required)
 
-## When To Sit
+| `kind` | Run after | Artifact | Blocked until chair `approve` |
+| --- | --- | --- | --- |
+| `plan` | Fix-loop step 4 (bug explained) | Written invariant, broken assumption, path, intended change, likely files | Any compiler source edit |
+| `pr` | Fix-loop step 8 (patch + tests ready) | Diff, PR description, changed files | Marking the PR ready for review |
 
-- After fix-loop step 4 (bug explained, before patching) — **plan** review.
-- After fix-loop step 8 (patch + tests, before marking the PR ready) — **PR** review.
-- On demand: plan text, diff, PR URL, or case file.
+Also sit on demand given a plan, diff, PR URL, or case file.
 
-Skip only for comment-only, docs-only, or test-expectation-only edits that
-do not encode a language rule. When unsure, sit.
+**Skip only** for comment-only, docs-only, or test-expectation-only
+edits that do not encode a language rule. If unsure, sit. A small Sema
+check is not a skip.
 
-## Procedure
+After `request-changes`, apply `must_address` and **re-sit** the same
+`kind` before continuing.
 
-1. **Seat from files, not vibes.** Run:
+## How
+
+Inputs: `kind` (`plan`|`pr`), triage `stage`, files (likely paths or
+`git diff --name-only`), artifact (plan text or patch + description).
+
+1. **Seat from files, not by hand:**
 
 ```bash
 python3 swift-expert-panel/scripts/seat.py --stage <triage-stage> \
-  --text-file <plan-or-pr-body> -- <changed files relative to swift checkout>
+  --text-file <plan-or-pr-body> -- <files relative to the swift checkout>
 ```
 
-Use `chair` + `seated` from the JSON. Do not add extra domains. Do not
-drop a seated domain because it looks unrelated — that domain abstains
-itself if needed.
+Use the JSON `chair` + `seated`. Do not add or drop domains. Out-of-
+charter seats abstain themselves.
 
-2. **Independent ballots.** Spawn one read-only subagent per seated domain
-   in parallel (Grok: `/swift-expert-panel` workflow, or this skill's
-   host parallel). Each agent:
-   - Reads only `knowledge-base/expert-panel/domains/<id>.md` plus
-     `evolution-gate.md` and the artifact (plan or diff).
-   - Must inspect the actual plan/diff with tools. Empty `blockers` is
-     valid only after that inspection.
-   - Returns the ballot schema in `knowledge-base/expert-panel/ballot.md`.
-   - **Abstains** (`in_scope: abstain`) when the change is outside its
-     charter. Abstention is success.
-   - Never discusses other domains' hypothetical votes.
+2. **Independent ballots** — one read-only subagent per seated domain,
+   in parallel. Grok: `/workflow swift-expert-panel` with
+   `{kind, chair, seated, artifact, files, kb_root}`. Other hosts: spawn
+   the same way. Each agent:
+   - Reads only `knowledge-base/expert-panel/domains/<id>.md`,
+     `evolution-gate.md`, `ballot.md`, and the artifact (with tools).
+   - Empty `blockers` is valid only after that inspection.
+   - **Abstains** when outside its charter. Abstention is success.
+   - Does not discuss other domains' hypothetical votes.
 
-3. **Chair verdict.** After every ballot is in, spawn **one** more agent:
-   the `chair` domain. It reads `chair-protocol.md`, `evolution-gate.md`,
-   its own brief, and every ballot. It does not re-review the diff from
-   scratch unless a ballot is unusable. Weighting:
+3. **Chair** — one more agent: the script's `chair`. It reads
+   `chair-protocol.md`, `evolution-gate.md`, its brief, and every
+   ballot. Weight: chair in-scope 1.0 (`block` is final); other
+   in-scope 0.5 (`block` needs a written invariant rebuttal);
+   abstain/failed 0 (not approval).
 
-   | Ballot | Weight |
-   | --- | --- |
-   | Chair domain, `in_scope: in` | 1.0 — its `block` cannot be overridden |
-   | Other seated, `in_scope: in` | 0.5 — `block` needs a written rebuttal naming the invariant |
-   | `abstain` or failed agent | 0 |
-
-   Failed or missing ballots are not silent approvals.
-
-4. **Stop or proceed.**
-   - `approve` — continue the fix-loop.
-   - `request-changes` — address `must_address` before implementing / marking ready.
-   - `block` — do not land; evolution or invariant failure.
-   Record the seating JSON, ballots, and chair verdict in the case file
-   under `## Expert panel`.
+4. **Obey the chair:** `approve` continue; `request-changes` fix then
+   re-sit; `block` do not land. Record seating, ballots, and verdict in
+   the case file under `## Expert panel`.
 
 ## Hard Rules
 
 - Seating is the script. The chair is the script's `chair`.
-- Do not average votes. The chair decides, with the weights above.
+- Do not average votes.
 - User-visible language/stdlib behavior changes go through
-  `evolution-gate.md` even if the patch "fixes a bug".
+  `evolution-gate.md` even if framed as a bugfix.
 - Do not restate stage playbooks. Experts judge *acceptability*.

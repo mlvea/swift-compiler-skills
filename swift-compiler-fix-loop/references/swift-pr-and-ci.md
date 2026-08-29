@@ -8,6 +8,8 @@ review or bot testing.
 - Work in your fork branch.
 - Open the PR against `swiftlang/swift:main`.
 - Prefer a Draft PR until the patch, explanation, and tests are ready.
+- Do not mark the PR ready until the expert-panel **PR** review has
+  chair `approve` (`swift-expert-panel/SKILL.md`).
 - Significant changes need explicit approval before merge.
 
 ## Commit Guidance

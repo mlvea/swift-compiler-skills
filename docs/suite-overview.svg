@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" role="img" aria-labelledby="title desc">
+  <title id="title">swift-compiler-skills suite</title>
+  <desc id="desc">An issue flows through triage, a stage playbook, plan-time expert panel, patch and tests, PR-time expert panel, then durable case notes. The curator feeds lessons back into the knowledge base and skills.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#10141c"/>
+      <stop offset="100%" stop-color="#1a2230"/>
+    </linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f05138"/>
+      <stop offset="100%" stop-color="#ff8a65"/>
+    </linearGradient>
+    <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity="0.35"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#9aa7bd"/>
+    </marker>
+    <marker id="arrowAccent" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f05138"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="640" fill="url(#bg)" rx="24"/>
+  <circle cx="1080" cy="80" r="160" fill="#f05138" opacity="0.07"/>
+  <circle cx="80" cy="560" r="140" fill="#7aa2f7" opacity="0.06"/>
+
+  <text x="48" y="48" fill="#f4f6fb" font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif" font-size="22" font-weight="700">swift-compiler-skills</text>
+  <text x="48" y="74" fill="#9aa7bd" font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif" font-size="13">One issue through the suite. Playbooks locate. The panel accepts or rejects. The curator trains the next run.</text>
+
+  <!-- flow spine -->
+  <path d="M 70 210 H 1130" stroke="#2b3648" stroke-width="6" fill="none"/>
+  <path d="M 70 210 H 1130" stroke="url(#orange)" stroke-width="2" fill="none" opacity="0.9"/>
+
+  <!-- nodes -->
+  <g font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif" filter="url(#soft)">
+    <g transform="translate(48,168)">
+      <rect width="132" height="84" rx="14" fill="#243044" stroke="#3a4a63"/>
+      <text x="66" y="38" text-anchor="middle" fill="#9aa7bd" font-size="11">input</text>
+      <text x="66" y="58" text-anchor="middle" fill="#f4f6fb" font-size="15" font-weight="700">issue</text>
+    </g>
+    <g transform="translate(210,168)">
+      <rect width="150" height="84" rx="14" fill="#243044" stroke="#f05138"/>
+      <text x="75" y="34" text-anchor="middle" fill="#ffb4a4" font-size="11">swift-issue-triage</text>
+      <text x="75" y="56" text-anchor="middle" fill="#f4f6fb" font-size="15" font-weight="700">triage</text>
+      <text x="75" y="72" text-anchor="middle" fill="#9aa7bd" font-size="10">stage · family · files</text>
+    </g>
+    <g transform="translate(390,168)">
+      <rect width="150" height="84" rx="14" fill="#243044" stroke="#3a4a63"/>
+      <text x="75" y="34" text-anchor="middle" fill="#9aa7bd" font-size="11">stage playbook</text>
+      <text x="75" y="56" text-anchor="middle" fill="#f4f6fb" font-size="15" font-weight="700">locate</text>
+      <text x="75" y="72" text-anchor="middle" fill="#9aa7bd" font-size="10">where to look</text>
+    </g>
+    <g transform="translate(570,156)">
+      <rect width="168" height="108" rx="16" fill="#2a1e1c" stroke="#f05138" stroke-width="1.5"/>
+      <text x="84" y="28" text-anchor="middle" fill="#ffb4a4" font-size="11">swift-expert-panel</text>
+      <text x="84" y="50" text-anchor="middle" fill="#f4f6fb" font-size="15" font-weight="700">plan panel</text>
+      <text x="84" y="70" text-anchor="middle" fill="#9aa7bd" font-size="10">domains vote · chair decides</text>
+      <text x="84" y="88" text-anchor="middle" fill="#f05138" font-size="10" font-weight="600">before any source edit</text>
+    </g>
+    <g transform="translate(768,168)">
+      <rect width="150" height="84" rx="14" fill="#243044" stroke="#3a4a63"/>
+      <text x="75" y="34" text-anchor="middle" fill="#9aa7bd" font-size="11">fix-loop + build-test</text>
+      <text x="75" y="56" text-anchor="middle" fill="#f4f6fb" font-size="15" font-weight="700">patch · tests</text>
+      <text x="75" y="72" text-anchor="middle" fill="#9aa7bd" font-size="10">smallest invariant fix</text>
+    </g>
+    <g transform="translate(948,156)">
+      <rect width="168" height="108" rx="16" fill="#2a1e1c" stroke="#f05138" stroke-width="1.5"/>
+      <text x="84" y="28" text-anchor="middle" fill="#ffb4a4" font-size="11">swift-expert-panel</text>
+      <text x="84" y="50" text-anchor="middle" fill="#f4f6fb" font-size="15" font-weight="700">PR panel</text>
+      <text x="84" y="70" text-anchor="middle" fill="#9aa7bd" font-size="10">review the diff</text>
+      <text x="84" y="88" text-anchor="middle" fill="#f05138" font-size="10" font-weight="600">before marking ready</text>
+    </g>
+  </g>
+
+  <!-- arrows between flow nodes -->
+  <g stroke="#9aa7bd" stroke-width="1.5" fill="none" marker-end="url(#arrow)">
+    <path d="M 180 210 H 208"/>
+    <path d="M 360 210 H 388"/>
+    <path d="M 540 210 H 568"/>
+    <path d="M 738 210 H 766"/>
+    <path d="M 918 210 H 946"/>
+  </g>
+
+  <!-- knowledge base slab -->
+  <g font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif">
+    <rect x="48" y="320" width="704" height="168" rx="18" fill="#18202c" stroke="#334056"/>
+    <text x="72" y="352" fill="#f4f6fb" font-size="15" font-weight="700">knowledge-base</text>
+    <text x="72" y="372" fill="#9aa7bd" font-size="11">loaded on demand · trainable state</text>
+    <g font-size="12" fill="#f4f6fb">
+      <rect x="72" y="392" width="150" height="68" rx="10" fill="#243044"/>
+      <text x="147" y="422" text-anchor="middle">pipeline-map</text>
+      <text x="147" y="440" text-anchor="middle" fill="#9aa7bd" font-size="10">stage identification</text>
+      <rect x="234" y="392" width="150" height="68" rx="10" fill="#243044"/>
+      <text x="309" y="422" text-anchor="middle">stage-playbooks</text>
+      <text x="309" y="440" text-anchor="middle" fill="#9aa7bd" font-size="10">where to look</text>
+      <rect x="396" y="392" width="150" height="68" rx="10" fill="#243044"/>
+      <text x="471" y="422" text-anchor="middle">issue patterns</text>
+      <text x="471" y="440" text-anchor="middle" fill="#9aa7bd" font-size="10">A1–A10 file search</text>
+      <rect x="558" y="392" width="170" height="68" rx="10" fill="#2a1e1c" stroke="#f05138"/>
+      <text x="643" y="422" text-anchor="middle">expert-panel</text>
+      <text x="643" y="440" text-anchor="middle" fill="#ffb4a4" font-size="10">domain briefs · seats</text>
+    </g>
+  </g>
+
+  <!-- curator loop -->
+  <g font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif">
+    <rect x="780" y="320" width="372" height="168" rx="18" fill="#18202c" stroke="#f05138" stroke-opacity="0.6"/>
+    <text x="804" y="352" fill="#ffb4a4" font-size="11">swift-knowledge-curator</text>
+    <text x="804" y="376" fill="#f4f6fb" font-size="16" font-weight="700">train the suite</text>
+    <text x="804" y="400" fill="#9aa7bd" font-size="12">After success or failure: harvest, bounded</text>
+    <text x="804" y="418" fill="#9aa7bd" font-size="12">edits, replay / counterexample / execution gates.</text>
+    <text x="804" y="448" fill="#9aa7bd" font-size="12">Writes back to knowledge-base and SKILL.md.</text>
+    <text x="804" y="466" fill="#9aa7bd" font-size="12">Journal: optimization/edit-log.md</text>
+  </g>
+
+  <!-- feedback path -->
+  <path d="M 966 488 C 966 560, 400 560, 400 488" fill="none" stroke="#f05138" stroke-width="2" stroke-dasharray="6 6" marker-end="url(#arrowAccent)"/>
+  <text x="683" y="576" text-anchor="middle" fill="#f05138" font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif" font-size="12" font-weight="600">lessons update the next run</text>
+
+  <text x="48" y="620" fill="#6b778a" font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif" font-size="11">Orchestrator: swift-compiler-fix-loop · environment: swift-local-build-test</text>
+</svg>

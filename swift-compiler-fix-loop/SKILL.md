@@ -10,7 +10,7 @@ delegates to four sibling skills:
 
 - `swift-issue-triage` — classify stage from THIS issue before touching code
 - `swift-local-build-test` — build trees, test invocation, environment traps
-- `swift-expert-panel` — domain review of the plan and PR
+- `swift-expert-panel` — required plan review (step 4) and PR review (step 8)
 - `swift-knowledge-curator` — after fixes, evolve these skills (validation-gated)
 
 Shared knowledge base: `/Users/madushan/Documents/Github/swift-compiler-skills/knowledge-base/`
@@ -22,6 +22,17 @@ Shared knowledge base: `/Users/madushan/Documents/Github/swift-compiler-skills/k
 
 Compiler patches go in the Swift checkout. Plans, case notes, handoffs,
 tracker updates, and book notes stay in the wiki repo.
+
+## Expert panel (required)
+
+Run `swift-expert-panel` at two gates unless the skip rule there applies
+(comment/docs/test-expectation-only, no language rule):
+
+- After step 4, on the **written plan**, before any compiler source edit.
+- After step 8, on the **diff**, before marking the PR ready.
+
+Obey the chair: `approve` continue; `request-changes` fix then re-sit;
+`block` stop. Procedure: `../swift-expert-panel/SKILL.md`.
 
 ## Work Loop
 
@@ -45,9 +56,8 @@ tracker updates, and book notes stay in the wiki repo.
    - the language rule / compiler invariant it violates
    - the broken assumption in the code it reaches
    - the exact path where it fails
-   Then run `swift-expert-panel` on the **plan** (seat.py on likely
-   files). Do not implement through a chair `block` / unrebutted
-   `request-changes`. Skip only comment/docs/test-expectation-only edits.
+   Then the **plan** panel (see above). Do not edit compiler source
+   through a chair `block` or unrebutted `request-changes`.
 
 5. **Implement the smallest change that restores that invariant.** No
    refactors on bug-fix branches unless the design itself is wrong. If
@@ -66,8 +76,7 @@ tracker updates, and book notes stay in the wiki repo.
    commit message explaining issue + invariant; Draft PR until ready;
    description covers explanation, scope, risk, testing, reviewers.
    Upstream triggers: `references/swift-pr-and-ci.md`.
-   Run `swift-expert-panel` on the **PR/diff** before marking ready.
-   Record seating + chair verdict in the case file.
+   Then the **PR** panel (see above) before marking ready.
 
 9. **Leave durable project memory.** Update the case file with root cause,
    path, patch notes, artifact paths + base commit, tests, verification,

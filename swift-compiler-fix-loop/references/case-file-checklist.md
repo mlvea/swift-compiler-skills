@@ -38,7 +38,8 @@ Every active case should explain:
 - Verification
 - Book Notes
 - Risks / Open Questions
-- Expert panel (when the panel sat): seating JSON, ballots, chair verdict
+- Expert panel: seating JSON, ballots, chair verdict (required except
+  the skip cases in `swift-expert-panel/SKILL.md`)
 
 ## Quality Bar
 
