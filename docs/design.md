@@ -24,24 +24,31 @@ swift-compiler-skills/
 ├── swift-issue-triage/          stage/family/archetype classifier
 ├── swift-local-build-test/      verified build/test commands + env contract
 │   └── references/environments.md   the machine's pinned truth
+├── swift-expert-panel/          domain review of a plan or PR
+│   └── scripts/seat.py          deterministic seating from files
 ├── swift-knowledge-curator/     SkillOpt-style meta-loop over the suite itself
 ├── knowledge-base/
 │   ├── pipeline-map.md          symptoms → stage → files → tests
 │   ├── stage-playbooks/         one playbook per compiler stage
 │   ├── regression-test-cookbook.md
-│   └── resolved-issue-patterns.md   archetypes A1–A10
+│   ├── resolved-issue-patterns.md   archetypes A1–A10
+│   └── expert-panel/            domain briefs, seats.json, evolution gate
 └── optimization/edit-log.md     append-only training journal
 ```
 
 Data flow for one fix:
 
 ```
-issue ──▶ triage skill ──▶ stage+archetype ──▶ stage playbook ──▶ fix loop
-                                                                    │
-        curator ◀── trajectory (case file, lit results) ◀───────────┘
+issue ──▶ triage ──▶ stage playbook ──▶ plan ──▶ expert panel ──▶ patch
+                                                                  │
+        curator ◀── trajectory ◀── panel-on-PR ◀── tests ◀────────┘
            │
-           └─ gated edits ▶ knowledge-base / SKILL.mds (next epoch's weights)
+           └─ gated edits ▶ knowledge-base / SKILL.mds
 ```
+
+Playbooks (issue-mined) say where to look. The expert panel says
+whether a plan or patch is acceptable in the compiler domains it
+touches, using per-domain briefs, forums, and evolution constraints.
 
 ## The Triage Model
 
@@ -79,6 +86,16 @@ Running that loop here without external training infrastructure:
 The gates are deliberately conservative: a proposed rule must re-route
 already-solved cases correctly AND explain at least one case the current
 docs misroute (or be backed by a command actually executed).
+
+## Expert panel
+
+A sitting panel is 1 chair + up to 3 other domains, chosen by
+`seat.py` from `seats.json` (file globs, keywords, pipeline stage).
+Each seat votes independently from its brief and may abstain. The
+chair synthesizes with weight 1.0 on its own in-scope ballot and 0.5
+on adjacent in-scope ballots; a chair `block` cannot be overridden.
+`evolution-gate.md` is the process.md test for "bugfix vs language
+change."
 
 ## Non-Goals
 

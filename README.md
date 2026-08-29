@@ -16,6 +16,7 @@ replay / counterexample / execution gates.
 | [`swift-compiler-fix-loop/`](swift-compiler-fix-loop/SKILL.md) | End-to-end fix of one issue: triage → reproduce → patch → regression tests → verify → durable case notes. The default entry point. |
 | [`swift-issue-triage/`](swift-issue-triage/SKILL.md) | Classify an issue into pipeline stage + failure family + archetype *before* touching code. |
 | [`swift-local-build-test/`](swift-local-build-test/SKILL.md) | Build targets, run lit tests, manage worktrees; the verified environment contract for this machine. |
+| [`swift-expert-panel/`](swift-expert-panel/SKILL.md) | After a plan or PR exists: seat compiler-domain reviewers, collect independent ballots, chair-weighted verdict. |
 | [`swift-knowledge-curator/`](swift-knowledge-curator/SKILL.md) | After fixes (or failures): evolve these skills with bounded, validation-gated edits. |
 
 Shared knowledge base (loaded on demand):
@@ -29,6 +30,9 @@ Shared knowledge base (loaded on demand):
   — per-layer RUN lines and test placement, extracted from the real suite
 - [`knowledge-base/resolved-issue-patterns.md`](knowledge-base/resolved-issue-patterns.md)
   — archetypes A1–A10 mined from 418 closed `swiftlang/swift` issues
+- [`knowledge-base/expert-panel/`](knowledge-base/expert-panel/) —
+  domain review briefs, seating table, evolution gate, chair protocol
+  (supplementary to issue-mined playbooks)
 
 Optimization journal (append-only): [`optimization/edit-log.md`](optimization/edit-log.md)
 
@@ -38,7 +42,7 @@ Symlink each skill into your agent's skill directory:
 
 ```bash
 REPO=~/.agents/skills   # or ~/.claude/skills, per your agent
-for s in swift-compiler-fix-loop swift-issue-triage swift-local-build-test swift-knowledge-curator; do
+for s in swift-compiler-fix-loop swift-issue-triage swift-local-build-test swift-expert-panel swift-knowledge-curator; do
   ln -sfn "$PWD/$s" "$REPO/$s"
 done
 ```
@@ -58,7 +62,9 @@ Adapt those paths in the SKILL.mds if you relocate them.
 2. `swift-issue-triage/SKILL.md` — run the triage procedure before any fix
 3. `knowledge-base/<playbook for the triaged stage>`
 4. `swift-local-build-test/SKILL.md` — for every build/test command
-5. On completion (success *or* failure): `swift-knowledge-curator/SKILL.md`
+5. After the plan and again before the PR is marked ready:
+   `swift-expert-panel/SKILL.md`
+6. On completion (success *or* failure): `swift-knowledge-curator/SKILL.md`
 
 ## Design Principles
 
@@ -82,8 +88,11 @@ Derived from SkillOpt's treatment of skills as trainable parameters:
 
 Highlights from `docs/validation.md`; full detail in the optimization journal:
 
-- Triage replayed 5 solved cases to their correct stages; fresh counterexample
-  (#91566) exposed 2 documentation gaps → fixed under gate.
+- Triage replayed 5 local cases to their correct *stages*; epoch 7 found
+  those issues still open (not merged-PR ground truth) and corrected
+  #85646 (T2 not A6) plus #90916's rejected vs merged fix shape.
+- Fresh counterexample (#91566) exposed 2 documentation gaps → fixed under
+  gate; PR #91581 confirms SIL specialization, not IRGen.
 - Environment contract derived empirically: swift `main` pairs with llvm
   `stable/21.x` (authoritative source: swift's own `update-checkout-config.json`),
   plus verified signatures for six distinct failure modes.

@@ -30,13 +30,20 @@ either normalize earlier (SILGen/mandatory pass should have canonicalized)
 or teach IRGen the missing case mirroring a sibling.
 
 Worked examples from harvest: #55299 root witness table assertion;
-typed-throws nested-error generics (#86347, #87030).
+typed-throws nested-error generics (#86347 merged #86387: thread the
+mapped in-context error type into `emitAsyncReturn`, do not re-query
+maximal expansion at the crash site; #87030). Embedded existential
+crash #91566 asserts in IRGen `setArgs` but the fix is SIL specialization
+(`specializeWitnessMethodInst` in `Generics.cpp`, #91581) — do not patch
+`GenCall`.
 
 ### Class R2: Undefined symbols / link errors
 
-Usually a missing thunk/accessor emission for some declaration combination
-(distributed accessors 85557-style), or an availability/back-deploy mismatch.
-Check TBD/export enumeration code paths.
+Usually a missing thunk/accessor emission for some declaration combination,
+or an availability/back-deploy mismatch. TBD vs IRGen mismatch is often a
+*symptom* of SILDeclRef identity, not a TBD list hole: #85557 / #90287
+(review on #90287: add `SILDeclRef::Kind::DistributedThunk`; do not keep
+`asDistributed()` as a boolean on the original isolated decl).
 
 ### Class R3: Miscompile visible only when running (-O or specific target)
 
@@ -53,7 +60,9 @@ Use lldb on the built test binary; check
 `test/Runtime/`, `test/Casting/`, `test/Concurrency/runtime*` for neighbors.
 
 Worked examples from local cases: 85500 (isolated deinit cleanup executor
-hop), 85663 (task-local suppression lifetime).
+hop), 85663 (task-local suppression lifetime), 89581 (Embedded `-Onone`
+pack init SIGSEGV: `projectTupleElementAddressByDynamicIndex` loads
+`.Elements` from thin `{vwt,kind}` tuple metadata; `-O` unrolls first).
 
 ### Class R5: stdlib behavior wrong
 

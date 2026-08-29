@@ -38,6 +38,7 @@ Every active case should explain:
 - Verification
 - Book Notes
 - Risks / Open Questions
+- Expert panel (when the panel sat): seating JSON, ballots, chair verdict
 
 ## Quality Bar
 

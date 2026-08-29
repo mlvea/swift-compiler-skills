@@ -164,3 +164,94 @@ Accepted changes:
 - New top-level README + docs/design.md + docs/validation.md for public use.
 
 Held-out check: reference audit script passes from the new root.
+
+## 2026-08-29 epoch 7 (PR-review audit of 10 load-bearing precedents)
+
+Evidence: GitHub issue + closing/superseded PRs + reviews for the 10
+highest-influence examples (86472, 87540, 85111, 85557, 85646, 91566,
+90916, 86463, 80929, 86347).
+
+Findings:
+- 6/10 still open with no merged PR (86472, 87540, 85111, 85646, 86463,
+  85557). Epoch-2 replay used local case files as "solved" ground truth.
+- #90916: CHANGES_REQUESTED on #90931 ("wrong fix"); merged
+  #90945 restores speculative-hoist check for scoped insts. Docs had
+  described the rejected weakly-imported/`#available` special case.
+- #91566: merged #91581 in `specializeWitnessMethodInst`; crash is IRGen
+  `setArgs` — that is the wrong patch site (epoch-2 already caught stage,
+  not the anti-pattern).
+- #86347: merged #86387; first approved commit did not compile; real fix
+  threads in-context typed-error type into `emitAsyncReturn`.
+- #80929: parse P3, actually #80928 for sibling #80927; author rejected a
+  `parseExprPrimary` one-off. Was miscited under A2.
+- #85646: T2 missing completion, not A6 stale-buffer.
+- #85557: #90287 review: `SILDeclRef::Kind::DistributedThunk`, not a TBD
+  list hole. #85111 review: mechanism right, compatibility risk unstated.
+- #86463: issue discussion confirms Sema reject; do not implement SILGen E2→E1.
+
+Proposed + Accepted (counterexample-gated on #90916 rejected-PR vs merged
+PR, and #85646 A6 misroute):
+- Rule: crash site ≠ fix site; restore the producing pass's existing
+  general check, do not encode the source symptom (pipeline-map #9, A3).
+- Rule: worked examples need a merged PR; record CHANGES_REQUESTED as
+  anti-patterns (curator harvest + fix-loop heuristic).
+- Factual: 85646 T2 not A6; 80929 parse not A2; 90916/91566/86347/85557/
+  86463/85111 examples rewritten from review evidence.
+
+Rejected: mining all 418 harvested issues for PR comments. Most PRs are
+LGTM/CI; signal is `CHANGES_REQUESTED` on first PRs and maintainer issue
+comments. Open issues have no review to check.
+
+Held-out check: #90916 still sil-opts/A3 (fix shape corrected); #86347
+still IRGen/A5; #80929 now parse P3 not A2; #85646 now T2 not A6. Open
+cases 86472/87540 keep stage routing only.
+
+Line budget: exceeded the 30-line cap because existing examples were
+factually wrong (corrections, not speculative growth).
+
+## 2026-08-29 epoch 8 (issue 89581 Embedded pack IRGen)
+
+Evidence: `issues/cases/issue-89581/README.md`; 6.3.2 stack
+`emitTypeMetadataRef` / `bindOpenedElementArchetypesAtIndex`; current
+main `-Onone` SIGSEGV vs `-O` success; IR GEP of `%swift.tuple_type.Elements`
+on `$eSb_SSSitMf` which is only `{vwt, kind}`.
+
+Proposed + Accepted (execution-gated: original binary rc 139 → 0;
+`test/embedded/parameter-packs.swift` fail-then-pass; neighbors
+`variadic_generics.sil` and `accessors.swift` pass):
+- A8 example: #89581 static tuple offsets, not thin-metadata `.Elements`.
+- irgen-runtime R4: 89581 as `-Onone` Embedded pack SIGSEGV that looks
+  `-O`-only because unrolling hides the query.
+
+Held-out check: #91566 remains SIL specialization / A8; #89581 is IRGen
+A8 (layout), not a missing Sema diagnostic.
+
+Rejected: unrolling pack loops in mandatory Embedded SIL as the first
+fix. Correct but larger; static offsets restore the IRGen invariant
+directly.
+
+## 2026-08-29 epoch 9 (expert-panel bootstrap)
+
+Evidence:
+- Review: #90931 CHANGES_REQUESTED vs merged #90945; #81054 ObjC
+  representability; process.md evolution scope; SE-0414 / commonly_proposed.md;
+  forums RBI + FRT + OSSA threads.
+- Compiler tree layout (`lib/Sema`, `lib/SILGen`, `lib/IRGen`, …) and
+  pipeline-map stages.
+
+Proposed + Accepted (bootstrap, execution-gated seating replay):
+- New skill `swift-expert-panel` + `knowledge-base/expert-panel/`
+  (14 core seats, 4 conditional).
+- `seat.py` deterministic seating; replay examples in `roster.md`
+  all returned the expected chair.
+- Workflow `swift-expert-panel` smoke-checked (canned-host path).
+- Fix-loop gates: panel on plan (step 4) and PR (step 8).
+- Curator owns domain briefs; seating-table edits re-run roster
+  examples.
+
+Gate: execution (`seat.py` replay OK) + workflow `validate_only`.
+Held-out check: six roster chairs unchanged after the neighbor-stage
+tweak (stage-only domains no longer flood the panel).
+
+Rejected: seating every domain that shares a pipeline stage. That
+produced 4-seat panels on a single CSSimplify.cpp edit.

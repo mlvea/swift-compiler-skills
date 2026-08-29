@@ -1,0 +1,4 @@
+interface:
+  display_name: "Swift Expert Panel"
+  short_description: "Domain review of a compiler plan or PR"
+  default_prompt: "Use $swift-expert-panel to seat compiler-domain reviewers, collect independent ballots, and issue a chair-weighted verdict on this plan or PR."

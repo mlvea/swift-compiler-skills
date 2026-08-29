@@ -76,6 +76,14 @@ reproducer's failure mode under flags, (3) title keywords and labels.
 8. **Assertion message names the invariant** → search the string in
    `llvm-project` + `swift` to find the exact guard; read the comment above
    it; the fix usually restores the invariant, not the assert.
+9. **Crash site is not the fix site; symptom-specific guards are the
+   rejected patch.** The producing pass is the one that first created the
+   illegal state. Restore that pass's existing general safety check (the
+   sibling instruction class already has it). Do not encode the
+   source-level symptom (`#available`, weakly-imported, embedded) at the
+   assert. Evidence: #90916 (LICM `load_borrow` speculation; #90931
+   weak-global special case rejected); #91566 (IRGen `setArgs` assert, fix
+   in `specializeWitnessMethodInst`).
 
 ## Where Fix Patterns Live
 
