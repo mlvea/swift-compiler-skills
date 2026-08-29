@@ -20,8 +20,9 @@ Stages beside the batch pipeline: IDE services, SourceKit, LSP, driver.
 
 Root cause is usually stale state: the IDE re-checks after edits while
 holding old ASTs/offsets. Guard against invalid SourceLoc/offsets, cancel
-stale requests, or invalidate caches on edit. Worked cases: 85582
-(semantic tokens vs stale buffers), 85646 (`any`/`some` completion).
+stale requests, or invalidate caches on edit. Worked case: 85582
+(semantic tokens vs stale buffers). Not this class: 85646 (`any`/`some`
+completion is T2 / parse context, still open).
 
 ### Class T2: Completion missing results
 
@@ -31,8 +32,9 @@ with the wrong expected type. Repro via:
 IDE=/Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/swift-macosx-arm64/bin/swift-ide-test
 $IDE -code-completion -source-filename /tmp/repro.swift -code-completion-token LINE:COLUMN
 ```
-Fix in `lib/IDE/CodeCompletion*` or the constraint path it drives.
-Worked cases: 85664, 85665.
+Fix in `lib/IDE/CodeCompletion*` or the parser handoff that never enters
+type-completion context. Worked cases: 85664, 85665. Open: 85646 (`any`/
+`some` in expression context).
 
 ### Class T3: Driver misbehaves (flags, batching, module resolution)
 

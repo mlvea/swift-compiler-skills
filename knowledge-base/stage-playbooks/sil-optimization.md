@@ -47,8 +47,11 @@ at a time until output diverges. The last pass applied is the suspect.
 Fixes must preserve the pass's core invariant (e.g. LICM may only hoist
 operations that are safe to execute speculatively and dominating).
 
-Worked example from harvest: #90916 LICM hoisting a weakly-linked global
-load above its `#available` gate.
+Worked example: #90916 (`-O` crash loading a weakly-imported `#available`
+global). Rejected #90931: special-case weakly-imported `load_borrow`.
+Merged #90945: stop speculatively hoisting scoped instructions; plain
+`load` already had the dominance check. Symptom is availability; invariant
+is speculation safety.
 
 ### Class O3: Region/isolation diagnostics wrong (SendNonSendable)
 

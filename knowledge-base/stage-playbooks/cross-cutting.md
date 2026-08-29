@@ -13,7 +13,10 @@ Bug classes:
   (unsupported construct, name mapping). Teach the importer or record an
   intentional unsupported case with a diagnostic.
 - Bridging unsoundness: bridged types must not implicitly prove Swift
-  protocol conformance — precedent 85111 (`any Equatable` via NSError).
+  protocol conformance — precedent 85111 (`any Equatable` via NSError;
+  still open). Issue discussion confirms the NSError bridge is the false
+  proof and flags source-compatibility risk; do not land a naive
+  runtime-cast patch from a local case file.
 - Synthesized C++ members must pass Clang-Sema viability before use —
   precedent 86478.
 - Reproduce with a minimal header: `test/ClangImporter/Inputs/` style, or

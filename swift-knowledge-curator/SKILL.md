@@ -5,24 +5,26 @@ description: Use after completing (or failing) Swift compiler fix attempts, or p
 
 # Swift Knowledge Curator
 
-The skill suite under `skills/` is trainable state. Treat edits to it like
+The skill suite in this repo is trainable state. Treat edits to it like
 weight updates: bounded, evidence-driven, accepted only when validated.
 Protocol adapted from microsoft/SkillOpt (text-space optimization with
 validation gates) to run without external training infrastructure.
 
 ## Files You Own
 
-All paths relative to this repo root (`swift-issue-fix-plans/`):
+All paths relative to this repo root (`swift-compiler-skills/`):
 
-- `skills/knowledge-base/pipeline-map.md`
-- `skills/knowledge-base/stage-playbooks/*.md`
-- `skills/knowledge-base/regression-test-cookbook.md`
-- `skills/knowledge-base/resolved-issue-patterns.md`
-- `skills/swift-issue-triage/SKILL.md`
-- `skills/swift-local-build-test/SKILL.md` and its
+- `knowledge-base/pipeline-map.md`
+- `knowledge-base/stage-playbooks/*.md`
+- `knowledge-base/regression-test-cookbook.md`
+- `knowledge-base/resolved-issue-patterns.md`
+- `knowledge-base/expert-panel/` (domain briefs, seats.json, evolution-gate)
+- `swift-expert-panel/SKILL.md` and `swift-expert-panel/scripts/seat.py`
+- `swift-issue-triage/SKILL.md`
+- `swift-local-build-test/SKILL.md` and its
   `references/environments.md`
-- `skills/swift-compiler-fix-loop/SKILL.md` + references
-- `skills/optimization/edit-log.md` (append-only journal)
+- `swift-compiler-fix-loop/SKILL.md` + references
+- `optimization/edit-log.md` (append-only journal)
 
 Environment facts live with the build-test skill; correctness fixes to them
 are execution-gated (run the command first).
@@ -58,6 +60,23 @@ requests/min — sleep between calls.) Update
 `knowledge-base/resolved-issue-patterns.md` counts only when family shares
 shift by >10% (relative to repo root).
 
+For any issue used as a *worked example* or replay-gate case, also fetch
+the closing PR and every linked PR (including superseded ones). Record:
+
+- merged PR number + files actually changed
+- `CHANGES_REQUESTED` / "this is the wrong fix" reviews as anti-patterns
+- author "Alternative Considered" sections (rejected approaches)
+- maintainer issue comments that decide the layer (Sema vs SILGen, etc.)
+
+Do not treat an open issue, or a local case-file patch, as a fix-shape
+precedent. Open issues may inform *stage routing* only when a maintainer
+comment confirms the layer.
+
+If a panel sat, compare the chair verdict to those reviews. A
+`CHANGES_REQUESTED` the panel missed is a domain-brief miss (add a
+reject-unless). A panel `block` that maintainers approved needs a
+counterexample before deleting the rule.
+
 ### Step 2: Reflect (extract gradients)
 
 For each completed trajectory (case files, fix logs, this epoch's events),
@@ -87,10 +106,13 @@ mechanisms.
 
 An edit is accepted only if at least one holds:
 
-- **Replay gate**: re-triage 2–3 already-solved cases (from
-  `issues/cases/*/README.md`) with the edited docs; the new text must route
-  every one to its correct recorded stage/archetype faster or equally well,
-  and must not misroute previously-correct cases.
+- **Replay gate**: re-triage 2–3 *merged-PR-backed* cases with the edited
+  docs; the new text must route every one to the stage/files of the merged
+  PR (not a local case file of an open issue) faster or equally well, and
+  must not misroute previously-correct merged cases. Open local cases may
+  only check stage routing, never fix shape. For seating-table edits,
+  re-run `seat.py` on the examples in
+  `knowledge-base/expert-panel/roster.md` and require identical chair.
 - **Counterexample gate**: for a new pattern claim, find one resolved issue
   matching it that the current docs would have misrouted.
 - **Execution gate** (commands): the exact command was run successfully on
@@ -101,7 +123,7 @@ but premature; revisit after two confirming instances.
 
 ### Step 5: Journal
 
-Append to `skills/optimization/edit-log.md`:
+Append to `optimization/edit-log.md`:
 
 ```
 ## <date> epoch N (<trigger>)

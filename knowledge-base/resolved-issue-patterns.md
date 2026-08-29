@@ -8,6 +8,12 @@ digest in `digest.json`) plus the local corpus of 200 harvested plans
 Read this file when triaging a new issue to find the closest resolved
 precedent. Update it after every completed fix (see curator skill).
 
+A numbered example is a *fix shape* only when a merged PR is cited.
+Open issues are routing evidence (maintainer comments), not proof the
+documented patch is right. Rejected first PRs (`CHANGES_REQUESTED`,
+superseded) are the usual agent mistakes — copy those as anti-patterns,
+not as the fix.
+
 ## Symptom Family Frequencies
 
 | Family | Share | Typical stage |
@@ -28,24 +34,30 @@ Each archetype lists: signature → mechanism → canonical fix shape → exampl
 - Mechanism: Sema accepted an invalid shape because one effect/substitution/
   availability check was skipped for that combination.
 - Fix: add the user-facing diagnostic in Sema; optionally add defensive
-  lowering coverage separately.
-- Examples: typed-throws crashes (#86463 family, #89431, #90818), embedded
-  generic existential crash (#91566).
+  lowering coverage separately. Do not implement the later-stage
+  "unimplemented" conversion — that is a symptom of invalid AST.
+- Examples: typed-throws SILGen crash (#86463, still open; issue
+  discussion: reject in Sema, do not teach `emitThrow` `E2→E1`); embedded existential
+  (#91566, merged #91581 — SIL specialization, not IRGen).
 
 ### A2. Recovery/reordering logic corrupts argument or token binding
 
 - Signature: cascade of unrelated diagnostics after one small mistake.
 - Mechanism: recovery claims bindings greedily before failure bookkeeping.
 - Fix: preserve source-order intent locally at the claim site.
-- Examples: #86472 argument matching; #80929 interpolation skip.
+- Examples: #86472 argument matching (still open; routing only).
+  Interpolation skip #80929 is parse P3, not this archetype.
 
 ### A3. Optimization pass violates its own preconditions
 
 - Signature: `-O`-only miscompile/crash; verifier fires after specific pass.
 - Mechanism: hoisting/sinking/speculation across guards, weak linkage,
   ownership boundaries.
-- Fix: narrow the transform's condition; never weaken the verifier.
-- Examples: #90916 LICM over `#available`; #91480 CMO metatype.
+- Fix: restore the pass's existing general safety check to the missing
+  instruction class (sibling already has it). Do not add a symptom-specific
+  carve-out (`#available`, weakly-imported, target). Never weaken the
+  verifier.
+- Examples: #90916 LICM (merged #90945, rejected #90931); #91480 CMO metatype.
 
 ### A4. Region/isolation identity lost through wrappers
 
@@ -55,7 +67,7 @@ Each archetype lists: signature → mechanism → canonical fix shape → exampl
   Sema and SIL split enforcement by design.
 - Fix: propagate capture identity through the wrapper in region analysis or
   adjust Sema classification — decide where the identity actually diverges.
-- Examples: #87540, #87503, #85667, #87768.
+- Examples: #87540, #87503 (both still open — routing only), #85667, #87768.
 
 ### A5. New feature lacks one lowering/checking arm
 
@@ -63,8 +75,9 @@ Each archetype lists: signature → mechanism → canonical fix shape → exampl
   feature (typed throws, parameter packs, macros, embedded).
 - Mechanism: switch statements elsewhere cover siblings but not the new case.
 - Fix: mirror the sibling case; audit all switches on that enum/shape.
-- Examples: typed throws × generics × IRGen (#86347, #87030), back-deployed
-  generic typed throw (#90818).
+- Examples: typed throws × generics × IRGen (#86347 merged #86387: thread
+  the mapped in-context error type, do not re-query maximal expansion at
+  `emitAsyncReturn`; #87030), back-deployed generic typed throw (#90818).
 
 ### A6. Stale state / offset skew in IDE paths
 
@@ -72,6 +85,8 @@ Each archetype lists: signature → mechanism → canonical fix shape → exampl
 - Mechanism: requests run against outdated buffers/ASTs.
 - Fix: validate offsets/lifetimes, invalidate caches.
 - Examples: #85582 semantic tokens; completion timeouts (#57248, #66785).
+  Not this archetype: #85646 missing type completion after `any`/`some`
+  (parser/completion context, class T2; still open).
 
 ### A7. Serialization boundary drops required information
 
@@ -79,8 +94,11 @@ Each archetype lists: signature → mechanism → canonical fix shape → exampl
 - Mechanism: something needed downstream is not recorded (or recorded
   wrongly) in swiftmodule/TBD.
 - Fix: serialize the fact; bump format handling carefully both directions.
-- Examples: distributed accessor TBD symbols (#85557), autolink metadata
-  (#85441), ObjC block swiftmodules (#86003).
+- Examples: distributed accessor TBD/IRGen mismatch (#85557, issue still
+  open; main fix #90287 is SILDeclRef thunk identity, not a TBD list patch —
+  review: add `Kind::DistributedThunk`, do not keep `asDistributed()` as a
+  boolean on the original decl); autolink metadata (#85441); ObjC block
+  swiftmodules (#86003).
 
 ### A8. Platform/target-gated path divergence
 
@@ -94,8 +112,12 @@ Each archetype lists: signature → mechanism → canonical fix shape → exampl
 - Examples: wasm typed-throws async (#89320); Linux Glibc module maps
   (#85427); Windows macro paths (#85958); embedded existential generic
   crash fixed in `lib/SILOptimizer/Utils/Generics.cpp` + test
-  `test/embedded/existential-generic-error.swift` (#91566); -O LICM hoist
-  over weak availability gate (#90916, class A3 sibling).
+  `test/embedded/existential-generic-error.swift` (#91566 merged #91581:
+  `specializeWitnessMethodInst` must refuse requirements more generic than
+  the protocol; do not patch the IRGen `setArgs` assert); Embedded pack
+  tuple projection (#89581: use static offsets, not
+  `TupleTypeMetadata.Elements` on thin `{vwt,kind}` metadata); -O LICM
+  (#90916, class A3).
 
 ### A9. Diagnostic machinery fails to produce any message
 
@@ -110,12 +132,16 @@ Each archetype lists: signature → mechanism → canonical fix shape → exampl
 - Signature: unsound casts/conformance via ObjC/C++ bridges.
 - Mechanism: bridge path bypasses Swift conformance proof.
 - Fix: require real conformance evidence at the cast site.
-- Examples: #85111 NSError→Equatable; Sendable C++ import assertion (#83695).
+- Examples: #85111 NSError→Equatable (still open; review confirms the
+  NSError bridge is the false proof and flags source-compatibility risk —
+  not a local-case "solved" runtime patch); Sendable C++ import (#83695).
 
 ## Triage Shortcuts
 
 - Title contains "SIL verification error" → sil-optimization.md class O1.
-- Title contains "IRGen" + assert → irgen-runtime.md class R1.
+- Title contains "IRGen" + assert → observation is IRGen (class R1), but
+  first ask which pass produced the SIL; #91566 asserted in `GenCall`
+  `setArgs` and was fixed in `specializeWitnessMethodInst`.
 - "Failed to produce diagnostic" → sema.md class S4.
 - "accepts invalid" label → sema.md class S2.
 - EXC_BAD_ACCESS in user binary → irgen-runtime.md class R4 (runtime), but

@@ -6,15 +6,19 @@ Xcode MacOSX26.2.sdk). Dates: 2026-08-25/26. Full narratives live in
 
 ## Triage Skill
 
-Replay gate — 5 solved local cases re-triaged from title/reproducer only:
+Replay gate — 5 local cases re-triaged from title/reproducer only
+(epoch 2). Epoch 7 review audit: these were *investigations of still-open
+issues*, not merged-PR ground truth. Stage routing still holds except
+85646 (A6 stale-buffer was wrong; it is T2 missing completion). Fix-shape
+claims from those case files are not review-validated.
 
-| Issue | Routed to | Recorded truth |
+| Issue | Epoch-2 route | 2026-08-29 status |
 | --- | --- | --- |
-| 86472 | sema / wrong-diagnostic / A2 | CSSimplify argument matching ✓ |
-| 87540 | sil-mandatory / false-sendable / A4 | SendNonSendable region fix ✓ |
-| 85111 | importer / unsound-cast / A10 | NSError bridging conformance ✓ |
-| 85557 | irgen / undefined-symbols / A7 | distributed TBD symbols ✓ |
-| 85646 | tooling / completion / A6 | IDE completion ✓ |
+| 86472 | sema / wrong-diagnostic / A2 | still open; no merged PR |
+| 87540 | sil-mandatory / false-sendable / A4 | still open; no merged PR |
+| 85111 | importer / unsound-cast / A10 | still open; review flags compat risk |
+| 85557 | irgen / undefined-symbols / A7 | still open; main #90287 is SILDeclRef identity |
+| 85646 | tooling / completion / A6 | still open; T2 parse-context, not A6 |
 
 Counterexample gate — fresh closed issue #91566 (embedded existential
 generic crash): predicted verifier/IRGen; actual fix landed in
@@ -23,7 +27,10 @@ Two documentation gaps found and fixed under gate: shared-SIL-utility
 mechanism for embedded bugs, and `test/embedded/` test placement.
 
 Fresh replay #90916 (SIL LICM hoist over weak availability gate) routed
-correctly to sil-opts / A3.
+correctly to sil-opts / A3. Epoch 7: the *merged* fix is #90945 (stop
+speculative hoist of scoped `load_borrow`); first PR #90931 was rejected
+as a weakly-imported special case. Stage was right; documented fix shape
+was the rejected patch.
 
 ## Environment Contract (execution-gated facts)
 
@@ -71,3 +78,11 @@ struct-fragment→tuple-fragment chains. The guard now walks the recorded
 DIExpr to compute the narrowed running type. This is the curator loop's
 thesis demonstrated end-to-end: validation data improved both the patch and
 the skills that produced it.
+
+## Expert panel seating (epoch 9)
+
+`python3 swift-expert-panel/scripts/seat.py` replayed six file maps
+from `knowledge-base/expert-panel/roster.md`. All chairs matched:
+type-system, sil-optimizer, concurrency, silgen, embedded, irgen-abi.
+Workflow `swift-expert-panel` passed `validate_only` (canned host;
+not a live panel run).

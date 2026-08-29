@@ -29,9 +29,10 @@ If yes, fix Sema (see sema.md class S2). Only teach SILGen to handle or
 diagnose-invalid when the AST is legitimately valid. Never emit
 `unimplemented()` for a case a user can write.
 
-Worked example: typed-throws crash 86463 — durable lesson recorded as
-"SILGen lowering assumes checked error destinations" in
-`wiki/compiler-understanding.md`.
+Worked example: typed-throws crash 86463 (still open). Issue discussion:
+reject in Sema; do not implement the SILGen `E2→E1` throw conversion
+(`feature not implemented`). Durable lesson: "SILGen lowering assumes checked error
+destinations" in `wiki/compiler-understanding.md`.
 
 ### Class G2: Wrong SIL emitted (valid program lowered incorrectly)
 

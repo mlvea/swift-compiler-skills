@@ -35,8 +35,10 @@ Recovery should resynchronize at statement/declaration boundaries and
 preserve token ownership. Prefer local guards near the failing production;
 do not reorder global diagnostic emission.
 
-Worked example from harvest: #80929 string interpolation with trailing comma
-skipping the following expression.
+Worked example: #80929, fixed as a side-effect of #80928 (#80927). Align
+interpolation trailing-comma handling in `parseListItem` with other comma
+lists. Do not add a one-off `parseExprPrimary` nullptr check (author
+considered and rejected that alternative in #80928).
 
 ### Class P4: Crash in parser (assertion/segfault)
 
