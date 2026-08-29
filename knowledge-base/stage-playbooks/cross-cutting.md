@@ -8,17 +8,13 @@ Sources: `lib/ClangImporter/`; APINotes data lives in `apinotes/*.apinotes`
 and APINotes handling inside ClangImporter; C++ interop tests
 `test/Interop/Cxx/`, ObjC tests `test/ClangImporter/`, `test/APINotes/`.
 
-Bug classes:
-- Missing import of a valid C/C++ decl: the importer filters it out
-  (unsupported construct, name mapping). Teach the importer or record an
-  intentional unsupported case with a diagnostic.
-- Bridging unsoundness: bridged types must not implicitly prove Swift
-  protocol conformance — precedent 85111 (`any Equatable` via NSError;
-  still open). Issue discussion confirms the NSError bridge is the false
-  proof and flags source-compatibility risk; do not land a naive
-  runtime-cast patch from a local case file.
-- Synthesized C++ members must pass Clang-Sema viability before use —
-  precedent 86478.
+What to inspect:
+- Missing import of a valid C/C++ decl: importer filter (unsupported
+  construct, name mapping).
+- Bridging unsoundness: the exact bridge/cast THIS reducer takes, and
+  whether it is allowed to imply a Swift protocol conformance.
+- Synthesized C++ members: Clang-Sema viability of the operator THIS
+  lookup produced.
 - Reproduce with a minimal header: `test/ClangImporter/Inputs/` style, or
   inline `-cxx-interoperability-mode=default` reproducers.
 
@@ -37,9 +33,9 @@ prebuilt module cache.
 Sources: `lib/SILOptimizer/Differentiation/` (`PullbackCloner.cpp`,
 `JVPCloner.cpp`, `LinearMapInfo.cpp`), tests `test/AutoDiff/`,
 `validation-test/AutoDiff/`.
-Bug classes: derivative registration crashes (#55882), pullback dominance,
-implicit differentiability attributes skipping generic validation
-(precedent 86522), IRGen linear-map structs (#55245).
+What to inspect: derivative registration, pullback dominance, implicit
+differentiability attributes vs generic validation, IRGen linear-map
+structs. Decide from THIS reducer, not from a listed issue's patch.
 
 ## DebugInfo
 
@@ -47,10 +43,8 @@ Sources: `lib/SIL/IR/SILDebugInfoExpression.cpp` +
 `include/swift/SIL/SILDebugInfoExpression.h`, verifier
 `lib/SIL/Verifier/DebugInfoVerifier.cpp`, emission in `lib/IRGen/IRGenDebugInfo.cpp`;
 docs: `swift/docs/HowToUpdateDebugInfo.md`.
-Bug classes: wrong variable values in debugger after SROA/optimization;
-DWARF piece assertions. Tests: `test/DebugInfo/*.sil|*.swift`.
-Worked local example: the debug-value-type-chain fix currently staged in
-the swift worktree (SROA + DeadObjectElimination interaction).
+What to inspect: variable values after SROA/optimization; DWARF piece
+assertions. Tests: `test/DebugInfo/*.sil|*.swift`.
 
 ## Driver / Build / Platforms
 
@@ -62,8 +56,6 @@ Tests: `test/Driver/` in swift repo; package-level tests in each sibling.
 
 ## Embedded / Wasm / WatchOS Special Cases
 
-Embedded Swift uses a restricted SIL subset and no runtime by default —
-verifier failures there are often missing embedded-mode support for a new
-feature (harvest example #90072). Wasm lacks ObjC runtime and has different
-error lowering (#89320 typed-throws async on Wasm). Always check whether a
-repro is target-gated before assuming general breakage.
+Embedded Swift uses a restricted SIL subset and no runtime by default.
+Wasm lacks ObjC runtime and has different error lowering. Always check
+whether THIS repro is target-gated before assuming general breakage.

@@ -21,7 +21,7 @@ evidence-grounded knowledge base.
 swift-compiler-skills/
 ├── swift-compiler-fix-loop/     orchestrator (default entry)
 │   └── references/              case-file checklist, PR/CI notes
-├── swift-issue-triage/          stage/family/archetype classifier
+├── swift-issue-triage/          stage/family classifier (not the patch)
 ├── swift-local-build-test/      verified build/test commands + env contract
 │   └── references/environments.md   the machine's pinned truth
 ├── swift-expert-panel/          domain review of a plan or PR
@@ -31,7 +31,7 @@ swift-compiler-skills/
 │   ├── pipeline-map.md          symptoms → stage → files → tests
 │   ├── stage-playbooks/         one playbook per compiler stage
 │   ├── regression-test-cookbook.md
-│   ├── resolved-issue-patterns.md   archetypes A1–A10
+│   ├── resolved-issue-patterns.md   search families A1–A10 (files, not patches)
 │   └── expert-panel/            domain briefs, seats.json, evolution gate
 └── optimization/edit-log.md     append-only training journal
 ```
@@ -39,7 +39,8 @@ swift-compiler-skills/
 Data flow for one fix:
 
 ```
-issue ──▶ triage ──▶ stage playbook ──▶ plan ──▶ expert panel ──▶ patch
+issue ──▶ stack/flag-ladder stage ──▶ playbook ──▶ plan ──▶ expert panel ──▶ patch
+                          └ optional search family (directories only)
                                                                   │
         curator ◀── trajectory ◀── panel-on-PR ◀── tests ◀────────┘
            │
@@ -57,11 +58,12 @@ assertion text > reproducer behavior under a flag ladder (`-typecheck` →
 `-emit-silgen` → `-emit-sil` → run) > title keywords and labels. The output
 is a fixed-shape record so downstream steps can rely on it.
 
-Failure families map to ten recurring root-cause archetypes (A1–A10), mined
-from 418 closed issues plus ~200 locally harvested fix plans. Each archetype
-predicts the *shape* of the fix before the compiler source is opened — e.g.
-A1 ("missing upstream validity check") predicts a Sema diagnostic even when
-the crash manifests in SILGen.
+Failure families map to ten *search families* (A1–A10). They name extra
+files to open. They do not predict the patch. The current issue's
+reproducer, stack, and the code that reducer reaches are the only
+evidence of what to change. Other issues, case files, and wiki lessons
+are file-search hints. A merged or rejected PR is in scope only when it
+is *this* issue's PR.
 
 ## The SkillOpt Adaptation
 

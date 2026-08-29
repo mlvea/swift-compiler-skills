@@ -5,16 +5,17 @@ Agent skills for finding, triaging, and fixing bugs in the Swift compiler
 from [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt).
 
 The suite treats skill documents as **trainable state**: every command is
-execution-verified before it is written down, triage rules are mined from
-resolved GitHub issues, and edits to the skills are accepted only behind
-replay / counterexample / execution gates.
+execution-verified before it is written down, triage *stage* rules are
+mined from resolved GitHub issues, and edits are accepted only behind
+replay / counterexample / execution gates. Historical issues name files
+to open. They do not decide the patch for a different issue.
 
 ## Skills
 
 | Skill | Use when |
 | --- | --- |
 | [`swift-compiler-fix-loop/`](swift-compiler-fix-loop/SKILL.md) | End-to-end fix of one issue: triage → reproduce → patch → regression tests → verify → durable case notes. The default entry point. |
-| [`swift-issue-triage/`](swift-issue-triage/SKILL.md) | Classify an issue into pipeline stage + failure family + archetype *before* touching code. |
+| [`swift-issue-triage/`](swift-issue-triage/SKILL.md) | Classify an issue into pipeline stage + failure family from *this* issue's stack/repro *before* touching code. |
 | [`swift-local-build-test/`](swift-local-build-test/SKILL.md) | Build targets, run lit tests, manage worktrees; the verified environment contract for this machine. |
 | [`swift-expert-panel/`](swift-expert-panel/SKILL.md) | After a plan or PR exists: seat compiler-domain reviewers, collect independent ballots, chair-weighted verdict. |
 | [`swift-knowledge-curator/`](swift-knowledge-curator/SKILL.md) | After fixes (or failures): evolve these skills with bounded, validation-gated edits. |
@@ -29,7 +30,7 @@ Shared knowledge base (loaded on demand):
 - [`knowledge-base/regression-test-cookbook.md`](knowledge-base/regression-test-cookbook.md)
   — per-layer RUN lines and test placement, extracted from the real suite
 - [`knowledge-base/resolved-issue-patterns.md`](knowledge-base/resolved-issue-patterns.md)
-  — archetypes A1–A10 mined from 418 closed `swiftlang/swift` issues
+  — search families A1–A10 (files to open, not patch recipes)
 - [`knowledge-base/expert-panel/`](knowledge-base/expert-panel/) —
   domain review briefs, seating table, evolution gate, chair protocol
   (supplementary to issue-mined playbooks)
@@ -83,16 +84,18 @@ Derived from SkillOpt's treatment of skills as trainable parameters:
    environment traps are recorded in the same epoch they are observed.
 6. **Never weaken a verifier to silence an assert** — applies to both the
    compiler and this suite's gates.
+7. **This issue is the only evidence of a correct patch.** Similar issues,
+   archetypes, case files, and wiki lessons may name files. They must not
+   be copied as the fix. If this issue already has PRs, read those.
 
 ## Validation Record
 
 Highlights from `docs/validation.md`; full detail in the optimization journal:
 
-- Triage replayed 5 local cases to their correct *stages*; epoch 7 found
-  those issues still open (not merged-PR ground truth) and corrected
-  #85646 (T2 not A6) plus #90916's rejected vs merged fix shape.
-- Fresh counterexample (#91566) exposed 2 documentation gaps → fixed under
-  gate; PR #91581 confirms SIL specialization, not IRGen.
+- Epoch 9: flag ladder is required when the stack does not settle stage;
+  search-family maps are issue+stage only; harvested plans are not the
+  diagnosis.
+- Epoch 8: historical issues no longer prescribe patches.
 - Environment contract derived empirically: swift `main` pairs with llvm
   `stable/21.x` (authoritative source: swift's own `update-checkout-config.json`),
   plus verified signatures for six distinct failure modes.

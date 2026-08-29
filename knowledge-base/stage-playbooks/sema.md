@@ -25,55 +25,44 @@ Correction note: when a file listed above is missing at your base commit,
 locate the owning request via its diagnostic or request name with
 `grep -rn "<RequestName>" lib/Sema include/swift/AST` instead of guessing.
 
-## Common Bug Classes And Fix Patterns
+## Common Bug Classes (what to inspect)
 
 ### Class S1: Crash on invalid program (robustness)
 
 Symptom: assertion/segfault while typechecking odd code.
-Pattern: find the violated assumption; decide whether the program is
-*actually valid* (fix the check that rejected it) or *invalid* (add a
-recovery guard + user-facing diagnostic). Prefer a diagnostic in the pass
-that first sees the bad shape. Add the reducer to
-`validation-test/compiler_crashers_fixed/issue-<n>.swift` only for crashers;
-normal regressions go under `test/<Area>/`.
-
-Worked example: 86438, 86437 (see `issues/cases/`).
+Inspect: the violated assumption. Decide from THIS reducer whether the
+program is valid or invalid, then inspect the pass that first sees the
+shape. Crashers go to
+`validation-test/compiler_crashers_fixed/issue-<n>.swift`; behavioral
+regressions under `test/<Area>/`.
 
 ### Class S2: Accepts-invalid
 
 Symptom: code compiles that should not.
-Pattern: identify the language invariant (read the Swift book section /
-evolution proposal), find where it is enforced, learn why the check was
-skipped (early exit, recovery path, missing substitution). Fix by restoring
-enforcement at that point, not by adding a parallel check downstream.
-
-Worked examples: 86026, 85742 (isolated conformance), 85111 (bridging proves
-conformance), recorded in case files.
+Inspect: the language rule (book / evolution proposal) and the existing
+enforcement site. Why was the check skipped for THIS reducer (early exit,
+recovery, missing substitution)? Do not add a parallel check downstream
+until that is known.
 
 ### Class S3: Rejects-valid / wrong error
 
 Symptom: false positive, misleading error, cascade.
-Pattern: reproduce with `-typecheck -verify`; if a *cascade* appears,
-suspect recovery ordering (argument matching, trailing closures) before the
-primary check. Keep source-order intent stable during recovery.
-Worked example: 86472 (`test/Constraints/argument_matching.swift`).
+Inspect: `-typecheck -verify` on THIS reducer. If a cascade appears, open
+recovery ordering (argument matching, trailing closures) before the
+primary check.
 
 ### Class S4: Failed to produce diagnostic
 
-Symptom: "failed to produce diagnostic for expression" or silently accepted
-invalid expression.
-Pattern: usually the solver salvages a solution that should fail, or a
-diagnostic path bails after `SolutionApplication` fails. Trace
-`solutionApply` failures; often the fix teaches the failure diagnostic
-system one more case (`CSDiagnostics.cpp`).
+Symptom: "failed to produce diagnostic for expression" or silently
+accepted invalid expression.
+Inspect: solver salvage and `SolutionApplication` / `CSDiagnostics.cpp`
+for THIS expression.
 
 ### Class S5: Solver performance blowup
 
 Symptom: timeout/hang on pathological but small input.
-Pattern: capture with `-solver-expression-time-threshold`, find disjunction
-explosion (overloads × conversions × literal conformances). Fixes usually
-prune disjunctions earlier or add short-circuit rules. Never "fix" by
-weakening soundness.
+Inspect: `-solver-expression-time-threshold`, disjunction explosion.
+Do not "fix" by weakening soundness.
 
 ## Verification Loop
 

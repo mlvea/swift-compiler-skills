@@ -47,8 +47,8 @@ The case file should answer:
 - What program or command failed?
 - What compiler invariant was violated?
 - Which exact files and functions were involved?
-- Which hand-reviewed guidance file and historical fixes were consulted?
-- Why does the patch prevent the same class of bug?
+- Which files were opened, and from what *this-issue* signal?
+- Why does the patch restore the invariant THIS reducer violated?
 - What tests prove it?
 - Which patch artifact recovers the current worktree changes?
 

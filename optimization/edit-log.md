@@ -209,6 +209,54 @@ cases 86472/87540 keep stage routing only.
 Line budget: exceeded the 30-line cap because existing examples were
 factually wrong (corrections, not speculative growth).
 
+## 2026-08-29 epoch 8 (issue-local evidence; user-requested)
+
+Evidence: epoch-7 review showed the suite used other issues' "canonical
+fix shapes" (including open local case files) as if they were the patch
+for a new issue. User: agent must not derive fix accuracy except from
+the issue itself.
+
+Proposed + Accepted (user-requested; supersedes the 30-line cap):
+- Rule: THIS issue's reducer, stack, thread, and PRs are the only
+  evidence of a correct patch. Similar issues / archetypes / case files /
+  wiki lessons are file-search hints.
+- Rewrote triage, fix-loop, design, patterns (dropped "Fix:" recipes),
+  pipeline-map heuristics, all playbooks, curator harvest, README
+  principle 7.
+
+Rejected: keeping A1–A10 as patch predictors with "do not copy" nits
+appended. That still moves the agent toward a historical shape.
+
+Held-out check: #90916 → sil-opts from THIS title/`-O` (no LICM recipe);
+#86347 → IRGen from THIS stack `emitAsyncReturn` (no emitAsyncReturn
+plumbing recipe); #80929 → parse from THIS skip-following-expr symptom
+(no parseListItem recipe).
+
+## 2026-08-29 epoch 9 (flag ladder required; maps are stage-only)
+
+Evidence: leftover wrong-paths after epoch 8. Search-family Map lines
+still named other issues' patches (`Generics.cpp`, SILDeclRef kind,
+#90945 vs #90931, #85646 "is T2"). Flag ladder was optional, so stage
+could be guessed from titles/families. Harvested plans were loaded as
+durable memory for THIS issue. Heuristic 9 forbade `#available` /
+weakly-imported / embedded as the missing check (a #90916 rule applied
+to future bugs). G1 forbade implementing "unimplemented" conversions
+(#86463).
+
+Proposed + Accepted:
+- Triage: flag ladder is required when the stack does not settle
+  stage; search family comes last and names directories only.
+- Fix-loop: GitHub issue + this issue's PRs first; harvested plans /
+  wiki / other case files are optional hints after reproduce.
+- Patterns: Map lines are `issue + stage` only (no function, no
+  rejected-PR anti-recipe, no diagnosis of open issues).
+- Heuristic 9 / G1 / R2 / A7: dropped other-issue patch forbids.
+
+Held-out: #90916 still sil-opts from THIS `-O` + pass name; #91566
+stage from THIS stack/flag ladder (not from A8 naming Generics.cpp);
+#85646 stage from THIS editor-only symptom (family A6 files to open,
+no T2 root-cause claim).
+
 ## 2026-08-29 epoch 8 (issue 89581 Embedded pack IRGen)
 
 Evidence: `issues/cases/issue-89581/README.md`; 6.3.2 stack

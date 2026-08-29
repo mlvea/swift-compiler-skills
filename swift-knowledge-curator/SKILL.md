@@ -60,17 +60,10 @@ requests/min — sleep between calls.) Update
 `knowledge-base/resolved-issue-patterns.md` counts only when family shares
 shift by >10% (relative to repo root).
 
-For any issue used as a *worked example* or replay-gate case, also fetch
-the closing PR and every linked PR (including superseded ones). Record:
-
-- merged PR number + files actually changed
-- `CHANGES_REQUESTED` / "this is the wrong fix" reviews as anti-patterns
-- author "Alternative Considered" sections (rejected approaches)
-- maintainer issue comments that decide the layer (Sema vs SILGen, etc.)
-
-Do not treat an open issue, or a local case-file patch, as a fix-shape
-precedent. Open issues may inform *stage routing* only when a maintainer
-comment confirms the layer.
+For a search-family or replay-gate issue, fetch its closing PR and any
+linked/superseded PRs. Record merged PR + files changed (file map), and
+that issue's own `CHANGES_REQUESTED` reviews / maintainer comments.
+Open issues and local case-file patches are not solved.
 
 If a panel sat, compare the chair verdict to those reviews. A
 `CHANGES_REQUESTED` the panel missed is a domain-brief miss (add a
@@ -95,22 +88,20 @@ Budget per epoch (learning rate):
 
 - ≤ 3 substantive rule changes across all SKILL.mds
 - ≤ 30 new lines in knowledge-base total
-- ≤ 5 new archetype examples (one line each)
+- ≤ 5 new search-family map lines (files to open, not a patch recipe)
 - Commands/environment facts corrected as needed (no budget — correctness)
 
 Each edit must cite its evidence: issue number, case path, or command
-transcript. No speculative advice ("consider", "might") — only observed
-mechanisms.
+transcript. No speculative advice. Never write a rule that states the
+patch for a future, different issue.
 
 ### Step 4: Validation gate
 
 An edit is accepted only if at least one holds:
 
-- **Replay gate**: re-triage 2–3 *merged-PR-backed* cases with the edited
-  docs; the new text must route every one to the stage/files of the merged
-  PR (not a local case file of an open issue) faster or equally well, and
-  must not misroute previously-correct merged cases. Open local cases may
-  only check stage routing, never fix shape. For seating-table edits,
+- **Replay gate**: re-triage 2–3 merged-PR-backed cases; the new text must
+  route each to the merged PR's stage/files without misrouting others.
+  Open local cases may check stage routing only. For seating-table edits,
   re-run `seat.py` on the examples in
   `knowledge-base/expert-panel/roster.md` and require identical chair.
 - **Counterexample gate**: for a new pattern claim, find one resolved issue
@@ -142,5 +133,5 @@ Held-out check: <2 solved cases re-triaged OK>
   SKILL.md over suite README) so entry-point skills stay lean.
 - Keep each SKILL.md under ~120 rendered lines; overflow goes into
   knowledge-base.
-- If two playbooks contradict, the one with a dated verified example wins;
-  then reconcile the loser same-epoch.
+- If two playbooks contradict, the one with a dated merged-PR *file map*
+  wins; reconcile the loser same-epoch.

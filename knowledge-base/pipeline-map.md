@@ -49,46 +49,45 @@ reproducer's failure mode under flags, (3) title keywords and labels.
 | AutoDiff | differentiation transforms | `AutoDiff`, `DifferentiationTransformer`, `PullbackCloner` | `@differentiable`, `derivative(of:)` reproducers | `test/AutoDiff/`, `validation-test/AutoDiff/` |
 | DebugInfo | SIL debug info, DWARF emission | `SILDebugInfoExpression`, `DebugInfoVerifier`, DWARF tests | debugger shows wrong values; `-debug-info` related; lldb-only failures | `test/DebugInfo/` |
 
-## Cross-Stage Heuristics (evidence-based)
+## Cross-Stage Heuristics
 
-1. **Crash in SILGen or later for an odd-but-invalid program** → suspect a
-   missing Sema validity check first. Prefer adding the user-facing diagnostic
-   in Sema over making lower layers tolerate invalid ASTs. Precedent:
-   issue 86463 (typed throws reached SILGen because an effect check was
-   missing), recorded in `wiki/compiler-understanding.md`.
-2. **Wrong diagnostic cascade from one small mistake** → recovery logic, not
-   the primary check. Argument matching recovery lives in
-   `matchCallArgumentsImpl` (`lib/Sema/CSSimplify.cpp`). Precedent: 86472.
-3. **Sendability/isolation disagreement between Sema and -Onone run** →
-   enforcement is split by design: AST classification in Sema, value-flow
-   regions in mandatory `SendNonSendable`. Fix belongs where the value
-   identity actually diverges. Precedents: 87540, 87503, 85667.
-4. **Works at `-Onone`, breaks at `-O`** → optimization pass bug. Bisect the
-   pass pipeline with `-Xllvm` debug flags or `sil-opt` on dumped pipelines
-   before editing source.
-5. **Only in editor / LSP, not batch compile** → IDE layer or delayed
-   re-resolution of an AST that batch mode never exercises.
-   `lib/IDE` often holds its own resolution caches.
-6. **Only cross-module** → serialization boundary: what must be recorded in
-   the swiftmodule vs recomputed locally.
-7. **Only embedded/wasm/watchos** → check target-specific lowering paths
-   (embedded uses a restricted SIL subset; wasm lacks ObjC runtime).
-8. **Assertion message names the invariant** → search the string in
-   `llvm-project` + `swift` to find the exact guard; read the comment above
-   it; the fix usually restores the invariant, not the assert.
-9. **Crash site is not the fix site; symptom-specific guards are the
-   rejected patch.** The producing pass is the one that first created the
-   illegal state. Restore that pass's existing general safety check (the
-   sibling instruction class already has it). Do not encode the
-   source-level symptom (`#available`, weakly-imported, embedded) at the
-   assert. Evidence: #90916 (LICM `load_borrow` speculation; #90931
-   weak-global special case rejected); #91566 (IRGen `setArgs` assert, fix
-   in `specializeWitnessMethodInst`).
+These decide *where to look* from THIS reducer. They do not decide the
+patch.
 
-## Where Fix Patterns Live
+1. **Crash in SILGen or later** → run the flag ladder on THIS reducer.
+   If `-typecheck` is clean, ask whether THIS program is valid. If it is
+   invalid, open Sema. If it is valid, open the crashing emit path. Do
+   not assume the answer from a similar crash.
+2. **Wrong diagnostic cascade from one small mistake** → open recovery
+   at the claim site (argument matching: `matchCallArgumentsImpl` in
+   `lib/Sema/CSSimplify.cpp`; parse: `lib/Parse/`), not only the primary
+   check.
+3. **Sendability/isolation disagreement between Sema and `-Onone`** →
+   enforcement is split: AST classification in Sema, value-flow regions
+   in mandatory `SendNonSendable`. Open both; decide from THIS value's
+   identity.
+4. **Works at `-Onone`, breaks at `-O`** → optimization pass. Bisect the
+   pass pipeline with `-Xllvm` debug flags or `sil-opt` on dumped
+   pipelines before editing source.
+5. **Only in editor / LSP, not batch compile** → IDE layer or a parse/
+   completion context batch mode never hits. `lib/IDE` has its own
+   caches; missing type-completion context is a different failure.
+6. **Only cross-module** → serialization / TBD / mangling of the
+   missing fact.
+7. **Only embedded/wasm/watchos** → target-specific paths *and* shared
+   SIL utilities that expand generics/existentials. Confirm the repro is
+   target-gated before assuming general breakage.
+8. **Assertion message names an invariant** → search the string in
+   `swift` + `llvm-project`; read the comment above the guard. The
+   assert is the observation, not the patch.
+9. **Crash site is not automatically the patch site.** Find which pass
+   first created the bad state on THIS repro (flag ladder / sil-opt
+   bisect). Do not patch the assert until that is known.
 
-Per-stage detail (entry points, common bug classes, worked examples,
-verification commands): `stage-playbooks/<stage>.md`.
+## Where To Look Next
+
+Per-stage detail (entry points, what to inspect, verification
+commands): `stage-playbooks/<stage>.md`.
 
 Test-writing rules per layer: `regression-test-cookbook.md`.
 

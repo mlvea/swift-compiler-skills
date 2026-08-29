@@ -23,52 +23,35 @@ Correction note: mandatory pass file names shift between releases (passes get
 renamed or folded). Always confirm with:
 `ls lib/SILOptimizer/Mandatory/ | grep -i <topic>`.
 
-## Common Bug Classes And Fix Patterns
+## Common Bug Classes (what to inspect)
 
 ### Class O1: SIL verifier assertion ("SIL verification error")
 
-The message names the broken invariant (e.g. "debug_value undef",
-"entry point argument types do not match", "value_metatype result must be
-formal metatype"). Read the guard in `lib/SIL/Verifier/*.cpp`, then find
-which earlier pass produced the ill-formed instruction: run with
-`-Xfrontend -sil-verify-none` then bisect by re-enabling verify after each
-stage (`-emit-silgen`, then mandatory, then optimized), or use
-`sil-opt --sil-pass-pipeline-dump` and run stages individually.
-Fix the producing pass; never weaken the verifier to make an assert go away.
-
-Worked examples: 90211-style debug_value undef cases, embedded-mode verifier
-crash 90072.
+The message names the broken invariant. Read the guard in
+`lib/SIL/Verifier/*.cpp`, then find which earlier pass produced the
+ill-formed instruction on THIS reducer: `-Xfrontend -sil-verify-none`,
+then re-enable after `-emit-silgen` / mandatory / optimized, or
+`sil-opt --sil-pass-pipeline-dump`. Never weaken the verifier to silence
+the assert.
 
 ### Class O2: -O-only miscompile or crash
 
-Reproduce with `-Onone` (clean) vs `-O`/`-Osize` (broken). Bisect passes:
-dump the pipeline, then run `sil-opt` on the dumped raw SIL applying one pass
-at a time until output diverges. The last pass applied is the suspect.
-Fixes must preserve the pass's core invariant (e.g. LICM may only hoist
-operations that are safe to execute speculatively and dominating).
-
-Worked example: #90916 (`-O` crash loading a weakly-imported `#available`
-global). Rejected #90931: special-case weakly-imported `load_borrow`.
-Merged #90945: stop speculatively hoisting scoped instructions; plain
-`load` already had the dominance check. Symptom is availability; invariant
-is speculation safety.
+Reproduce with `-Onone` (clean) vs `-O`/`-Osize` (broken). Bisect: dump
+the pipeline, run `sil-opt` one pass at a time until THIS SIL diverges.
+The last pass applied is the suspect. Read that pass's existing safety
+checks; do not assume the source-level symptom is the missing condition.
 
 ### Class O3: Region/isolation diagnostics wrong (SendNonSendable)
 
-Sema classifies boundaries; SendNonSendable tracks value regions through SIL.
-If a value's region identity is lost through closures/partial applies/
-temporaries, fix region transfer in `RegionAnalysis*`, not the Sema walk.
-Precedents: 87540 (closure capture identity), 85667 (deinit uses of self),
-85719 (actor @concurrent inout send). Historical anchors recorded in
-`wiki/compiler-understanding.md`.
+Sema classifies boundaries; SendNonSendable tracks value regions through
+SIL. Open both `RegionAnalysis*` and the Sema walk; decide from THIS
+value's identity (closures/partial applies/temporaries can hide it).
 
 ### Class O4: Ownership transfer function bugs (noncopyable, borrowing)
 
-Symptoms: "value is consumed", partial-initialization liveness errors,
-borrow scope violations. Fix in `lib/SILOptimizer/Mandatory/MoveOnly*` or
-the lowering that produced the borrow. Preserve addressability/projection
-identity — precedent 87140 (move-only existentials through borrowed member
-refs).
+Symptoms: "value is consumed", partial-initialization liveness, borrow
+scope violations. Inspect `lib/SILOptimizer/Mandatory/MoveOnly*` and the
+lowering that produced the borrow on THIS reducer.
 
 ## Verification Loop
 

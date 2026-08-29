@@ -25,41 +25,33 @@ tracker updates, and book notes stay in the wiki repo.
 
 ## Work Loop
 
-1. **Load durable memory for THIS issue.**
+1. **Load THIS issue.** Read the GitHub issue (body, comments, linked
+   PRs). Tracker/status files say whether work is already in flight.
+   Harvested plans (`issues/plans-by-search-page/`), mentor guidance,
+   `wiki/compiler-understanding.md`, and other issues' case files are
+   optional file-name hints *after* reproduce. They are not the
+   diagnosis and not proof of a patch.
 
-Read: `AGENTS.md`, `STATUS.md`, `tracker/active.md`, `tracker/backlog.md`,
-`wiki/00-start-here.md`, plus this issue's plan under
-`issues/plans-by-search-page/` and `issues/guidance/` when listed.
-`wiki/compiler-understanding.md` and other issues' case files may name
-files. They do not decide this patch.
+2. **Triage before proposing a patch.** Run the triage skill. Stage
+   comes from THIS stack or flag ladder.
 
-2. **Triage before anything else.** Run the triage procedure (triage skill)
-   and produce the triage record: stage, family, search family (optional),
-   confidence, likely files, test home. Do not propose patches without it.
+3. **Reproduce the smallest real failure of THIS issue.** Strongest
+   signal first: this issue's reducer → this issue's PRs/CI → existing
+   lit test. Inspect worktree state (`git status`!), nearby tests, and
+   the compiler path THIS reducer hits. Environment skill for all
+   build/test commands.
 
-3. **Reproduce the smallest real failure of THIS issue.** Strongest signal
-   first: this issue's reproducer → this issue's PRs/CI → existing lit
-   test. Before editing, inspect worktree state (`git status`!), nearby
-   tests, and the exact compiler path THIS reducer hits. Use the
-   environment skill for all build/test commands; if an environment error
-   appears, fix the environment first and record it.
-
-4. **Explain the bug from THIS issue before patching.** Write down:
-   - the language rule / compiler invariant THIS reducer violates
-   - the broken assumption in the code THIS reducer reaches
+4. **Explain the bug from THIS reducer before patching.** Write down:
+   - the language rule / compiler invariant it violates
+   - the broken assumption in the code it reaches
    - the exact path where it fails
-   Similar issues, mentor notes, and archetypes may suggest files. They
-   are not evidence that a patch is correct.
    Then run `swift-expert-panel` on the **plan** (seat.py on likely
    files). Do not implement through a chair `block` / unrebutted
    `request-changes`. Skip only comment/docs/test-expectation-only edits.
 
-5. **Implement the smallest invariant fix for THIS reducer.** Narrowest
-   change that restores the invariant proven above; no refactors on
-   bug-fix branches unless the design itself is wrong. If a change
-   broadens a condition, rerun neighboring tests immediately. Prefer
-   fixing upstream of observation on THIS repro; user-facing diagnostics
-   belong in Sema only when THIS program is invalid.
+5. **Implement the smallest change that restores that invariant.** No
+   refactors on bug-fix branches unless the design itself is wrong. If
+   a change broadens a condition, rerun neighboring tests immediately.
 
 6. **Add regression tests that match the layer.** Follow
    `../knowledge-base/regression-test-cookbook.md`: minimal reducer, nearest
@@ -94,11 +86,10 @@ git -C <swift-worktree> diff --stat --output=<case>/artifacts/diffstat.txt
 ## Working Heuristics
 
 - Exact file/function/test references beat subsystem labels.
-- Guidance files, archetypes, similar issues, and local case files are
-  file-search hints, not proof of correctness.
+- Guidance, search families, similar issues, harvested plans, and local
+  case files are file-search hints, not proof of correctness.
 - If THIS issue already has PRs (merged, open, or `CHANGES_REQUESTED`),
-  read those. Do not copy a different issue's patch, and do not treat an
-  unmerged local case-file patch as a solved fix.
+  read those. Do not copy a different issue's patch.
 - Multi-platform CI failures: look for one shared semantic regression first.
 - Highest-signal local loop: incremental rebuild → focused lit → neighbors →
   reducer.

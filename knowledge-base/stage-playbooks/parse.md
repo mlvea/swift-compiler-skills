@@ -15,43 +15,34 @@ the 2026-08 harvest) but high-visibility when it breaks.
 Correction note: verify exact names at your base commit:
 `ls lib/Parse/`.
 
-## Common Bug Classes And Fix Patterns
+## Common Bug Classes (what to inspect)
 
 ### Class P1: Valid syntax rejected
 
-Check whether the grammar change belongs to the C++ parser only or also to
-SwiftSyntax-based parsing (`swift-syntax` sibling repo). Both must accept.
-Fix by extending the grammar site and updating
-`swift-syntax/Sources/SwiftParser/` mirror when applicable.
+Inspect: C++ parser *and* SwiftSyntax-based parsing (`swift-syntax`
+sibling repo). THIS program must be accepted on the path that actually
+parses it.
 
 ### Class P2: Invalid syntax accepted (accepts-invalid)
 
-Add the rejection at the narrowest production; check existing "invalid"
-tests under `test/Parse/invalid/` for message style.
+Inspect: the narrowest production that should reject THIS tokens.
+Message style: `test/Parse/invalid/`.
 
 ### Class P3: Bad recovery producing cascading junk diagnostics
 
-Recovery should resynchronize at statement/declaration boundaries and
-preserve token ownership. Prefer local guards near the failing production;
-do not reorder global diagnostic emission.
-
-Worked example: #80929, fixed as a side-effect of #80928 (#80927). Align
-interpolation trailing-comma handling in `parseListItem` with other comma
-lists. Do not add a one-off `parseExprPrimary` nullptr check (author
-considered and rejected that alternative in #80928).
+Inspect: recovery at the failing production (list items, statement
+boundaries, token ownership). Do not reorder global diagnostic emission
+to paper over THIS cascade.
 
 ### Class P4: Crash in parser (assertion/segfault)
 
-Usually infinite recursion or missing null-check after a failed sub-parse.
-Reduce to smallest snippet; guard the specific recursion/optional. Add the
-reducer under `test/Parse/invalid/` (or crashers dir for pure robustness).
+Usually infinite recursion or a missing null-check after a failed
+sub-parse. Reduce THIS snippet; inspect that recursion/optional.
 
 ### Class P5: Parser differences between legacy and new parser
 
-When a fix touches shared productions, run both parser paths:
-`-experimental-allow-non-resilient-modules` irrelevant—instead compare
-`swift-parse-test` behavior vs `swift-frontend -parse`. Keep them consistent
-or gate intentionally.
+Compare `swift-parse-test` vs `swift-frontend -parse` on THIS input.
+Keep them consistent or gate intentionally.
 
 ## Verification Loop
 

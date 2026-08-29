@@ -68,6 +68,34 @@ The single DebugInfo failure (`modulecache.swift`) asserts clang
 module-cache format details against the installed SDK and is unrelated to
 any SIL-level change; classified pre-existing/environmental.
 
+## Epoch 8 — issue-local evidence only
+
+User-requested correction: agents must not derive patch correctness from
+other issues, archetypes, case files, or wiki lessons. Sweep applied:
+
+- Triage/fix-loop: THIS issue's reducer, stack, and code are the only
+  patch evidence. Other issues name files. This issue's own PRs are in
+  scope.
+- Search families A1–A10 no longer have "Fix:" recipes.
+- Playbooks renamed to "what to inspect"; historical worked-example
+  patches removed.
+- Curator must not write a rule that states the patch for a future,
+  different issue.
+
+Held-out: #90916 still routes sil-opts from `-O` + LICM in the title;
+#86347 still routes IRGen from `emitAsyncReturn`; #80929 still routes
+parse from skip-until recovery. None of those records now include a
+copy-this-patch instruction.
+
+## Epoch 9 — leftover analogical recipes
+
+Flag ladder is required when the stack does not settle stage. Search
+family comes last and maps issue→stage only (no function names, no
+rejected-PR anti-recipes, no root-cause claims for open issues).
+Harvested plans/wiki are optional hints after reproduce, not the
+diagnosis. Heuristic 9 no longer forbids `#available` / weakly-imported
+as a class of check.
+
 ## Live Patch Under Lit Feedback
 
 A real in-flight fix (SIL debug-value type chains:

@@ -20,38 +20,24 @@ Correction note: closure-capture planning has moved between files across
 releases. Locate it at your base commit with:
 `grep -rn "CaptureInfo\|PartialApplyInst" lib/SILGen/*.cpp | head`.
 
-## Common Bug Classes And Fix Patterns
+## Common Bug Classes (what to inspect)
 
-### Class G1: Crash because Sema allowed a shape SILGen does not expect
+### Class G1: Crash on a shape SILGen does not expect
 
-First question: should this program have been rejected in Sema?
-If yes, fix Sema (see sema.md class S2). Only teach SILGen to handle or
-diagnose-invalid when the AST is legitimately valid. Never emit
-`unimplemented()` for a case a user can write.
-
-Worked example: typed-throws crash 86463 (still open). Issue discussion:
-reject in Sema; do not implement the SILGen `E2→E1` throw conversion
-(`feature not implemented`). Durable lesson: "SILGen lowering assumes checked error
-destinations" in `wiki/compiler-understanding.md`.
+First question, from THIS reducer: is the program valid? If `-typecheck`
+is clean and the program is invalid, open Sema. If the program is valid,
+open the crashing SILGen emit path.
 
 ### Class G2: Wrong SIL emitted (valid program lowered incorrectly)
 
-Pattern: reproduce with `-emit-silgen` vs `-emit-sil`; read emitted SIL with
-`-Xfrontend -sil-print-types` style flags or dump to file. Identify which
-managed value / cleanup ordering breaks ownership or lifetime. Fix by using
-the right `ManagedValue` borrow/ownership operation, not by inserting
-`copy_value` band-aids unless that genuinely matches the semantics.
-
-Worked examples from local cases: 87141 (consumed storage address),
-87396 (borrowed projection for noncopyable member rvalues), 85941 (borrow
-through conditional expressions).
+Inspect: `-emit-silgen` vs `-emit-sil` on THIS reducer; managed value /
+cleanup ordering. `copy_value` band-aids are wrong unless they match
+THIS semantics.
 
 ### Class G3: Missing lowering path for a new feature
 
-New syntax/features often parse+typecheck but lack a lowering switch arm.
-The fix adds the missing arm mirroring an existing sibling case.
-Check both `-Onone` and `-O` since optimization passes assume well-formed
-raw SIL.
+Inspect: whether THIS program is valid and whether a sibling lowering
+arm exists. Check both `-Onone` and `-O`.
 
 ### Class G4: Diagnostic quality after lowering
 
