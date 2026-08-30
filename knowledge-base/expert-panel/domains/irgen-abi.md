@@ -23,6 +23,9 @@ mangling, ABI stability.
 - Closed-world ABI: if `docs/LibraryEvolution.rst` does not permit
   the layout/mangling/witness change, it is a break (`library-evolution`
   adjacent).
+- Noncopyable type metadata must not be discoverable by older runtimes
+  as copyable types (separate section / `RuntimeResolvableTypes2`,
+  swift#64215).
 
 ## Plan review
 

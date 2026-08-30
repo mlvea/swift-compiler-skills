@@ -74,6 +74,11 @@ counterexample before deleting the rule. Procedure and corpus:
 seating-table edits. Scorecard epochs may exceed the 30-line KB
 budget: misses vs landed reviews are correctness, not style.
 
+After seating-table or official-doc edits, run
+`python3 swift-expert-panel/scripts/probe_globs.py` against
+`paths.json` `swift_checkout`. Missing globs are the same class of
+bug as epoch 10 (`test/Module/`).
+
 ### Step 2: Reflect (extract gradients)
 
 For each completed trajectory (case files, fix logs, this epoch's events),

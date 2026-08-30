@@ -48,6 +48,7 @@ reproducer's failure mode under flags, (3) title keywords and labels.
 | ClangImporter / C++ interop | importing C/Objective-C/C++ decls, bridging | `ClangImporter`, `ImporterImpl`, `swift::importer` | needs a C header / `-cxx-interoperability-mode`; only with Foundation/ObjC | `test/ClangImporter/`, `test/Interop/Cxx/`, `test/APINotes/` |
 | Serialization / modules | swiftmodule emit/read, module cache, cross-module refs | `Serialization`, `deserialize*`, `ModuleBuffer` | stale/corrupt module cache symptoms; cross-module optimization crashes reading serialized SIL | `test/Serialization/`, `test/ModuleInterface/` |
 | AutoDiff | differentiation transforms | `AutoDiff`, `DifferentiationTransformer`, `PullbackCloner` | `@differentiable`, `derivative(of:)` reproducers | `test/AutoDiff/` |
+| Macros | expansion, attached/freestanding | `TypeCheckMacros`, `MacroExpansion`, ASTGen | `@freestanding` / `@attached` / `#externalMacro` | `test/Macros/` |
 | DebugInfo | SIL debug info, DWARF emission | `SILDebugInfoExpression`, `DebugInfoVerifier`, DWARF tests | debugger shows wrong values; `-debug-info` related; lldb-only failures | `test/DebugInfo/` |
 
 ## Cross-Stage Heuristics
@@ -93,5 +94,8 @@ Per-stage detail (entry points, what to inspect, verification
 commands): `stage-playbooks/<stage>.md`.
 
 Test-writing rules per layer: `regression-test-cookbook.md`.
+
+Bugs in `swift-driver`, `swift-syntax`, `sourcekit-lsp`, LLVM proper:
+`sibling-repos.md`. Do not invent a frontend patch for those.
 
 Mined patterns from resolved GitHub issues: `resolved-issue-patterns.md`.

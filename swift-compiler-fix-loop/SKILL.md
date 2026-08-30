@@ -113,6 +113,7 @@ git -C <swift-worktree> diff --stat --output=<case>/artifacts/diffstat.txt
 - `references/swift-pr-and-ci.md`
 - `../knowledge-base/pipeline-map.md`
 - `../knowledge-base/resolved-issue-patterns.md`
+- `../knowledge-base/sibling-repos.md`
 - `../swift-expert-panel/SKILL.md`
 - `/Users/madushan/Documents/Github/swiftlang/swift-issue-fix-plans/issues/guidance/README.md`
 - `/Users/madushan/Documents/Github/swiftlang/swift-issue-fix-plans/wiki/compiler-understanding.md`

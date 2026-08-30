@@ -153,6 +153,37 @@
       "review_invariant": "Embedded witness specialization of existentials belongs in shared utilities; do not convert-indirect-to-direct when that invents the wrong convention.",
       "expected_verdict_on_this_diff": "request-changes-until-shared-utility",
       "offline_ballot": "partial"
+    },
+    {
+      "id": "64215",
+      "kind": "merged-after-changes-requested",
+      "stage": "irgen",
+      "files": [
+        "lib/IRGen/GenDecl.cpp",
+        "lib/IRGen/IRGenModule.h",
+        "stdlib/public/runtime/ImageInspectionCommon.h",
+        "test/IRGen/moveonly_deinit.sil"
+      ],
+      "text": "Hide type metadata records for noncopyable types from discovery by existing runtimes",
+      "expected_chair": "irgen-abi",
+      "review_invariant": "Noncopyable type metadata must not be discoverable by older runtimes as copyable. Separate section / RuntimeResolvableTypes2.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit-after-rule"
+    },
+    {
+      "id": "72416",
+      "kind": "merged-after-changes-requested",
+      "stage": "sema",
+      "files": [
+        "lib/AST/DistributedDecl.cpp",
+        "lib/AST/ASTMangler.cpp",
+        "include/swift/SIL/SILWitnessVisitor.h"
+      ],
+      "text": "distributed protocol calls witnesses mangling distributed thunk getter",
+      "expected_chair": "distributed",
+      "review_invariant": "Distributed thunks/getters must mangle and witness as the distributed protocol, not as ordinary accessors.",
+      "expected_verdict_on_this_diff": "request-changes-until-mangling-agrees",
+      "offline_ballot": "seating-hit-after-glob"
     }
   ]
 }

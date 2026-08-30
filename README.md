@@ -36,8 +36,10 @@ Shared knowledge base (loaded on demand):
 - [`knowledge-base/resolved-issue-patterns.md`](knowledge-base/resolved-issue-patterns.md)
   — search families A1–A10 (files to open, not patch recipes)
 - [`knowledge-base/expert-panel/`](knowledge-base/expert-panel/) —
-  domain review briefs, seating table, evolution gate, chair protocol
-  (supplementary to issue-mined playbooks)
+  domain review briefs, seating table, evolution gate, chair protocol,
+  scorecard (supplementary to issue-mined playbooks)
+- [`knowledge-base/sibling-repos.md`](knowledge-base/sibling-repos.md) —
+  when the bug is llvm / swift-driver / swift-syntax / sourcekit-lsp
 
 Optimization journal (append-only): [`optimization/edit-log.md`](optimization/edit-log.md)
 

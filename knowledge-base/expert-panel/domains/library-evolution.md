@@ -36,6 +36,8 @@ upcoming-feature flags, source compatibility.
 ## PR review
 
 - `test/Availability/` and resilience tests as used by neighbors.
+  Public ABI: neighboring `test/api-digester/` dump/compare, not only
+  typecheck.
 - Both objc and non-objc where the attribute is ABI-visible.
 - Softened diagnostics for `@_originallyDefinedIn` / access notes
   follow existing `softenIfAccessNote` patterns.

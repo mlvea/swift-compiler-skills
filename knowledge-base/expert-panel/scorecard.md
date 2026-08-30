@@ -37,8 +37,10 @@ briefs; cite the PR number and the invariant.
 | #77522 | clang-importer | `request-changes` if process-global FRT cache | `approve` request evaluator | **hit** | Already: no process-global caches. |
 | #86312 | concurrency | `request-changes` until RBI model matches | isolation-info as concurrency | **seating-miss-before-glob** | `SILIsolationInfo*` is concurrency primary, not a SILBuilder drive-by. |
 | #85644 | sil-optimizer | `request-changes` until shared utility / convention | embedded witness + IRGen | **partial** | Review threads exist; invariant not fully extracted. Seating OK (optimizer chairs, embedded sits on `test/embedded/`). |
+| #64215 | irgen-abi | hide noncopyable metadata from old runtimes | `approve` separate section | **hit-after-rule** | `RuntimeResolvableTypes2` / extra metadata section. |
+| #72416 | distributed | thunk/getter mangling | seating + mangling rule | **seating-hit-after-glob** | `DistributedDecl.cpp` primary. |
 
-**Score this epoch:** 7 hit, 1 hit-after-rule, 1 seating-miss-before-glob (fixed), 1 partial. No false block on a merged diff.
+**Score:** 7 hit, 2 hit-after-rule, 1 seating glob fix, 1 seating-hit-after-glob, 1 partial. Corpus seating 12/12. No false block on a merged diff.
 
 ## Adding a case
 

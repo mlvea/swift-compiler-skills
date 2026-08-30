@@ -50,4 +50,5 @@ semicolons, replacing `?:`, renaming `guard`) stay rejected. Parser
 ## Abstain
 
 Solver-only or SIL-only changes with no diagnostic string / parse
-change.
+change. Macro expansion / `test/Macros/` with no parse change →
+`macros`.

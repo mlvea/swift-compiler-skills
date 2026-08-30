@@ -94,14 +94,20 @@ assert candidates with `CHECK:` lines copied from neighbors.
 | Embedded Swift | `test/embedded/` |
 | IDE | `test/IDE/`, SourceKit requests: `test/SourceKit/` |
 | Driver flags | `test/Driver/` |
+| Macros | `test/Macros/` |
+| ABI digester / TBD | `test/api-digester/`, `test/TBD/`, `test/abi/` |
 
 ## Running Tests Locally (verified on this machine)
 
 ```bash
-LIT=/Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/llvm-macosx-arm64/bin/llvm-lit
-CFG=/Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/swift-macosx-arm64/test-macosx-arm64/lit.site.cfg
+# $LIT / $CFG from paths.json build_llvm / build_swift
+LIT=<paths.json build_llvm>/bin/llvm-lit
+CFG=<paths.json build_swift>/test-macosx-arm64/lit.site.cfg
 $LIT -sv --param swift_site_config=$CFG <file-or-dir>
 ```
+
+Public ABI: run the neighboring `test/api-digester/` dump/compare test, not
+only a typecheck. TBD: `test/TBD/` must still list the new symbol.
 
 Single untracked test without lit: run its RUN line manually with
 `bin/swift-frontend` etc., substituting `%s` with the path,

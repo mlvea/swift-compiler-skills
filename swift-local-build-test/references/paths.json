@@ -5,5 +5,12 @@
   "wiki_checkout": "/Users/madushan/Documents/Github/swiftlang/swift-issue-fix-plans",
   "build_swift": "/Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/swift-macosx-arm64",
   "build_llvm": "/Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/llvm-macosx-arm64",
-  "skills_kb": "knowledge-base"
+  "skills_kb": "knowledge-base",
+  "siblings": {
+    "llvm-project": "/Users/madushan/Documents/Github/swiftlang/llvm-project",
+    "swift-driver": "/Users/madushan/Documents/Github/swiftlang/swift-driver",
+    "swift-syntax": "/Users/madushan/Documents/Github/swiftlang/swift-syntax",
+    "sourcekit-lsp": "/Users/madushan/Documents/Github/swiftlang/sourcekit-lsp",
+    "indexstore-db": "/Users/madushan/Documents/Github/swiftlang/indexstore-db"
+  }
 }

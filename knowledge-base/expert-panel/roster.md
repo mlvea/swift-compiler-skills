@@ -19,7 +19,7 @@ hand-pick a chair when the script returned one.
 | `irgen-abi` | LLVM IR, layout, witness tables, mangling, ABI |
 | `runtime` | Casts, refcounting, metadata, reflection, threading, backtrace, bridging |
 | `clang-importer` | C/ObjC/C++ import, PrintAsClang, FRT |
-| `parser-diagnostics` | Parse, recovery, diagnostic wording |
+| `parser-diagnostics` | Parse, recovery, diagnostic wording, ASTGen |
 | `sourcekit-ide` | Completion, cursor info, index, refactoring |
 | `library-evolution` | Availability, resilience, inlinable, feature flags |
 | `serialization` | swiftmodule, dependency scan, driver module loading |
@@ -28,7 +28,7 @@ hand-pick a chair when the script returned one.
 ## Conditional seats
 
 Sit only on a **primary** file hit (script enforces this):
-`autodiff`, `distributed`, `embedded`, `stdlib`.
+`autodiff`, `distributed`, `embedded`, `stdlib`, `macros`.
 
 ## Seating algorithm
 
@@ -67,6 +67,7 @@ must keep these chairs:
 | `docs/SIL/Ownership.md` | silgen | ownership | silgen |
 | `lib/ClangImporter/DWARFImporter.cpp` | importer | debug-info | clang-importer |
 | `test/Generics/inverse.swift` | sema | generics | type-system |
+| `lib/Sema/TypeCheckMacros.cpp` + `test/Macros/attached_macros_diags.swift` | sema | macros | parser-diagnostics |
 
 ## Not in the panel
 

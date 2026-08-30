@@ -407,3 +407,28 @@ Held-out: original six roster chairs identical to epochs 9–11.
 
 Rejected: treating this 10-case scorecard as proof the panel is
 better than a human specialist. It is a start of measurement.
+
+## 2026-08-30 epoch 13 (Horizon 2: probe, siblings, macros, scorecard+)
+
+Evidence: `probe_globs.py` against local swift checkout (217 globs
+OK after fixing `DerivedConformanceDistributed*` and dropping
+missing `test/Interop/Concurrency/`); sibling dirs exist under
+swiftlang root; `lib/Sema/TypeCheckMacros.cpp` + `test/Macros/`;
+merged PRs #64215 (noncopyable metadata section) and #72416
+(distributed thunk mangling).
+
+Proposed + Accepted:
+- Living-knowledge gate `scripts/probe_globs.py` + `official-docs.md`.
+- Sibling-repo map (`knowledge-base/sibling-repos.md`, `paths.json`
+  `siblings`).
+- Conditional `macros` seat; roster chair replay.
+- api-digester / TBD test homes; `DistributedDecl.cpp` primary;
+  irgen-abi noncopyable runtime-discovery rule.
+- Scorecard 12/12 chairs.
+
+Gate: execution (probe + sil-opt from epoch 12) + replay (original
+six chairs + macros + corpus 12/12).
+Held-out: CSSimplify still chairs type-system.
+
+Rejected: 30-case held-out as done. Corpus is 12 measured PRs, not
+a specialist benchmark.

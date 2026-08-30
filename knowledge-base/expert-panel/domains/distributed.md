@@ -31,6 +31,9 @@ primary Distributed* hit.
   requirements (`concurrency` adjacent for the isolation half).
 - Synthesis (`CodeSynthesisDistributed*`) agrees with the stdlib
   `DistributedActor` protocol; do not invent witnesses in SILGen.
+- Distributed thunks/getters mangle as the distributed protocol
+  (storage name for `_distributed_get`), not as ordinary accessors
+  (swift#72416).
 
 ## Evolution
 

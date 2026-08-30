@@ -104,8 +104,7 @@
         "lib/Sema/",
         "lib/SILGen/SILGenConcurrency.cpp",
         "lib/SILOptimizer/Mandatory/",
-        "stdlib/public/Concurrency/",
-        "test/Interop/Concurrency/"
+        "stdlib/public/Concurrency/"
       ],
       "keywords": [
         "Sendable",
@@ -246,7 +245,8 @@
       ],
       "adjacent": [
         "include/swift/AST/DiagnosticsIRGen.def",
-        "test/abi/"
+        "test/abi/",
+        "test/TBD/"
       ],
       "keywords": [
         "IRGen",
@@ -403,7 +403,9 @@
         "include/swift/AST/*Availability*",
         "include/swift/Basic/Features.def",
         "include/swift/Option/*Options*",
-        "test/Availability/"
+        "test/Availability/",
+        "lib/APIDigester/",
+        "test/api-digester/"
       ],
       "adjacent": [
         "lib/Frontend/",
@@ -489,6 +491,31 @@
       ]
     },
     {
+      "id": "macros",
+      "kind": "conditional",
+      "charter": "Freestanding/attached macros, macro expansion, TypeCheckMacros.",
+      "stages": ["sema", "parse"],
+      "neighbors": ["parser-diagnostics", "type-system", "silgen"],
+      "primary": [
+        "lib/Macros/",
+        "lib/Sema/TypeCheckMacros*",
+        "lib/AST/FreestandingMacroExpansion.cpp",
+        "test/Macros/"
+      ],
+      "adjacent": [
+        "lib/ASTGen/",
+        "test/ASTGen/",
+        "lib/CompilerSwiftSyntax/"
+      ],
+      "keywords": [
+        "macro",
+        "@freestanding",
+        "@attached",
+        "#externalMacro",
+        "MacroExpansion"
+      ]
+    },
+    {
       "id": "autodiff",
       "kind": "conditional",
       "charter": "Differentiation transforms, pullback/JVP cloning, derivative registration.",
@@ -517,14 +544,15 @@
       "primary": [
         "lib/Sema/TypeCheckDistributed*",
         "lib/Sema/CodeSynthesisDistributed*",
-        "lib/Sema/DerivedConformanceDistributed*",
+        "lib/Sema/DerivedConformance/DerivedConformanceDistributed*",
         "lib/SILGen/*Distributed*",
         "lib/IRGen/*Distributed*",
         "lib/SILOptimizer/Utils/Distributed*",
         "include/swift/AST/*Distributed*",
         "stdlib/public/Distributed/",
         "test/Distributed/",
-        "test/decl/protocol/special/DistributedActor.swift"
+        "test/decl/protocol/special/DistributedActor.swift",
+        "lib/AST/DistributedDecl.cpp"
       ],
       "adjacent": [
         "test/Concurrency/"
