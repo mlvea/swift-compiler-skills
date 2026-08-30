@@ -444,3 +444,21 @@ strip-before-override; irgen-abi `IsVeryLargeType`; library-evolution
 
 Gate: probe 218 globs + corpus 15/15 + CSSimplify held-out.
 Rejected: still not a 30-case specialist benchmark.
+
+## 2026-08-30 epoch 15 (eval protocol + locked splits)
+
+Evidence: deep-research on SkillOpt / ACE / Sleep / Trace2Skill /
+Harbor. This suite is a directory skill with batch-1 fix rollouts, not
+SkillOpt's compact-document trainer.
+
+Proposed + Accepted: `docs/eval-protocol.md`; `optimization/splits/`
+(`D_tr` / `D_sel` / `D_test`); `check_split.py`. Curator must not
+harvest the test split. No `skillopt-train` dependency.
+
+Gate: `check_split.py` OK (disjoint ids, test split ≥30, no test ids
+in scorecard/validation/journal). `D_sel` seating labels recorded.
+Held-out: CSSimplify chair unchanged.
+
+Rejected: turning on SkillOpt research trainer, SAGE weights, or
+GEPA/TextGrad as the production skill store. Prompt-only baselines
+wait until a `D_test` Skill Lift run.

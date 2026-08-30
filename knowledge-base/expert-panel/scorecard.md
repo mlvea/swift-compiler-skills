@@ -6,7 +6,8 @@ Corpus: `scorecard-corpus.json`. Seating replay:
 
 This is **not** a claim that the panel outperforms a human specialist.
 It records hit / miss / seating-miss against merged PRs that had
-`CHANGES_REQUESTED` or a rejected first PR.
+`CHANGES_REQUESTED` or a rejected first PR. Scorecard rows are **`D_tr`**.
+Specialist numbers use locked `D_test` only (`docs/eval-protocol.md`).
 
 ## How to score a case
 

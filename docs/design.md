@@ -65,14 +65,16 @@ evidence of what to change. Other issues, case files, and wiki lessons
 are file-search hints. A merged or rejected PR is in scope only when it
 is *this* issue's PR.
 
-## The SkillOpt Adaptation
+## Skill-crafting stack (not SkillOpt-train)
 
-microsoft/SkillOpt trains a skill document as the frozen agent's trainable
-state: rollouts produce trajectories; an optimizer turns scored trajectories
-into bounded document edits; a held-out validation gate accepts only
-improving edits.
+SkillOpt's research engine is best-in-class for **one compact markdown
+file** with batched selection scores. This suite's trainable state is a
+**directory** plus corpus, and a rollout is one real fix. Do not migrate
+production skills onto `skillopt-train`, SAGE weights, or GEPA/TextGrad
+as the skill store. Protocol: `docs/eval-protocol.md`.
 
-Running that loop here without external training infrastructure:
+Local loop (ACE-style batch-1 + SkillOpt-Sleep harvest, no `skillopt/`
+dependency):
 
 | SkillOpt concept | Local implementation |
 | --- | --- |
@@ -81,7 +83,7 @@ Running that loop here without external training infrastructure:
 | trajectory score | repro fixed? tests pass? regressions? time lost? |
 | gradient signal | where the agent lost time / misrouted / hit a stale fact |
 | bounded update (learning rate) | ≤3 rule changes + ≤30 KB lines per epoch |
-| validation gate | replay gate, counterexample gate, execution gate |
+| validation gate | replay / counterexample / execution; `D_sel` seating; never `D_test` |
 | rejected-edit buffer | journal entries marked Rejected, revisited after 2 confirmations |
 | epochs | triggered by finished fixes, repeated friction, or ≥50 new closed issues |
 

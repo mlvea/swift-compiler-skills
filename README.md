@@ -154,5 +154,6 @@ Highlights from `docs/validation.md`; full detail in the optimization journal:
 
 ## Docs
 
-- [`docs/design.md`](docs/design.md) — architecture and the SkillOpt adaptation
+- [`docs/design.md`](docs/design.md) — architecture (directory skills, ACE-style deltas)
+- [`docs/eval-protocol.md`](docs/eval-protocol.md) — splits, Skill Lift, no SkillOpt-train
 - [`docs/validation.md`](docs/validation.md) — what was verified, and how

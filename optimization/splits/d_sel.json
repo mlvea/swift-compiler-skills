@@ -1,0 +1,119 @@
+{
+  "split": "D_sel",
+  "use": "Accept or reject staged skill edits only (seating replay, cheap graders). Not harvest. Not D_test report.",
+  "items": [
+    {
+      "id": 91775,
+      "cluster": [
+        91103,
+        91775
+      ],
+      "title": "[SILOptimizer] Fix compiler performance in closure specialization pass",
+      "stage": "sil-opts",
+      "files": [
+        "SwiftCompilerSources/Sources/Optimizer/FunctionPasses/ClosureSpecialization.swift",
+        "test/SILOptimizer/closure_specialization_recurse_timeout.swift"
+      ],
+      "expected_chair": "sil-optimizer"
+    },
+    {
+      "id": 91103,
+      "cluster": [
+        91103,
+        91775
+      ],
+      "title": "[SILOptimizer] Fix closure specialization crash on mutual recursion handling",
+      "stage": "sil-opts",
+      "files": [
+        "SwiftCompilerSources/Sources/Optimizer/FunctionPasses/ClosureSpecialization.swift",
+        "test/SILOptimizer/closure_specialization_recurse3.sil"
+      ],
+      "expected_chair": "sil-optimizer"
+    },
+    {
+      "id": 91681,
+      "title": "[DebugInfo] Salvage Debug Info in deleteAllDebugUses",
+      "stage": "debuginfo",
+      "files": [
+        "include/swift/SIL/DebugUtils.h",
+        "include/swift/SILOptimizer/Utils/DebugOptUtils.h",
+        "lib/SILOptimizer/SILCombiner/SILCombine.cpp"
+      ],
+      "expected_chair": "sil-optimizer"
+    },
+    {
+      "id": 91788,
+      "title": "Sema: Consider toll-free bridging in type join implementation",
+      "stage": "sema",
+      "files": [
+        "lib/Sema/Subtyping.cpp",
+        "test/Constraints/rdar181264379.swift",
+        "test/Sema/common_supertype_objc.swift"
+      ],
+      "expected_chair": "type-system"
+    },
+    {
+      "id": 91808,
+      "title": "[Sema] Anchor derivation macro expansions inside the conformance context's braces",
+      "stage": "sema",
+      "files": [
+        "lib/Sema/DerivedConformance/DerivedConformance.cpp",
+        "test/Sema/derived_conformance_macro_scopes.swift"
+      ],
+      "expected_chair": "generics"
+    },
+    {
+      "id": 91115,
+      "title": "IRGen: don't pass a metadata pack pointer to swift_checkMetadataState",
+      "stage": "irgen",
+      "files": [
+        "lib/IRGen/GenPack.cpp",
+        "test/Interpreter/variadic_generic_vanishing_tuple_resilient_field.swift"
+      ],
+      "expected_chair": "irgen-abi"
+    },
+    {
+      "id": 91268,
+      "title": "SIL,SILGen,IRGen: support one word COM existential representation",
+      "stage": "irgen",
+      "files": [
+        "lib/IRGen/GenExistential.cpp",
+        "lib/SIL/IR/SILType.cpp",
+        "lib/SIL/IR/TypeLowering.cpp"
+      ],
+      "expected_chair": "irgen-abi"
+    },
+    {
+      "id": 91622,
+      "title": "serialization: emit diagnostics for conformance witnesses that reference unloaded modules instead of crashing",
+      "stage": "serialization",
+      "files": [
+        "lib/Serialization/Deserialization.cpp",
+        "lib/Sema/CSDiagnostics.cpp",
+        "test/Serialization/Recovery/conformance-xref-internal-import.swift"
+      ],
+      "expected_chair": "serialization"
+    },
+    {
+      "id": 91705,
+      "title": "[Sema] InferIsolatedConformances: Break a cycle in type resolution",
+      "stage": "sema",
+      "files": [
+        "lib/Sema/TypeCheckConcurrency.cpp",
+        "lib/Sema/TypeCheckDeclPrimary.cpp",
+        "lib/Sema/TypeCheckIsolatedConformance.cpp"
+      ],
+      "expected_chair": "concurrency"
+    },
+    {
+      "id": 91649,
+      "title": "Sema: Allow joining bindings involving type variables",
+      "stage": "sema",
+      "files": [
+        "lib/Sema/CSBindings.cpp",
+        "test/Constraints/array_literal.swift"
+      ],
+      "expected_chair": "type-system"
+    }
+  ]
+}

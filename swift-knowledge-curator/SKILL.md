@@ -7,8 +7,9 @@ description: Use after completing (or failing) Swift compiler fix attempts, or p
 
 The skill suite in this repo is trainable state. Treat edits to it like
 weight updates: bounded, evidence-driven, accepted only when validated.
-Protocol adapted from microsoft/SkillOpt (text-space optimization with
-validation gates) to run without external training infrastructure.
+Protocol: ACE-style batch-1 deltas plus SkillOpt-Sleep harvest, with
+the existing replay / counterexample / execution gates. Do not call
+`skillopt-train`. Splits: `optimization/splits/` (`docs/eval-protocol.md`).
 
 ## Files You Own
 
@@ -25,6 +26,8 @@ All paths relative to this repo root (`swift-compiler-skills/`):
   `references/environments.md`
 - `swift-compiler-fix-loop/SKILL.md` + references
 - `optimization/edit-log.md` (append-only journal)
+- `optimization/splits/` and `docs/eval-protocol.md` (do not put
+  `D_test` ids into other files)
 
 Environment facts live with the build-test skill; correctness fixes to them
 are execution-gated (run the command first).
@@ -42,6 +45,13 @@ Run an epoch when any of these hold:
 2. The same friction appeared twice (wrong command, missed stage, stale
    file name).
 3. Calendar trigger: ≥50 new closed issues since last harvest.
+
+Never harvest, mine, scorecard, or journal as evidence any id in
+`optimization/splits/d_test.json`. Run
+`python3 swift-expert-panel/scripts/check_split.py` after harvests.
+`D_sel` may accept/reject seating-table edits only. ACE update unit:
+one delta bullet per trajectory (helpful/harmful), not a full
+playbook rewrite.
 
 ### Step 1: Harvest (new training data)
 
