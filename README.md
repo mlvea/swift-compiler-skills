@@ -5,14 +5,15 @@
 </p>
 
 Agent skills for finding, triaging, and fixing bugs in the Swift compiler
-(`swiftlang/swift`) — with a validation-gated self-improvement loop adapted
-from [microsoft/SkillOpt](https://github.com/microsoft/SkillOpt).
+(`swiftlang/swift`). Skills are a **directory** (lean `SKILL.md`, knowledge
+base, scripts), loaded on demand. After each real fix attempt the curator
+applies **one bounded edit**, accepted only behind replay, counterexample,
+or execution gates. Historical issues name files to open. They do not
+decide the patch for a different issue.
 
-The suite treats skill documents as **trainable state**: every command is
-execution-verified before it is written down, triage *stage* rules are
-mined from resolved GitHub issues, and edits are accepted only behind
-replay / counterexample / execution gates. Historical issues name files
-to open. They do not decide the patch for a different issue.
+This is not Microsoft SkillOpt. That trainer fits one compact markdown
+file and a batched numeric score. This repo is a multi-file compiler
+skill and a single-issue rollout. See `docs/eval-protocol.md`.
 
 ## Skills
 
@@ -117,7 +118,7 @@ Full procedure: [`swift-expert-panel/SKILL.md`](swift-expert-panel/SKILL.md).
 
 ## Design Principles
 
-Derived from SkillOpt's treatment of skills as trainable parameters:
+How the suite is allowed to change:
 
 1. **Entry skills stay lean** (<~120 rendered lines); depth lives in the
    knowledge base and is loaded on demand.
@@ -154,6 +155,6 @@ Highlights from `docs/validation.md`; full detail in the optimization journal:
 
 ## Docs
 
-- [`docs/design.md`](docs/design.md) — architecture (directory skills, ACE-style deltas)
-- [`docs/eval-protocol.md`](docs/eval-protocol.md) — splits, Skill Lift, no SkillOpt-train
+- [`docs/design.md`](docs/design.md) — architecture
+- [`docs/eval-protocol.md`](docs/eval-protocol.md) — train / selection / test splits
 - [`docs/validation.md`](docs/validation.md) — what was verified, and how

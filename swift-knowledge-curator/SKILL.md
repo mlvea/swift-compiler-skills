@@ -1,15 +1,15 @@
 ---
 name: swift-knowledge-curator
-description: Use after completing (or failing) Swift compiler fix attempts, or periodically, to evolve the fix-loop skill set itself - harvest new resolved issues, mine recurring patterns, and apply small validation-gated edits to the knowledge base following the SkillOpt protocol. Also use when a playbook fact proves wrong or a triage call was missed.
+description: Use after completing (or failing) Swift compiler fix attempts, or periodically, to evolve the fix-loop skill set itself - harvest new resolved issues, mine recurring patterns, and apply one bounded, validation-gated edit per trajectory. Also use when a playbook fact proves wrong or a triage call was missed.
 ---
 
 # Swift Knowledge Curator
 
-The skill suite in this repo is trainable state. Treat edits to it like
+The skill suite in this repo is editable state. Treat edits like
 weight updates: bounded, evidence-driven, accepted only when validated.
-Protocol: ACE-style batch-1 deltas plus SkillOpt-Sleep harvest, with
-the existing replay / counterexample / execution gates. Do not call
-`skillopt-train`. Splits: `optimization/splits/` (`docs/eval-protocol.md`).
+One real fix → one delta in `optimization/deltas.md`. Do not rewrite a
+whole playbook for one miss. Splits: `optimization/splits/`
+(`docs/eval-protocol.md`). Do not harvest `D_test`.
 
 ## Files You Own
 
@@ -26,6 +26,7 @@ All paths relative to this repo root (`swift-compiler-skills/`):
   `references/environments.md`
 - `swift-compiler-fix-loop/SKILL.md` + references
 - `optimization/edit-log.md` (append-only journal)
+- `optimization/deltas.md` (one helpful/harmful bullet per accepted epoch)
 - `optimization/splits/` and `docs/eval-protocol.md` (do not put
   `D_test` ids into other files)
 
@@ -49,7 +50,7 @@ Run an epoch when any of these hold:
 Never harvest, mine, scorecard, or journal as evidence any id in
 `optimization/splits/d_test.json`. Run
 `python3 swift-expert-panel/scripts/check_split.py` after harvests.
-`D_sel` may accept/reject seating-table edits only. ACE update unit:
+`D_sel` may accept/reject seating-table edits only. Update unit:
 one delta bullet per trajectory (helpful/harmful), not a full
 playbook rewrite.
 
@@ -80,9 +81,10 @@ If a panel sat, compare the chair verdict to those reviews. A
 reject-unless). A panel `block` that maintainers approved needs a
 counterexample before deleting the rule. Procedure and corpus:
 `knowledge-base/expert-panel/scorecard.md`. Re-run
-`python3 swift-expert-panel/scripts/score_pr.py --corpus` after
-seating-table edits. Scorecard epochs may exceed the 30-line KB
-budget: misses vs landed reviews are correctness, not style.
+`python3 swift-expert-panel/scripts/score_pr.py --corpus` and
+`--sel` after seating-table edits. Scorecard (`D_tr`) epochs may
+exceed the 30-line KB budget: misses vs landed reviews are
+correctness, not style.
 
 After seating-table or official-doc edits, run
 `python3 swift-expert-panel/scripts/probe_globs.py` against
@@ -118,11 +120,13 @@ patch for a future, different issue.
 
 An edit is accepted only if at least one holds:
 
-- **Replay gate**: re-triage 2–3 merged-PR-backed cases; the new text must
-  route each to the merged PR's stage/files without misrouting others.
-  Open local cases may check stage routing only. For seating-table edits,
-  re-run `seat.py` on the examples in
-  `knowledge-base/expert-panel/roster.md` and require identical chair.
+- **Replay gate**: re-triage 2–3 merged-PR-backed **`D_tr` or `D_sel`**
+  cases (never `D_test`); the new text must route each to the merged
+  PR's stage/files without misrouting others. Open local cases may
+  check stage routing only. For seating-table edits, re-run `seat.py`
+  on `knowledge-base/expert-panel/roster.md` **and**
+  `python3 swift-expert-panel/scripts/score_pr.py --sel` and require
+  identical chairs.
 - **Counterexample gate**: for a new pattern claim, find one resolved issue
   matching it that the current docs would have misrouted.
 - **Execution gate** (commands): the exact command was run successfully on
@@ -141,7 +145,7 @@ Evidence: <issues/cases/...>
 Proposed: <diff summary>
 Gate: replay|counterexample|execution <result>
 Accepted/Rejected: <what changed in which file>
-Held-out check: <2 solved cases re-triaged OK>
+Held-out check: <D_sel seating and/or D_tr replay — never D_test ids>
 ```
 
 ## Anti-Drift Rules

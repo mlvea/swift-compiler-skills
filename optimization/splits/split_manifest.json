@@ -1,7 +1,7 @@
 {
   "version": 1,
   "locked": "2026-08-30",
-  "notes": "SkillOpt-style D_tr / D_sel / D_test. D_test IDs must not appear in harvests, scorecard, or edit-log evidence. Related PR clusters stay together. File maps live in the per-split items files.",
+  "notes": "Train / selection / test. D_test IDs must not appear in harvests, scorecard, or edit-log evidence. Related PR clusters stay together. File maps live in the per-split items files.",
   "leaked_to_training": [
     74641, 75745, 77522, 80929, 81054, 84975, 85111, 85557, 85644, 85646,
     86148, 86312, 86347, 86472, 86573, 87540, 89581, 90916, 90931, 90945,

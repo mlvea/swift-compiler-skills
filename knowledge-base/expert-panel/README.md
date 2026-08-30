@@ -24,8 +24,8 @@ same official doc.
 
 Skill entry: `swift-expert-panel/SKILL.md`.
 Seating: `swift-expert-panel/scripts/seat.py`.
-Scorecard: `scorecard.md` + `scorecard-corpus.json` (merged-PR
-review history; `scripts/score_pr.py --corpus`).
+Scorecard: `scorecard.md` + `scorecard-corpus.json` (`score_pr.py --corpus`,
+`D_tr`). Seating accept gate: `score_pr.py --sel` (`D_sel`).
 Official docs load from `swift_checkout` in
 `swift-local-build-test/references/paths.json`
 (`official-docs.md`; `scripts/probe_globs.py` checks they exist).

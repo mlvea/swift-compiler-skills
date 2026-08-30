@@ -459,6 +459,20 @@ Gate: `check_split.py` OK (disjoint ids, test split ≥30, no test ids
 in scorecard/validation/journal). `D_sel` seating labels recorded.
 Held-out: CSSimplify chair unchanged.
 
-Rejected: turning on SkillOpt research trainer, SAGE weights, or
-GEPA/TextGrad as the production skill store. Prompt-only baselines
-wait until a `D_test` Skill Lift run.
+Rejected: turning on an external compact-skill trainer or weight
+updates as the production skill store.
+
+## 2026-08-30 epoch 16 (docs match the loop we run)
+
+Evidence: SkillOpt mentions in README/design/curator still framed the
+suite as that paper's trainer. It is not.
+
+Proposed + Accepted: README, design, eval-protocol, curator, and
+split notes describe a directory skill with one-edit-per-fix, train/
+selection/test splits, and no trainer dependency. `score_pr.py --sel`
+is the D_sel seating accept gate. `optimization/deltas.md` holds
+batch-1 helpful/harmful bullets.
+
+Gate: `check_split.py`; `--corpus` 15/15; `--sel` 10/10; probe;
+CSSimplify chair.
+Rejected: claiming a specialist Skill Lift. That run is still unrun.

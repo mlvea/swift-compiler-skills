@@ -26,7 +26,7 @@ swift-compiler-skills/
 │   └── references/environments.md   the machine's pinned truth
 ├── swift-expert-panel/          domain review of a plan or PR
 │   └── scripts/seat.py          deterministic seating from files
-├── swift-knowledge-curator/     SkillOpt-style meta-loop over the suite itself
+├── swift-knowledge-curator/     gated one-edit-per-fix loop over the suite itself
 ├── knowledge-base/
 │   ├── pipeline-map.md          symptoms → stage → files → tests
 │   ├── stage-playbooks/         one playbook per compiler stage
@@ -65,27 +65,23 @@ evidence of what to change. Other issues, case files, and wiki lessons
 are file-search hints. A merged or rejected PR is in scope only when it
 is *this* issue's PR.
 
-## Skill-crafting stack (not SkillOpt-train)
+## How the suite learns
 
-SkillOpt's research engine is best-in-class for **one compact markdown
-file** with batched selection scores. This suite's trainable state is a
-**directory** plus corpus, and a rollout is one real fix. Do not migrate
-production skills onto `skillopt-train`, SAGE weights, or GEPA/TextGrad
-as the skill store. Protocol: `docs/eval-protocol.md`.
+Protocol: `docs/eval-protocol.md`. Skills stay a directory (YAML
+always visible, `SKILL.md` on trigger, knowledge-base on demand).
+One real fix attempt → one bounded edit. Do not collapse this repo
+into a single compact skill file or train model weights.
 
-Local loop (ACE-style batch-1 + SkillOpt-Sleep harvest, no `skillopt/`
-dependency):
-
-| SkillOpt concept | Local implementation |
+| Piece | This repo |
 | --- | --- |
-| trainable parameter θ | the SKILL.mds + knowledge-base corpus |
-| rollout | one real fix attempt (success or failure) |
-| trajectory score | repro fixed? tests pass? regressions? time lost? |
-| gradient signal | where the agent lost time / misrouted / hit a stale fact |
-| bounded update (learning rate) | ≤3 rule changes + ≤30 KB lines per epoch |
-| validation gate | replay / counterexample / execution; `D_sel` seating; never `D_test` |
-| rejected-edit buffer | journal entries marked Rejected, revisited after 2 confirmations |
-| epochs | triggered by finished fixes, repeated friction, or ≥50 new closed issues |
+| State | `SKILL.md` files + `knowledge-base/` + scripts |
+| Rollout | one real fix attempt (success or failure) |
+| Signal | repro fixed? tests pass? regressions? time lost? stale path? |
+| Update | ≤3 rule changes + ≤30 KB lines per epoch; one delta bullet in `optimization/deltas.md` |
+| Accept | replay, counterexample, or execution; seating-table edits also keep `D_sel` chairs |
+| Never | harvest or grade `D_test`; rewrite a whole playbook because one issue hurt |
+| Rejected edits | journaled, revisited after two confirming instances |
+| Epochs | finished fixes, repeated friction, or ≥50 new closed issues |
 
 The gates are deliberately conservative: a proposed rule must re-route
 already-solved cases correctly AND explain at least one case the current
@@ -107,3 +103,5 @@ change."
 - No reliance on network access during fixes (harvesting is offline-first;
   GitHub harvests are cached under `data/` in the wiki repo).
 - No silent self-modification: every epoch is journaled with evidence.
+- No compact-skill trainer and no weight updates as the production
+  skill store.
