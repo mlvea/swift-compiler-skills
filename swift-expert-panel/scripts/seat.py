@@ -215,6 +215,11 @@ def main() -> int:
         help="Optional plan/PR body whose keywords influence seating",
     )
     p.add_argument(
+        "--text",
+        default="",
+        help="Optional plan/PR body as a string (alternative to --text-file)",
+    )
+    p.add_argument(
         "files",
         nargs="*",
         help="Changed paths relative to the swift checkout",
@@ -225,7 +230,7 @@ def main() -> int:
     if not sys.stdin.isatty() and not files:
         files.extend(line.strip() for line in sys.stdin if line.strip())
 
-    text = ""
+    text = args.text or ""
     if args.text_file:
         text = Path(args.text_file).read_text(errors="replace")
 

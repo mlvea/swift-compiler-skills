@@ -376,3 +376,34 @@ Rejected: a measured claim that these seats outperform a human
 specialist. The bar is fail-closed application of documented
 invariants that a hurried human pass skips, not a SkillOpt win in
 this domain.
+
+## 2026-08-30 epoch 12 (Horizon 1: scorecard, producing-pass, paths)
+
+Evidence: merged PRs with `CHANGES_REQUESTED` or a rejected first PR
+(#90931/#90945, #81054, #84975, #74641, #86573, #91581/#91566,
+#77522, #86312, #85644); in-tree `docs/DebuggingTheCompiler.md`;
+execution of `$B/bin/sil-opt -O --sil-print-pass-name` and
+`--sil-opt-pass-count=5` on this machine.
+
+Proposed + Accepted:
+- Panel scorecard: `knowledge-base/expert-panel/scorecard.md` +
+  `scorecard-corpus.json` + `scripts/score_pr.py`. Offline seating
+  10/10 chairs match. Ballot: 7 hit, 1 hit-after-rule, 1 seating
+  glob fix, 1 partial (review invariant not fully extracted).
+- Seating from misses: `TypeCheckDeclObjC.cpp` clang-importer
+  primary; `SILIsolationInfo*` concurrency primary;
+  `TypeCheckStmt.cpp` + `inlinable` keyword library-evolution.
+- Briefs: PackageCMO skip is package-CMO-only (#74641); Embedded
+  `witness_method` ABI-more-generic (#91581).
+- Producing-pass cookbook (`stage-playbooks/producing-pass.md`);
+  pipeline-map heuristic 9 points at it.
+- Path contract: `swift-local-build-test/references/paths.json`.
+  Triage/fix-loop no longer point at a stale absolute KB path.
+- Panel loads cited official docs from `swift_checkout`.
+
+Gate: execution (sil-opt pass-name + pass-count) + replay (nine
+roster chairs unchanged; corpus 10/10).
+Held-out: original six roster chairs identical to epochs 9–11.
+
+Rejected: treating this 10-case scorecard as proof the panel is
+better than a human specialist. It is a start of measurement.

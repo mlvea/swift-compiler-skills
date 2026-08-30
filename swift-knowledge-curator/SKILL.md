@@ -68,7 +68,11 @@ Open issues and local case-file patches are not solved.
 If a panel sat, compare the chair verdict to those reviews. A
 `CHANGES_REQUESTED` the panel missed is a domain-brief miss (add a
 reject-unless). A panel `block` that maintainers approved needs a
-counterexample before deleting the rule.
+counterexample before deleting the rule. Procedure and corpus:
+`knowledge-base/expert-panel/scorecard.md`. Re-run
+`python3 swift-expert-panel/scripts/score_pr.py --corpus` after
+seating-table edits. Scorecard epochs may exceed the 30-line KB
+budget: misses vs landed reviews are correctness, not style.
 
 ### Step 2: Reflect (extract gradients)
 

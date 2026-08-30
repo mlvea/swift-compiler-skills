@@ -1,7 +1,8 @@
 # Environment Reference (verified facts)
 
 This file records the machine's actual state and every verified failure
-mode. Update it whenever a command in the skill proves wrong.
+mode. Update it whenever a command in the skill proves wrong. Checkout
+and build-tree paths: `paths.json` (edit that file to relocate).
 
 ## Repo Pinning Contract
 

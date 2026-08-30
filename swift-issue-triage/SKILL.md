@@ -26,7 +26,8 @@ trace/assertion text, reproducer snippet, or a failing local test path.
    - Title keywords + labels last.
 
 2. **Map to stage** using the identification table in
-   `/Users/madushan/Documents/Github/swift-compiler-skills/knowledge-base/pipeline-map.md`.
+   `../knowledge-base/pipeline-map.md`. Machine checkouts:
+   `../swift-local-build-test/references/paths.json`.
 
 3. **Optional search family** (after stage is known) in
    `../knowledge-base/resolved-issue-patterns.md`. Extra *directories*

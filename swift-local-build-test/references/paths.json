@@ -1,0 +1,9 @@
+{
+  "notes": "Single source of machine paths. Skills and playbooks expand $B / $LIT / $SWIFT from here. Relocate by editing this file, then re-run one smoke lit test (execution gate).",
+  "swiftlang_root": "/Users/madushan/Documents/Github/swiftlang",
+  "swift_checkout": "/Users/madushan/Documents/Github/swiftlang/swift",
+  "wiki_checkout": "/Users/madushan/Documents/Github/swiftlang/swift-issue-fix-plans",
+  "build_swift": "/Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/swift-macosx-arm64",
+  "build_llvm": "/Users/madushan/Documents/Github/swiftlang/build/Ninja-RelWithDebInfoAssert/llvm-macosx-arm64",
+  "skills_kb": "knowledge-base"
+}

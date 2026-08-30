@@ -1,0 +1,158 @@
+{
+  "notes": "Merged PRs (or a rejected first PR plus its merged replacement) with review history. Offline seating is scored by score_pr.py. Ballot hit/miss is a human/offline judgment against the review invariant, recorded in scorecard.md. Do not treat open issues as ground truth.",
+  "cases": [
+    {
+      "id": "90931",
+      "kind": "rejected-first-pr",
+      "merged_replacement": "90945",
+      "stage": "sil-opts",
+      "files": [
+        "SwiftCompilerSources/Sources/Optimizer/FunctionPasses/LoopInvariantCodeMotion.swift",
+        "test/SILOptimizer/licm_weakly_imported_global.swift"
+      ],
+      "text": "LICM load_borrow weakly imported global #available speculative hoist",
+      "expected_chair": "sil-optimizer",
+      "review_invariant": "Do not add a weakly-imported special case; load_borrow must not be speculatively hoisted, same as load.",
+      "expected_verdict_on_this_diff": "block",
+      "offline_ballot": "hit"
+    },
+    {
+      "id": "90945",
+      "kind": "merged",
+      "stage": "sil-opts",
+      "files": [
+        "SwiftCompilerSources/Sources/Optimizer/FunctionPasses/LoopInvariantCodeMotion.swift",
+        "SwiftCompilerSources/Sources/Optimizer/Analysis/DominatorTree.swift"
+      ],
+      "text": "LICM do not move scoped instructions out of the loop speculatively load_borrow",
+      "expected_chair": "sil-optimizer",
+      "review_invariant": "Generalize the hoist check to the scoped-instruction class.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit"
+    },
+    {
+      "id": "81054",
+      "kind": "merged-after-changes-requested",
+      "stage": "importer",
+      "files": [
+        "lib/Sema/TypeCheckDeclObjC.cpp",
+        "include/swift/AST/DiagnosticsSema.def",
+        "test/attr/attr_objc.swift",
+        "test/attr/attr_objc_async.swift"
+      ],
+      "text": "@objc typed throws isRepresentableInLanguage",
+      "expected_chair": "clang-importer",
+      "review_invariant": "Check isRepresentableInLanguage (inferred @objc), not InterfaceTypeRequest; do not use TypeRepr; tests sync and async; limitBehavior/softenIfAccessNote.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit",
+      "first_diff_would_be": "request-changes"
+    },
+    {
+      "id": "84975",
+      "kind": "merged-after-changes-requested",
+      "stage": "sema",
+      "files": [
+        "lib/Sema/TypeCheckStmt.cpp",
+        "include/swift/AST/DeclContext.h",
+        "include/swift/AST/DiagnosticsSema.def",
+        "test/Sema/discard_resilient_inlinable.swift"
+      ],
+      "text": "discard self inlinable non-frozen getFragileFunctionKind",
+      "expected_chair": "library-evolution",
+      "review_invariant": "Use getFragileFunctionKind(), not a hardcoded attribute list; parameterize the diagnostic on fragile kind.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit"
+    },
+    {
+      "id": "74641",
+      "kind": "merged-after-changes-requested",
+      "stage": "sil-opts",
+      "files": [
+        "lib/SILOptimizer/IPO/CrossModuleOptimization.cpp",
+        "test/SILOptimizer/package-cmo-swiftinterface.swift"
+      ],
+      "text": "PackageCMO usableFromInline AST mutation conservative CMO",
+      "expected_chair": "sil-optimizer",
+      "review_invariant": "Do not disable makeDeclUsableFromInline for all CMO; package-CMO only. Aggressive CMO still mutates AST by design.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit",
+      "first_diff_would_be": "request-changes"
+    },
+    {
+      "id": "86573",
+      "kind": "merged",
+      "stage": "importer",
+      "files": [
+        "lib/ClangImporter/ImportDecl.cpp",
+        "stdlib/public/Cxx/CxxPair.swift",
+        "test/Interop/Cxx/stdlib/use-std-pair-typechecker.swift"
+      ],
+      "text": "CxxPair suppress Copyable noncopyable C++ pair",
+      "expected_chair": "clang-importer",
+      "review_invariant": "Suppress Copyable when the imported C++ type is not copyable.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit"
+    },
+    {
+      "id": "91581",
+      "kind": "merged",
+      "issue": "91566",
+      "stage": "irgen",
+      "files": [
+        "lib/SILOptimizer/Utils/Generics.cpp",
+        "test/embedded/existential-generic-error.swift"
+      ],
+      "text": "Embedded Swift generic protocol requirement witness_method specialize",
+      "expected_chair": "embedded",
+      "review_invariant": "Do not specialize witness_method when the requirement is ABI-more-generic than the protocol. Shared SIL utility + test/embedded/.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit-after-rule"
+    },
+    {
+      "id": "77522",
+      "kind": "merged",
+      "stage": "importer",
+      "files": [
+        "lib/ClangImporter/ClangImporter.cpp",
+        "lib/ClangImporter/ImportDecl.cpp",
+        "include/swift/ClangImporter/ClangImporterRequests.h"
+      ],
+      "text": "infer SWIFT_SHARED_REFERENCE CxxRecordSemantics request evaluator",
+      "expected_chair": "clang-importer",
+      "review_invariant": "FRT inference through the request evaluator, not a process-global cache. Unique retain/release; diamond inheritance is not inferred FRT.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit"
+    },
+    {
+      "id": "86312",
+      "kind": "merged-after-changes-requested",
+      "stage": "sil-mandatory",
+      "files": [
+        "include/swift/SILOptimizer/Utils/SILIsolationInfo.h",
+        "include/swift/SILOptimizer/PassManager/Passes.def",
+        "include/swift/SIL/SILBuilder.h"
+      ],
+      "text": "Sendable immutable weak var capture region isolation weak let",
+      "expected_chair": "concurrency",
+      "review_invariant": "RBI must see Sendable immutable weak captures as the isolation the language rule requires; SILIsolationInfo is concurrency, not a drive-by SILBuilder change.",
+      "expected_verdict_on_this_diff": "request-changes-until-isolation-model-matches",
+      "offline_ballot": "seating-miss-before-glob"
+    },
+    {
+      "id": "85644",
+      "kind": "merged-after-changes-requested",
+      "stage": "sil-opts",
+      "files": [
+        "SwiftCompilerSources/Sources/Optimizer/Utilities/GenericSpecialization.swift",
+        "SwiftCompilerSources/Sources/Optimizer/ModulePasses/MandatoryPerformanceOptimizations.swift",
+        "lib/IRGen/GenMeta.cpp",
+        "test/embedded/existential-generic-error.swift"
+      ],
+      "text": "embedded specialized witness tables InitExistentialAddr convertIndirectToDirect",
+      "expected_chair": "sil-optimizer",
+      "review_invariant": "Embedded witness specialization of existentials belongs in shared utilities; do not convert-indirect-to-direct when that invents the wrong convention.",
+      "expected_verdict_on_this_diff": "request-changes-until-shared-utility",
+      "offline_ballot": "partial"
+    }
+  ]
+}

@@ -88,6 +88,7 @@ for d in seated {
     prompt += "/evolution-gate.md and ";
     prompt += kb_root;
     prompt += "/ballot.md.\n";
+    prompt += "Also read every official doc path named in that brief (TypeChecker.md, SIL/Ownership.md, LibraryEvolution.rst, HowToUpdateDebugInfo.md, ABI/TypeMetadata.rst, DebuggingTheCompiler.md, etc.) from the swift checkout in swift-local-build-test/references/paths.json. The brief is the fail-closed index; the cited doc is the spec.\n";
     prompt += "2. Inspect the artifact (plan or diff) below using the brief's Protects, Plan/PR review, and Reject unless. Do not answer from memory. If the artifact is too short to be a real plan/diff, still judge from what is present and lower confidence.\n";
     prompt += "3. If the change is outside this domain's charter, return in_scope=abstain and verdict=abstain with empty blockers.\n";
     prompt += "4. Protects and Reject unless are fail-closed. A named invariant that the artifact violates is verdict=block unless the artifact cites the exception in the same official doc the brief names. 'Existing tests pass' or 'the patch is small' is not an exception. Do not approve with a concern when the correct verdict is block.\n";

@@ -53,6 +53,9 @@ Symptoms: "value is consumed", partial-initialization liveness, borrow
 scope violations. Inspect `lib/SILOptimizer/Mandatory/MoveOnly*` and the
 lowering that produced the borrow on THIS reducer.
 
+Producing-pass bisect (named pass, `--sil-opt-pass-count`):
+`producing-pass.md`.
+
 ## Verification Loop
 
 ```bash

@@ -52,14 +52,9 @@ for s in swift-compiler-fix-loop swift-issue-triage swift-local-build-test swift
 done
 ```
 
-Skills reference two local checkouts by absolute path:
-
-| Path | Role |
-| --- | --- |
-| `/Users/madushan/Documents/Github/swiftlang/swift` | the compiler checkout being patched |
-| `/Users/madushan/Documents/Github/swiftlang/swift-issue-fix-plans` | persistent wiki: case files, tracker, mentor guidance |
-
-Adapt those paths in the SKILL.mds if you relocate them.
+Machine checkouts and build trees live in one file:
+[`swift-local-build-test/references/paths.json`](swift-local-build-test/references/paths.json).
+Edit that file if you relocate; do not scatter new absolute paths.
 
 ## Reading Order For A Fix Task
 

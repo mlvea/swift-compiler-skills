@@ -24,3 +24,7 @@ same official doc.
 
 Skill entry: `swift-expert-panel/SKILL.md`.
 Seating: `swift-expert-panel/scripts/seat.py`.
+Scorecard: `scorecard.md` + `scorecard-corpus.json` (merged-PR
+review history; `scripts/score_pr.py --corpus`).
+Official docs load from `swift_checkout` in
+`swift-local-build-test/references/paths.json`.

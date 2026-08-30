@@ -45,8 +45,11 @@ charter seats abstain themselves.
    in parallel. Grok: `/workflow swift-expert-panel` with
    `{kind, chair, seated, artifact, files, kb_root}`. Other hosts: spawn
    the same way. Each agent:
-   - Reads only `knowledge-base/expert-panel/domains/<id>.md`,
-     `evolution-gate.md`, `ballot.md`, and the artifact (with tools).
+   - Reads `knowledge-base/expert-panel/domains/<id>.md`,
+     `evolution-gate.md`, `ballot.md`, the artifact, and every
+     official doc path named in that brief (from `swift_checkout` in
+     `swift-local-build-test/references/paths.json`). Briefs are the
+     fail-closed index; the cited doc is the spec.
    - Empty `blockers` is valid only after inspecting `Protects` and
      `Reject unless`. Those rules are **fail-closed**: a violation is
      `block` unless the artifact cites the exception in the same

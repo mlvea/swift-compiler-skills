@@ -1,8 +1,9 @@
 # Swift Compiler Pipeline Map For Triage
 
 Ground truth for deciding which compiler stage an issue belongs to.
-Swift checkout: `/Users/madushan/Documents/Github/swiftlang/swift`.
-All paths below are relative to that checkout unless absolute.
+Swift checkout: `swift-local-build-test/references/paths.json`
+(`swift_checkout`). All compiler paths below are relative to that
+checkout unless absolute.
 
 Label frequency across 418 closed issues harvested 2026-08 (see
 `resolved-issue-patterns.md`): crash 153, type checker 75, concurrency 37,
@@ -81,8 +82,10 @@ patch.
    `swift` + `llvm-project`; read the comment above the guard. The
    assert is the observation, not the patch.
 9. **Crash site is not automatically the patch site.** Find which pass
-   first created the bad state on THIS repro (flag ladder / sil-opt
-   bisect). Do not patch the assert until that is known.
+   first created the bad state on THIS repro. Procedure:
+   `stage-playbooks/producing-pass.md` (flag ladder, `-sil-print-pass-name`,
+   `--sil-opt-pass-count` bisect). Do not patch the assert until that
+   is known.
 
 ## Where To Look Next
 

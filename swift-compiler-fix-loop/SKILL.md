@@ -13,7 +13,8 @@ delegates to four sibling skills:
 - `swift-expert-panel` — required plan review (step 4) and PR review (step 8)
 - `swift-knowledge-curator` — after fixes, evolve these skills (validation-gated)
 
-Shared knowledge base: `/Users/madushan/Documents/Github/swift-compiler-skills/knowledge-base/`
+Shared knowledge base: `../knowledge-base/` (this repo). Machine
+checkouts and build trees: `../swift-local-build-test/references/paths.json`.
 
 ## Repo Roles
 

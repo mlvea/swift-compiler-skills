@@ -36,6 +36,9 @@ product files).
   restore the producing pass's general check (#90931 class).
 - Do not mix Embedded ABI (`$e` mangling, unstable) with full Swift
   metadata on the same path.
+- Do not specialize `witness_method` when the requirement is ABI-more-
+  generic than the protocol (swift#91581 / issue #91566). Those calls
+  need unspecialized generics, which Embedded forbids.
 
 ## Evolution
 

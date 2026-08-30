@@ -38,7 +38,10 @@ Do not copy a listed issue's patch onto this one.
 - Open: Sema if `-typecheck` on THIS reducer is clean *and* the program
   looks invalid; also the crashing emit function. Decide validity from
   THIS reducer.
-- Map (stage only): #86463 open SILGen; #91566 merged sil-opts.
+- Map (merged PR file map only): #91566 → #91581
+  `lib/SILOptimizer/Utils/Generics.cpp` +
+  `test/embedded/existential-generic-error.swift`. #86463 is open
+  (not a map).
 
 ### A2. Diagnostic cascade after one small mistake
 
@@ -53,7 +56,8 @@ Do not copy a listed issue's patch onto this one.
   named pass.
 - Open: the pass the bisect names on THIS SIL. Read that pass's existing
   safety checks.
-- Map (stage only): #90916 merged sil-opts; #91480 sil-opts.
+- Map (merged PR file map only): #90916 → rejected #90931, merged
+  #90945 `SwiftCompilerSources/.../LoopInvariantCodeMotion.swift`.
 
 ### A4. Isolation / sendability through wrappers
 
@@ -90,8 +94,10 @@ Do not copy a listed issue's patch onto this one.
 - Signature: only one target, or only `-O` on that target.
 - Open: target branches *and* shared SIL/IRGen utilities. Confirm THIS
   repro is target-gated before assuming general breakage.
-- Map (stage only): #89320 wasm; #85427 Linux; #85958 Windows; #91566
-  embedded; #89581 embedded.
+- Map (merged PR file map only): #91566 → #91581 (above); #89581
+  Embedded pack IRGen (`emitTypeMetadataRef`, not `.Elements` on thin
+  metadata). Other ids are stage hints, not file maps, until a merged
+  PR is recorded.
 
 ### A9. "Failed to produce diagnostic for expression"
 

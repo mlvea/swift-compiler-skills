@@ -97,6 +97,7 @@
         "lib/SILOptimizer/Mandatory/SendNonSendable*",
         "lib/SILOptimizer/Mandatory/FlowIsolation*",
         "lib/SILOptimizer/Analysis/RegionAnalysis*",
+        "include/swift/SILOptimizer/Utils/SILIsolationInfo*",
         "test/Concurrency/"
       ],
       "adjacent": [
@@ -306,11 +307,11 @@
         "test/ClangImporter/",
         "test/Interop/",
         "test/APINotes/",
-        "stdlib/public/Cxx/"
+        "stdlib/public/Cxx/",
+        "lib/Sema/TypeCheckDeclObjC.cpp"
       ],
       "adjacent": [
-        "apinotes/",
-        "lib/Sema/TypeCheckDeclObjC.cpp"
+        "apinotes/"
       ],
       "keywords": [
         "ClangImporter",
@@ -407,13 +408,18 @@
       "adjacent": [
         "lib/Frontend/",
         "include/swift/Frontend/",
-        "lib/Sema/TypeCheckAttr.cpp"
+        "lib/Sema/TypeCheckAttr.cpp",
+        "lib/Sema/TypeCheckStmt.cpp"
       ],
       "keywords": [
         "availability",
         "@available",
         "@frozen",
+        "frozen",
         "@inlinable",
+        "inlinable",
+        "fragile function",
+        "discard self",
         "@usableFromInline",
         "resilience",
         "library evolution",

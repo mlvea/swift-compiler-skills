@@ -46,9 +46,10 @@ LICM/SROA, SwiftCompilerSources optimizer.
   `test/embedded/` coverage (`embedded` conditional).
 - No `sil-verify-none` in tests to hide a verifier failure
   (swift#87916).
-- No AST mutation from an optimizer except modes that already do;
-  PackageCMO must not stamp `@usableFromInline` as a drive-by
-  (swift#74641).
+- No AST mutation from an optimizer except modes that already do.
+  PackageCMO must not stamp `@usableFromInline` (swift#74641). Do not
+  disable `makeDeclUsableFromInline` for *all* CMO; aggressive CMO
+  still mutates AST by design — gate the skip on package-CMO only.
 
 ## Evolution
 

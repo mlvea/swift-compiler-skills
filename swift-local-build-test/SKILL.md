@@ -5,8 +5,10 @@ description: Use when building Swift compiler targets, running lit tests, managi
 
 # Swift Local Build & Test Environment
 
-Verified commands for THIS machine. If a command here fails, fix the
-command in this file too (`references/environments.md`), not just your shell.
+Verified commands for THIS machine. Paths: `references/paths.json`
+(`swift_checkout`, `build_swift` `$B`, `build_llvm`). If a command
+here fails, fix it in this file and `references/environments.md`, not
+just your shell. Relocate by editing `paths.json` first.
 
 Before blaming your patch for build failures, read
 `references/environments.md` — sibling-repo version skew and HOSTTOOLS
