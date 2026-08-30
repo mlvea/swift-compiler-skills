@@ -1,22 +1,13 @@
 # Eval protocol
 
-This suite is a **directory skill** for Swift compiler work. After each
-real fix the curator applies **one bounded edit**, accepted only if
-replay, counterexample, or execution says so.
+This suite is a **directory skill** for Swift compiler work. YAML
+name/description is always visible; `SKILL.md` loads when the skill
+triggers; the knowledge base and scripts load on demand.
 
-Microsoft SkillOpt trains one compact markdown file (~300–2000 tokens)
-with batched numeric scores. That is a different problem. We do not run
-`skillopt-train`, SAGE weight updates, or GEPA/TextGrad as the skill
-store. Optional later: use those as *prompt-only* baselines on `D_test`.
-
-What we do run:
-
-| Piece | Role |
-| --- | --- |
-| Directory load | YAML name/description always; `SKILL.md` when triggered; KB and scripts on demand |
-| One-edit loop | Batch size 1; `optimization/deltas.md` (helpful/harmful); curator gates |
-| Harvest | Closed merged-PR issues and transcripts; mine; replay; human adopt |
-| Splits | `optimization/splits/` — train, selection, test |
+After each real fix the curator applies **one bounded edit**. Accept
+only if replay, counterexample, or execution says so. One helpful or
+harmful bullet goes in `optimization/deltas.md`. Do not rewrite a whole
+playbook because one issue hurt.
 
 ## Splits
 
@@ -34,12 +25,13 @@ Related PR clusters stay in one split. IDs already in
 
 ```bash
 python3 swift-expert-panel/scripts/check_split.py
-python3 swift-expert-panel/scripts/score_pr.py --corpus   # D_tr regression
-python3 swift-expert-panel/scripts/score_pr.py --sel      # D_sel accept gate
+python3 swift-expert-panel/scripts/check_split.py --harvest data/resolved-issues-<date>/*.json
+python3 swift-expert-panel/scripts/score_pr.py --corpus   # D_tr seating regression
+python3 swift-expert-panel/scripts/score_pr.py --sel      # D_sel seating accept gate
 ```
 
 `check_split.py` fails if a `D_test` id appears outside
-`optimization/splits/` and this file.
+`optimization/splits/`, or if a harvest JSON contains a `D_test` id.
 
 ## Metrics
 
@@ -58,6 +50,10 @@ run has not been done yet.
 ## Matrix (not yet run)
 
 skill combo (none / this directory) × harness (this loop, Codex CLI,
-Claude Code) × model. Report `D_test` only. Do not turn on an external
-skill trainer until a custom env can score `id` / hard / soft in [0, 1]
-without using `D_test` for training.
+Claude Code) × model. Report `D_test` only.
+
+## Out of scope
+
+We do not run Microsoft SkillOpt (`skillopt-train`) or other external
+skill-file trainers. Optional later: a prompt-only baseline on `D_test`
+after a with-skill vs no-skill run. That run has not happened.

@@ -77,7 +77,7 @@ def main() -> int:
         return replay(items)
 
     if not args.files:
-        print("need --corpus or files", file=sys.stderr)
+        print("need --corpus, --sel, or files", file=sys.stderr)
         return 2
     got = run_seat(args.files, args.stage, args.text)
     json.dump(got, sys.stdout, indent=2)

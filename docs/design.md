@@ -33,7 +33,7 @@ swift-compiler-skills/
 │   ├── regression-test-cookbook.md
 │   ├── resolved-issue-patterns.md   search families A1–A10 (files, not patches)
 │   └── expert-panel/            domain briefs, seats.json, evolution gate
-└── optimization/edit-log.md     append-only training journal
+└── optimization/edit-log.md     append-only edit journal
 ```
 
 Data flow for one fix:
@@ -69,8 +69,7 @@ is *this* issue's PR.
 
 Protocol: `docs/eval-protocol.md`. Skills stay a directory (YAML
 always visible, `SKILL.md` on trigger, knowledge-base on demand).
-One real fix attempt → one bounded edit. Do not collapse this repo
-into a single compact skill file or train model weights.
+One real fix attempt → one bounded edit.
 
 | Piece | This repo |
 | --- | --- |
@@ -103,5 +102,5 @@ change."
 - No reliance on network access during fixes (harvesting is offline-first;
   GitHub harvests are cached under `data/` in the wiki repo).
 - No silent self-modification: every epoch is journaled with evidence.
-- No compact-skill trainer and no weight updates as the production
-  skill store.
+- No external skill-file trainer as the production store. The loop is
+  one bounded edit per fix, gated in this repo. See `docs/eval-protocol.md`.

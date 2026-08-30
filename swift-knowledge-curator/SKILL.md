@@ -5,9 +5,9 @@ description: Use after completing (or failing) Swift compiler fix attempts, or p
 
 # Swift Knowledge Curator
 
-The skill suite in this repo is editable state. Treat edits like
-weight updates: bounded, evidence-driven, accepted only when validated.
-One real fix → one delta in `optimization/deltas.md`. Do not rewrite a
+These files are editable. After each real fix (or failure), apply **one
+bounded edit**, accepted only behind replay, counterexample, or
+execution. One bullet in `optimization/deltas.md`. Do not rewrite a
 whole playbook for one miss. Splits: `optimization/splits/`
 (`docs/eval-protocol.md`). Do not harvest `D_test`.
 
@@ -35,26 +35,24 @@ are execution-gated (run the command first).
 
 Do not edit case files, tracker, or the swift checkout from this skill.
 
-## The Optimization Loop
+## Curation loop
 
 ### Epoch triggers
 
 Run an epoch when any of these hold:
 
-1. A fix attempt just finished (success OR failure — failures are the
-   highest-gradient data).
+1. A fix attempt just finished (success or failure — failures teach more).
 2. The same friction appeared twice (wrong command, missed stage, stale
    file name).
 3. Calendar trigger: ≥50 new closed issues since last harvest.
 
 Never harvest, mine, scorecard, or journal as evidence any id in
-`optimization/splits/d_test.json`. Run
-`python3 swift-expert-panel/scripts/check_split.py` after harvests.
-`D_sel` may accept/reject seating-table edits only. Update unit:
-one delta bullet per trajectory (helpful/harmful), not a full
-playbook rewrite.
+`optimization/splits/d_test.json`. After harvests run
+`python3 swift-expert-panel/scripts/check_split.py` and
+`python3 swift-expert-panel/scripts/check_split.py --harvest <json>`.
+`D_sel` may accept/reject seating-table edits only.
 
-### Step 1: Harvest (new training data)
+### Step 1: Harvest (new closed issues)
 
 Pull freshly closed issues for pattern drift:
 
@@ -67,9 +65,9 @@ curl -sG "https://api.github.com/search/issues" \
 
 (Repeat for: assertion, diagnostic, SILGen, IRGen, sendable, type checker,
 parser, completion/sourcekit. Unauthenticated API allows ~10 search
-requests/min — sleep between calls.) Update
-`knowledge-base/resolved-issue-patterns.md` counts only when family shares
-shift by >10% (relative to repo root).
+requests/min — sleep between calls.) Drop any id in `d_test.json`
+before mining. Update `knowledge-base/resolved-issue-patterns.md` counts
+only when family shares shift by >10% (relative to repo root).
 
 For a search-family or replay-gate issue, fetch its closing PR and any
 linked/superseded PRs. Record merged PR + files changed (file map), and
@@ -91,10 +89,9 @@ After seating-table or official-doc edits, run
 `paths.json` `swift_checkout`. Missing globs are the same class of
 bug as epoch 10 (`test/Module/`).
 
-### Step 2: Reflect (extract gradients)
+### Step 2: Reflect
 
-For each completed trajectory (case files, fix logs, this epoch's events),
-answer:
+For each completed trajectory (case files, fix logs, this epoch's events):
 
 - Where did the agent lose the most time? (environment, triage, location,
   test style, verification)
@@ -105,7 +102,7 @@ answer:
 
 ### Step 3: Propose bounded edits
 
-Budget per epoch (learning rate):
+Budget per epoch:
 
 - ≤ 3 substantive rule changes across all SKILL.mds
 - ≤ 30 new lines in knowledge-base total

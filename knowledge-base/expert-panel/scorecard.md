@@ -1,13 +1,14 @@
 # Panel scorecard
 
-Held-out measure of whether the specialist bar matches real review.
-Corpus: `scorecard-corpus.json`. Seating replay:
+`D_tr` record of seating replay and offline ballots against merged PRs
+that had `CHANGES_REQUESTED` or a rejected first PR. Corpus:
+`scorecard-corpus.json`. Seating replay:
 `python3 swift-expert-panel/scripts/score_pr.py --corpus`.
 
-This is **not** a claim that the panel outperforms a human specialist.
-It records hit / miss / seating-miss against merged PRs that had
-`CHANGES_REQUESTED` or a rejected first PR. Scorecard rows are **`D_tr`**.
-Specialist numbers use locked `D_test` only (`docs/eval-protocol.md`).
+This is chair-match and named-invariant hit/miss on training IDs. It is
+**not** a with-skill vs no-skill result and not a claim the panel beats
+a human specialist. Specialist numbers use locked `D_test` only
+(`docs/eval-protocol.md`). Those have not been run.
 
 ## How to score a case
 

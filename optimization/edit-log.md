@@ -1,4 +1,4 @@
-# Skill Optimization Journal
+# Skill edit journal
 
 Append-only. One entry per curator epoch. Never rewrite history; supersede
 with a new entry.
@@ -11,7 +11,7 @@ Evidence: <case paths / issue numbers / command transcripts>
 Proposed: <bounded edit summary>
 Gate: replay | counterexample | execution — <result>
 Accepted/Rejected: <files changed or why refused>
-Held-out check: <which solved cases were re-triaged>
+Held-out check: <D_sel seating and/or D_tr replay — never D_test ids>
 ```
 
 ## 2026-08-25 epoch 1 (suite bootstrap)
@@ -476,3 +476,21 @@ batch-1 helpful/harmful bullets.
 Gate: `check_split.py`; `--corpus` 15/15; `--sel` 10/10; probe;
 CSSimplify chair.
 Rejected: claiming a specialist Skill Lift. That run is still unrun.
+
+## 2026-08-30 epoch 17 (docs match the loop we run)
+
+Evidence: leftover trainer language after epoch 16 (README SkillOpt
+lede, curator weight-update/gradient wording, figure "trains the next
+run", test-split JSON "Skill Lift", scorecard framed as a specialist
+bar). Live skill symlinks pointed at `main`, which credited SkillOpt.
+
+Proposed + Accepted: README, design, eval-protocol, curator, fix-loop,
+scorecard, and suite figure describe a directory skill with one bounded
+edit per fix. SkillOpt is named once in `docs/eval-protocol.md` as a
+trainer we do not run. `check_split.py` walks the repo and `--harvest`
+fails if a harvest JSON contains a `D_test` id.
+
+Gate: `check_split.py`; `--corpus` 15/15; `--sel` 10/10; harvest JSON
+with a locked test-split id fails; clean harvest passes.
+Held-out: `D_sel` chairs unchanged. No `D_test` ids in this entry.
+Rejected: still no with-skill vs no-skill run on `D_test`.

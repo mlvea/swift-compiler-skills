@@ -91,7 +91,7 @@ git -C <swift-worktree> diff --stat --output=<case>/artifacts/diffstat.txt
 
 10. **Feed the loop.** Any durable lesson, corrected fact, or repeated
     friction goes through the curator skill (validation-gated edits to
-    knowledge-base/playbooks) — skills are trainable state, not static docs.
+    knowledge-base/playbooks) via the curator: one bounded, gated edit.
 
 ## Working Heuristics
 

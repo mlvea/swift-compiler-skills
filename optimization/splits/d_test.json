@@ -1,6 +1,6 @@
 {
   "split": "D_test",
-  "use": "Final Skill Lift and domain metrics only. Never harvest, mine, scorecard, accept/reject, or journal as evidence.",
+  "use": "Final with-skill vs no-skill numbers only. Never harvest, mine, scorecard, accept/reject, or journal as evidence.",
   "items": [
     {"id": 90675, "title": "Sema: Suppress memberwise init synthesis if init accessors are unavailable", "stage": "sema"},
     {"id": 91793, "title": "[Sema] Use public module name in appendMissingImportFixIt", "stage": "sema"},

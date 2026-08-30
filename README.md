@@ -5,15 +5,23 @@
 </p>
 
 Agent skills for finding, triaging, and fixing bugs in the Swift compiler
-(`swiftlang/swift`). Skills are a **directory** (lean `SKILL.md`, knowledge
-base, scripts), loaded on demand. After each real fix attempt the curator
-applies **one bounded edit**, accepted only behind replay, counterexample,
-or execution gates. Historical issues name files to open. They do not
-decide the patch for a different issue.
+([`swiftlang/swift`](https://github.com/swiftlang/swift)).
 
-This is not Microsoft SkillOpt. That trainer fits one compact markdown
-file and a batched numeric score. This repo is a multi-file compiler
-skill and a single-issue rollout. See `docs/eval-protocol.md`.
+Coding agents fail this work in repeatable ways. They patch Sema for a
+SILGen bug. They lose hours to a stale build tree. They put the test in
+the wrong directory, so CI disagrees with their laptop. Then the chat
+ends and none of that is written down.
+
+This repo is the counter. Skills are a **directory**: lean `SKILL.md`, a
+knowledge base, and scripts, loaded on demand. One skill walks a single
+issue all the way through. The others are specialists it calls. After a
+fix (or a failure) the curator applies **one bounded edit**, accepted
+only behind replay, counterexample, or execution gates. Historical
+issues name files to open. They do not decide the patch for a different
+issue.
+
+How edits are accepted, and which issue IDs may be harvested:
+[`docs/eval-protocol.md`](docs/eval-protocol.md).
 
 ## Skills
 
@@ -23,7 +31,7 @@ skill and a single-issue rollout. See `docs/eval-protocol.md`.
 | [`swift-issue-triage/`](swift-issue-triage/SKILL.md) | Classify an issue into pipeline stage + failure family from *this* issue's stack/repro *before* touching code. |
 | [`swift-local-build-test/`](swift-local-build-test/SKILL.md) | Build targets, run lit tests, manage worktrees; the verified environment contract for this machine. |
 | [`swift-expert-panel/`](swift-expert-panel/SKILL.md) | Required after the written plan (before compiler edits) and again on the diff (before marking a PR ready). Also on demand for a plan, PR, or diff. |
-| [`swift-knowledge-curator/`](swift-knowledge-curator/SKILL.md) | After fixes (or failures): evolve these skills with bounded, validation-gated edits. |
+| [`swift-knowledge-curator/`](swift-knowledge-curator/SKILL.md) | After fixes (or failures): one bounded, validation-gated edit to these files. |
 
 Shared knowledge base (loaded on demand):
 
@@ -42,7 +50,11 @@ Shared knowledge base (loaded on demand):
 - [`knowledge-base/sibling-repos.md`](knowledge-base/sibling-repos.md) —
   when the bug is llvm / swift-driver / swift-syntax / sourcekit-lsp
 
-Optimization journal (append-only): [`optimization/edit-log.md`](optimization/edit-log.md)
+What changed, and which edits helped or hurt:
+
+- [`optimization/edit-log.md`](optimization/edit-log.md) — append-only journal
+- [`optimization/deltas.md`](optimization/deltas.md) — one helpful/harmful bullet per accepted epoch
+- [`optimization/splits/`](optimization/splits/) — train / selection / test IDs
 
 ## Install
 
@@ -65,7 +77,7 @@ Edit that file if you relocate; do not scatter new absolute paths.
 2. `swift-issue-triage/SKILL.md` — run the triage procedure before any fix
 3. `knowledge-base/<playbook for the triaged stage>`
 4. `swift-local-build-test/SKILL.md` — for every build/test command
-5. `swift-expert-panel/SKILL.md` — **plan review after step 4, PR review after step 8** (see below)
+5. `swift-expert-panel/SKILL.md` — **plan review after step 4, PR review after step 8**
 6. On completion (success *or* failure): `swift-knowledge-curator/SKILL.md`
 
 ## Expert panel: when and how
@@ -127,9 +139,9 @@ How the suite is allowed to change:
 3. **Replay + counterexample gates**: new triage/pattern claims must re-route
    already-solved cases correctly and explain at least one case the current
    docs would have misrouted.
-4. **Bounded learning rate**: ≤3 substantive rule changes and ≤30 knowledge-
+4. **Bounded edits**: ≤3 substantive rule changes and ≤30 knowledge-
    base lines per curation epoch; rejected proposals are journaled, not lost.
-5. **Failure data is training data**: misroutes, broken commands, and
+5. **Failure data is kept**: misroutes, broken commands, and
    environment traps are recorded in the same epoch they are observed.
 6. **Never weaken a verifier to silence an assert** — applies to both the
    compiler and this suite's gates.
@@ -137,9 +149,9 @@ How the suite is allowed to change:
    archetypes, case files, and wiki lessons may name files. They must not
    be copied as the fix. If this issue already has PRs, read those.
 
-## Validation Record
+## What we have actually checked
 
-Highlights from `docs/validation.md`; full detail in the optimization journal:
+Highlights from `docs/validation.md`; full detail in the edit journal:
 
 - Epoch 9: flag ladder is required when the stack does not settle stage;
   search-family maps are issue+stage only; harvested plans are not the
@@ -152,9 +164,12 @@ Highlights from `docs/validation.md`; full detail in the optimization journal:
   (single pre-existing environmental failure), smoke tests across
   Constraints/SILGen pass, and a real in-flight bug fix (SIL debug-value
   type chains) was rebased, completed under lit feedback, and green.
+- Seating replay: 15/15 on the `D_tr` scorecard, 10/10 on `D_sel`. That
+  is chair-match, not a with-skill vs no-skill result. The `D_test` run
+  has not happened.
 
 ## Docs
 
 - [`docs/design.md`](docs/design.md) — architecture
-- [`docs/eval-protocol.md`](docs/eval-protocol.md) — train / selection / test splits
+- [`docs/eval-protocol.md`](docs/eval-protocol.md) — how edits are accepted; train / selection / test splits
 - [`docs/validation.md`](docs/validation.md) — what was verified, and how

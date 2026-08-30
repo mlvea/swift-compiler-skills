@@ -26,7 +26,7 @@
   <circle cx="80" cy="560" r="140" fill="#7aa2f7" opacity="0.06"/>
 
   <text x="48" y="48" fill="#f4f6fb" font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif" font-size="22" font-weight="700">swift-compiler-skills</text>
-  <text x="48" y="74" fill="#9aa7bd" font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif" font-size="13">One issue through the suite. Playbooks locate. The panel accepts or rejects. The curator trains the next run.</text>
+  <text x="48" y="74" fill="#9aa7bd" font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif" font-size="13">One issue through the suite. Playbooks locate. The panel accepts or rejects. The curator writes one edit back.</text>
 
   <!-- flow spine -->
   <path d="M 70 210 H 1130" stroke="#2b3648" stroke-width="6" fill="none"/>
@@ -86,7 +86,7 @@
   <g font-family="ui-sans-serif, -apple-system, Helvetica, Arial, sans-serif">
     <rect x="48" y="320" width="704" height="168" rx="18" fill="#18202c" stroke="#334056"/>
     <text x="72" y="352" fill="#f4f6fb" font-size="15" font-weight="700">knowledge-base</text>
-    <text x="72" y="372" fill="#9aa7bd" font-size="11">loaded on demand · trainable state</text>
+    <text x="72" y="372" fill="#9aa7bd" font-size="11">loaded on demand · one edit per fix</text>
     <g font-size="12" fill="#f4f6fb">
       <rect x="72" y="392" width="150" height="68" rx="10" fill="#243044"/>
       <text x="147" y="422" text-anchor="middle">pipeline-map</text>
