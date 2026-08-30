@@ -26,6 +26,9 @@ mangling, ABI stability.
 - Noncopyable type metadata must not be discoverable by older runtimes
   as copyable types (separate section / `RuntimeResolvableTypes2`,
   swift#64215).
+- Do not build an explosion schema just to count registers for a very
+  large type (compile-time blowup). Mark `IsVeryLargeType` and keep
+  it indirect (swift#86148).
 
 ## Plan review
 

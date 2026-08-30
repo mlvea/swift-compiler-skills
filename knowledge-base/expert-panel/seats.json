@@ -405,7 +405,8 @@
         "include/swift/Option/*Options*",
         "test/Availability/",
         "lib/APIDigester/",
-        "test/api-digester/"
+        "test/api-digester/",
+        "test/Sema/accessibility_package*"
       ],
       "adjacent": [
         "lib/Frontend/",

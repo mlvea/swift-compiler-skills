@@ -39,8 +39,11 @@ briefs; cite the PR number and the invariant.
 | #85644 | sil-optimizer | `request-changes` until shared utility / convention | embedded witness + IRGen | **partial** | Review threads exist; invariant not fully extracted. Seating OK (optimizer chairs, embedded sits on `test/embedded/`). |
 | #64215 | irgen-abi | hide noncopyable metadata from old runtimes | `approve` separate section | **hit-after-rule** | `RuntimeResolvableTypes2` / extra metadata section. |
 | #72416 | distributed | thunk/getter mangling | seating + mangling rule | **seating-hit-after-glob** | `DistributedDecl.cpp` primary. |
+| #73158 | concurrency | `@preconcurrency` override sendability | `approve` strip then match | **hit-after-rule** | Not a hard type mismatch that also bans mutable overrides. |
+| #75745 | library-evolution | package UFI from interface is public | `approve` | **hit** | `accessibility_package*` primary. |
+| #86148 | irgen-abi | skip explosion schema on huge types | `approve` keep indirect | **hit-after-rule** | `IsVeryLargeType`. |
 
-**Score:** 7 hit, 2 hit-after-rule, 1 seating glob fix, 1 seating-hit-after-glob, 1 partial. Corpus seating 12/12. No false block on a merged diff.
+**Score:** 8 hit, 4 hit-after-rule, 1 seating glob fix, 1 seating-hit-after-glob, 1 partial. Corpus seating **15/15**. No false block on a merged diff.
 
 ## Adding a case
 

@@ -432,3 +432,15 @@ Held-out: CSSimplify still chairs type-system.
 
 Rejected: 30-case held-out as done. Corpus is 12 measured PRs, not
 a specialist benchmark.
+
+## 2026-08-30 epoch 14 (scorecard 15)
+
+Evidence: #73158 `@preconcurrency` override; #75745 package UFI
+from interface; #86148 large-type explosion schema.
+
+Proposed + Accepted: three corpus rows (15/15 chairs); concurrency
+strip-before-override; irgen-abi `IsVeryLargeType`; library-evolution
+`test/Sema/accessibility_package*`.
+
+Gate: probe 218 globs + corpus 15/15 + CSSimplify held-out.
+Rejected: still not a 30-case specialist benchmark.

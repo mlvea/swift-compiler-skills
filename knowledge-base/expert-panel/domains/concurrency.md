@@ -15,6 +15,10 @@ syntax.
   SIL) are split by design. Fix the layer whose identity is wrong.
 - `@unchecked Sendable` and `nonisolated(unsafe)` are user escape
   hatches, not compiler implementation tools.
+- `@preconcurrency` overrides: strip concurrency before matching the
+  superclass type (SE-0337). A sendability mismatch is a diagnostic,
+  not a hard "types don't match so the override is also illegally
+  mutable" (swift#73158).
 - Closures that call global-actor-isolated code are isolated to that
   actor (SE-0414 revision). Do not regress this.
 

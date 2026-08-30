@@ -184,6 +184,51 @@
       "review_invariant": "Distributed thunks/getters must mangle and witness as the distributed protocol, not as ordinary accessors.",
       "expected_verdict_on_this_diff": "request-changes-until-mangling-agrees",
       "offline_ballot": "seating-hit-after-glob"
+    },
+    {
+      "id": "73158",
+      "kind": "merged-after-changes-requested",
+      "stage": "sema",
+      "files": [
+        "lib/Sema/TypeCheckDeclOverride.cpp",
+        "lib/AST/Type.cpp",
+        "test/Concurrency/predates_concurrency.swift"
+      ],
+      "text": "preconcurrency override Any to any Sendable stripConcurrency",
+      "expected_chair": "concurrency",
+      "review_invariant": "@preconcurrency overrides strip concurrency before matching; sendability mismatch is not a hard type failure that also bans mutable overrides.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit-after-rule"
+    },
+    {
+      "id": "75745",
+      "kind": "merged-after-changes-requested",
+      "stage": "sema",
+      "files": [
+        "include/swift/Option/Options.td",
+        "lib/AST/Decl.cpp",
+        "test/Sema/accessibility_package_import_interface.swift"
+      ],
+      "text": "usableFromInline package decls from interface treated as public skip access checks",
+      "expected_chair": "library-evolution",
+      "review_invariant": "Package + UFI decls loaded from a public/private interface without package-name are effectively public for access checking.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit"
+    },
+    {
+      "id": "86148",
+      "kind": "merged-after-changes-requested",
+      "stage": "irgen",
+      "files": [
+        "lib/IRGen/LoadableByAddress.cpp",
+        "lib/SIL/IR/TypeLowering.cpp",
+        "include/swift/SIL/SILTypeProperties.h"
+      ],
+      "text": "LargeTypesReg2Mem avoid explosion schema very large types compile time",
+      "expected_chair": "irgen-abi",
+      "review_invariant": "Do not build an explosion schema just to count registers for a very large type; keep it indirect.",
+      "expected_verdict_on_this_diff": "approve",
+      "offline_ballot": "hit-after-rule"
     }
   ]
 }
