@@ -1,0 +1,621 @@
+{
+  "version": 1,
+  "notes": "Machine seating table. Human algorithm lives in roster.md. Domain briefs live in domains/<id>.md.",
+  "max_seated": 4,
+  "primary_weight": 3,
+  "adjacent_weight": 1,
+  "keyword_weight": 1,
+  "stage_weight": 1,
+  "domains": [
+    {
+      "id": "type-system",
+      "kind": "core",
+      "charter": "Constraint solver, overload resolution, argument matching, solution application, and solver diagnostics.",
+      "stages": ["sema"],
+      "neighbors": ["generics", "concurrency", "parser-diagnostics", "sourcekit-ide"],
+      "primary": [
+        "lib/Sema/CS*",
+        "lib/Sema/Constraint*",
+        "lib/Sema/PreCheckTarget.cpp",
+        "include/swift/Sema/CS*",
+        "include/swift/Sema/Constraint*",
+        "test/Constraints/"
+      ],
+      "adjacent": [
+        "lib/Sema/",
+        "include/swift/Sema/",
+        "test/Sema/",
+        "test/expr/",
+        "test/stmt/",
+        "unittests/Sema/"
+      ],
+      "keywords": [
+        "constraint solver",
+        "overload resolution",
+        "CSSimplify",
+        "matchCallArguments",
+        "failed to produce diagnostic",
+        "solution application",
+        "disjunction"
+      ]
+    },
+    {
+      "id": "generics",
+      "kind": "core",
+      "charter": "Generic signatures, requirement machine, associated type inference, protocol conformances, existentials, parameter packs, opaque types.",
+      "stages": ["sema"],
+      "neighbors": ["type-system", "silgen", "ownership", "irgen-abi", "embedded"],
+      "primary": [
+        "lib/AST/RequirementMachine/",
+        "lib/AST/*Generic*",
+        "lib/AST/*Requirement*",
+        "lib/AST/*Substitution*",
+        "lib/AST/*Conformance*",
+        "lib/Sema/TypeCheckGeneric*",
+        "lib/Sema/TypeCheckProtocol*",
+        "lib/Sema/AssociatedTypeInference*",
+        "lib/Sema/DerivedConformance*",
+        "lib/Sema/OpenedExistentials*",
+        "include/swift/AST/*Generic*",
+        "include/swift/AST/*Requirement*",
+        "include/swift/AST/*Substitution*",
+        "include/swift/AST/*Protocol*",
+        "docs/Generics/",
+        "docs/ABI/GenericSignature.md",
+        "test/Generics/",
+        "test/decl/protocol/"
+      ],
+      "adjacent": [
+        "lib/AST/",
+        "lib/Sema/",
+        "test/decl/",
+        "test/type/"
+      ],
+      "keywords": [
+        "requirement machine",
+        "generic signature",
+        "associated type",
+        "parameter pack",
+        "opaque type",
+        "some ",
+        "any ",
+        "inverse",
+        "Copyable",
+        "Escapable",
+        "opened existential"
+      ]
+    },
+    {
+      "id": "concurrency",
+      "kind": "core",
+      "charter": "Actor isolation, Sendable, region-based isolation, sending/transferring, isolation inference, data-race diagnostics.",
+      "stages": ["sema", "sil-mandatory"],
+      "neighbors": ["type-system", "ownership", "silgen", "distributed", "runtime"],
+      "primary": [
+        "lib/Sema/TypeCheckConcurrency*",
+        "lib/Sema/TypeCheckCaptures.cpp",
+        "lib/SILOptimizer/Mandatory/SendNonSendable*",
+        "lib/SILOptimizer/Mandatory/FlowIsolation*",
+        "lib/SILOptimizer/Analysis/RegionAnalysis*",
+        "include/swift/SILOptimizer/Utils/SILIsolationInfo*",
+        "test/Concurrency/"
+      ],
+      "adjacent": [
+        "lib/Sema/",
+        "lib/SILGen/SILGenConcurrency.cpp",
+        "lib/SILOptimizer/Mandatory/",
+        "stdlib/public/Concurrency/"
+      ],
+      "keywords": [
+        "Sendable",
+        "actor isolation",
+        "region-based isolation",
+        "region isolation",
+        "sending",
+        "transferring",
+        "global actor",
+        "nonisolated",
+        "isolated",
+        "data race",
+        "SendNonSendable",
+        "FlowIsolation"
+      ]
+    },
+    {
+      "id": "silgen",
+      "kind": "core",
+      "charter": "Checked AST to raw SIL: apply, closures, cleanups, bridging, concurrency lowering, result builders.",
+      "stages": ["silgen"],
+      "neighbors": ["ownership", "concurrency", "type-system", "irgen-abi"],
+      "primary": [
+        "lib/SILGen/",
+        "include/swift/SIL/SILBuilder.h",
+        "test/SILGen/",
+        "docs/SIL/SIL.md",
+        "docs/SIL/Types.md",
+        "docs/SIL/SILFunctionConventions.md",
+        "docs/SIL/SILInitializerConventions.md",
+        "docs/SIL/Instructions.md"
+      ],
+      "adjacent": [
+        "lib/SIL/",
+        "include/swift/SIL/",
+        "test/sil*",
+        "docs/SIL/"
+      ],
+      "keywords": [
+        "SILGen",
+        "emit-silgen",
+        "ManagedValue",
+        "cleanup",
+        "partial_apply",
+        "result builder"
+      ]
+    },
+    {
+      "id": "ownership",
+      "kind": "core",
+      "charter": "OSSA, borrow scopes, consuming/borrowing, move-only / noncopyable, address lowering, SIL ownership verifier.",
+      "stages": ["sil-mandatory", "silgen"],
+      "neighbors": ["silgen", "sil-optimizer", "generics", "concurrency"],
+      "primary": [
+        "lib/SIL/Verifier/",
+        "lib/SILOptimizer/Mandatory/MoveOnly*",
+        "lib/SILOptimizer/Mandatory/ConsumeOperator*",
+        "lib/SILOptimizer/Mandatory/AddressLowering*",
+        "lib/SILOptimizer/Mandatory/OwnershipModelEliminator*",
+        "include/swift/SIL/*Ownership*",
+        "test/SILOptimizer/moveonly*",
+        "test/SILOptimizer/noimplicitcopy*",
+        "test/Sema/moveonly*",
+        "test/SIL/OwnershipVerifier/",
+        "docs/SIL/Ownership.md",
+        "docs/SIL/SILMemoryAccess.md"
+      ],
+      "adjacent": [
+        "lib/SIL/",
+        "lib/SILGen/",
+        "lib/SILOptimizer/Mandatory/",
+        "test/SIL/"
+      ],
+      "keywords": [
+        "OSSA",
+        "load_borrow",
+        "begin_borrow",
+        "move-only",
+        "noncopyable",
+        "~Copyable",
+        "~Escapable",
+        "consuming",
+        "borrowing",
+        "consume",
+        "SIL verification",
+        "ownership",
+        "deinit barrier",
+        "interior pointer",
+        "lexical lifetime"
+      ]
+    },
+    {
+      "id": "sil-optimizer",
+      "kind": "core",
+      "charter": "SIL pass soundness, specialization, ARC/mem2reg/LICM/SROA, SwiftCompilerSources optimizer, benchmarks.",
+      "stages": ["sil-opts", "sil-mandatory"],
+      "neighbors": ["ownership", "irgen-abi", "debug-info", "embedded"],
+      "primary": [
+        "lib/SILOptimizer/",
+        "include/swift/SILOptimizer/",
+        "SwiftCompilerSources/",
+        "benchmark/",
+        "test/SILOptimizer/",
+        "docs/Optimizer*",
+        "docs/SIL/ARCOptimization.md",
+        "docs/SIL/SIL-Utilities.md"
+      ],
+      "adjacent": [
+        "lib/SIL/",
+        "validation-test/SILOptimizer/"
+      ],
+      "keywords": [
+        "LICM",
+        "mem2reg",
+        "SROA",
+        "specialization",
+        "sil-opt",
+        "ARC",
+        "-O",
+        "miscompile"
+      ]
+    },
+    {
+      "id": "irgen-abi",
+      "kind": "core",
+      "charter": "SIL to LLVM IR, calling conventions, layout, witness tables, mangling, ABI stability.",
+      "stages": ["irgen"],
+      "neighbors": ["runtime", "library-evolution", "silgen", "debug-info"],
+      "primary": [
+        "lib/IRGen/",
+        "include/swift/IRGen/",
+        "lib/*Demangl*/",
+        "include/swift/*Demangl*/",
+        "docs/ABI/",
+        "test/IRGen/",
+        "test/*Demangl*/",
+        "validation-test/IRGen/"
+      ],
+      "adjacent": [
+        "include/swift/AST/DiagnosticsIRGen.def",
+        "test/abi/",
+        "test/TBD/"
+      ],
+      "keywords": [
+        "IRGen",
+        "witness table",
+        "ABI",
+        "calling convention",
+        "mangling",
+        "type layout",
+        "emit-ir"
+      ]
+    },
+    {
+      "id": "runtime",
+      "kind": "core",
+      "charter": "Swift runtime, casts, refcounting, metadata, reflection, threading, backtrace, bridging entrypoints.",
+      "stages": ["runtime"],
+      "neighbors": ["irgen-abi", "concurrency", "clang-importer", "stdlib"],
+      "primary": [
+        "stdlib/public/runtime/",
+        "stdlib/public/RuntimeModule/",
+        "stdlib/public/Threading/",
+        "stdlib/public/libexec/swift-backtrace/",
+        "include/swift/Runtime/",
+        "include/swift/Threading/",
+        "lib/Threading/",
+        "test/Runtime/",
+        "test/Casting/",
+        "unittests/runtime/"
+      ],
+      "adjacent": [
+        "stdlib/private/*Runtime*/",
+        "lib/SwiftRemoteMirror/",
+        "test/stdlib/"
+      ],
+      "keywords": [
+        "swift_dynamicCast",
+        "refcount",
+        "metadata",
+        "runtime crash",
+        "EXC_BAD_ACCESS",
+        "bridging",
+        "reflection",
+        "backtrace"
+      ]
+    },
+    {
+      "id": "clang-importer",
+      "kind": "core",
+      "charter": "C/ObjC/C++ import, PrintAsClang, APINotes, foreign reference types, reverse interop.",
+      "stages": ["importer"],
+      "neighbors": ["runtime", "parser-diagnostics", "library-evolution", "type-system"],
+      "primary": [
+        "lib/ClangImporter/",
+        "include/swift/ClangImporter/",
+        "lib/PrintAsClang/",
+        "include/swift/PrintAsClang/",
+        "include/swift/AST/DiagnosticsClangImporter.def",
+        "test/ClangImporter/",
+        "test/Interop/",
+        "test/APINotes/",
+        "stdlib/public/Cxx/",
+        "lib/Sema/TypeCheckDeclObjC.cpp"
+      ],
+      "adjacent": [
+        "apinotes/"
+      ],
+      "keywords": [
+        "ClangImporter",
+        "cxx-interop",
+        "C++ interop",
+        "foreign reference type",
+        "APINotes",
+        "PrintAsClang",
+        "@objc",
+        "NSError"
+      ]
+    },
+    {
+      "id": "parser-diagnostics",
+      "kind": "core",
+      "charter": "Parse/lex, recovery, diagnostic wording/fix-its, SwiftSyntax/ASTGen, diagnostic groups.",
+      "stages": ["parse", "sema"],
+      "neighbors": ["type-system", "sourcekit-ide", "library-evolution"],
+      "primary": [
+        "lib/Parse/",
+        "include/swift/Parse/",
+        "lib/ASTGen/",
+        "include/swift/AST/DiagnosticsParse.def",
+        "include/swift/AST/DiagnosticGroup*",
+        "test/Parse/",
+        "test/ASTGen/"
+      ],
+      "adjacent": [
+        "lib/AST/",
+        "include/swift/AST/",
+        "test/diagnostics/"
+      ],
+      "keywords": [
+        "parser",
+        "lexer",
+        "fix-it",
+        "diagnostic",
+        "ASTGen",
+        "SwiftSyntax",
+        "recovery"
+      ]
+    },
+    {
+      "id": "sourcekit-ide",
+      "kind": "core",
+      "charter": "SourceKit, completion, cursor info, indexing, refactoring, swift-ide-test.",
+      "stages": ["tooling"],
+      "neighbors": ["type-system", "parser-diagnostics", "serialization"],
+      "primary": [
+        "lib/IDE/",
+        "include/swift/IDE/",
+        "lib/IDETool/",
+        "lib/Index/",
+        "include/swift/Index/",
+        "lib/Refactoring/",
+        "include/swift/Refactoring/",
+        "tools/SourceKit/",
+        "tools/swift-ide-test/",
+        "tools/swift-refactor/",
+        "test/IDE/",
+        "test/SourceKit/",
+        "test/Index/",
+        "test/refactoring/",
+        "unittests/SourceKit/",
+        "validation-test/IDE/"
+      ],
+      "adjacent": [
+        "lib/Sema/TypeCheckCodeCompletion.cpp"
+      ],
+      "keywords": [
+        "SourceKit",
+        "code completion",
+        "cursor info",
+        "index",
+        "refactoring",
+        "swift-ide-test"
+      ]
+    },
+    {
+      "id": "library-evolution",
+      "kind": "core",
+      "charter": "Availability, resilience, @frozen/@usableFromInline/@inlinable, upcoming feature flags, source compatibility.",
+      "stages": ["sema", "silgen", "irgen", "driver"],
+      "neighbors": ["irgen-abi", "serialization", "stdlib", "parser-diagnostics"],
+      "primary": [
+        "lib/Sema/*Availability*",
+        "lib/AST/*Availability*",
+        "lib/SILGen/*Availability*",
+        "include/swift/AST/*Availability*",
+        "include/swift/Basic/Features.def",
+        "include/swift/Option/*Options*",
+        "test/Availability/",
+        "lib/APIDigester/",
+        "test/api-digester/",
+        "test/Sema/accessibility_package*"
+      ],
+      "adjacent": [
+        "lib/Frontend/ModuleInterface*",
+        "include/swift/Frontend/ModuleInterface*",
+        "lib/Sema/TypeCheckAttr.cpp",
+        "lib/Sema/TypeCheckStmt.cpp"
+      ],
+      "keywords": [
+        "availability",
+        "@available",
+        "@frozen",
+        "frozen",
+        "@inlinable",
+        "inlinable",
+        "fragile function",
+        "discard self",
+        "@usableFromInline",
+        "resilience",
+        "library evolution",
+        "upcoming feature",
+        "source compatibility"
+      ]
+    },
+    {
+      "id": "serialization",
+      "kind": "core",
+      "charter": "swiftmodule format, module loaders, dependency scanning, incremental compilation interfaces.",
+      "stages": ["serialization", "driver"],
+      "neighbors": ["library-evolution", "sourcekit-ide", "sil-optimizer"],
+      "primary": [
+        "lib/Serialization/",
+        "include/swift/Serialization/",
+        "lib/DependencyScan/",
+        "include/swift/DependencyScan/",
+        "include/swift-c/DependencyScan/",
+        "lib/Driver/",
+        "lib/DriverTool/",
+        "include/swift/Driver/",
+        "test/Serialization/",
+        "test/ModuleInterface/",
+        "test/ScanDependencies/",
+        "test/Driver/"
+      ],
+      "adjacent": [
+        "lib/Frontend/Serialization.cpp",
+        "lib/Frontend/ModuleInterfaceLoader.cpp",
+        "lib/Frontend/ModuleInterfaceSupport.cpp",
+        "lib/Frontend/ModuleInterfaceBuilder.cpp",
+        "include/swift/Frontend/ModuleInterfaceLoader.h",
+        "include/swift/Frontend/ModuleInterfaceSupport.h",
+        "lib/AST/ModuleLoader.cpp"
+      ],
+      "keywords": [
+        "swiftmodule",
+        "deserialization",
+        "dependency scan",
+        "module cache",
+        "CMO",
+        "cross-module"
+      ]
+    },
+    {
+      "id": "debug-info",
+      "kind": "core",
+      "charter": "SIL debug values, DWARF emission, debugger correctness after optimization.",
+      "stages": ["debuginfo", "sil-opts", "irgen"],
+      "neighbors": ["sil-optimizer", "irgen-abi", "clang-importer"],
+      "primary": [
+        "lib/SIL/IR/SILDebug*",
+        "include/swift/SIL/SILDebug*",
+        "lib/SIL/Verifier/DebugInfoVerifier.cpp",
+        "lib/IRGen/*Debug*",
+        "lib/ClangImporter/DWARFImporter*",
+        "test/DebugInfo/",
+        "docs/HowToUpdateDebugInfo.md",
+        "docs/SIL/DebugBasicBlocks.md"
+      ],
+      "adjacent": [
+        "lib/IRGen/",
+        "lib/SILOptimizer/"
+      ],
+      "keywords": [
+        "debug_value",
+        "DWARF",
+        "debugger",
+        "SILDebugInfo",
+        "location"
+      ]
+    },
+    {
+      "id": "macros",
+      "kind": "conditional",
+      "charter": "Freestanding/attached macros, macro expansion, TypeCheckMacros.",
+      "stages": ["sema", "parse"],
+      "neighbors": ["parser-diagnostics", "type-system", "silgen"],
+      "primary": [
+        "lib/Macros/",
+        "lib/Sema/TypeCheckMacros*",
+        "lib/AST/FreestandingMacroExpansion.cpp",
+        "test/Macros/"
+      ],
+      "adjacent": [
+        "lib/ASTGen/",
+        "test/ASTGen/",
+        "lib/CompilerSwiftSyntax/"
+      ],
+      "keywords": [
+        "macro",
+        "@freestanding",
+        "@attached",
+        "#externalMacro",
+        "MacroExpansion"
+      ]
+    },
+    {
+      "id": "autodiff",
+      "kind": "conditional",
+      "charter": "Differentiation transforms, pullback/JVP cloning, derivative registration.",
+      "stages": ["autodiff"],
+      "neighbors": ["sil-optimizer", "silgen", "irgen-abi"],
+      "primary": [
+        "lib/SILOptimizer/Differentiation/",
+        "stdlib/public/Differentiation/",
+        "stdlib/private/DifferentiationUnittest/",
+        "test/AutoDiff/"
+      ],
+      "adjacent": [],
+      "keywords": [
+        "@differentiable",
+        "pullback",
+        "AutoDiff",
+        "derivative(of:)"
+      ]
+    },
+    {
+      "id": "distributed",
+      "kind": "conditional",
+      "charter": "Distributed actors, distributed protocol synthesis, distributed runtime hooks.",
+      "stages": ["sema", "silgen", "runtime"],
+      "neighbors": ["concurrency", "irgen-abi", "runtime"],
+      "primary": [
+        "lib/Sema/TypeCheckDistributed*",
+        "lib/Sema/CodeSynthesisDistributed*",
+        "lib/Sema/DerivedConformance/DerivedConformanceDistributed*",
+        "lib/SILGen/*Distributed*",
+        "lib/IRGen/*Distributed*",
+        "lib/SILOptimizer/Utils/Distributed*",
+        "include/swift/AST/*Distributed*",
+        "stdlib/public/Distributed/",
+        "test/Distributed/",
+        "test/decl/protocol/special/DistributedActor.swift",
+        "lib/AST/DistributedDecl.cpp"
+      ],
+      "adjacent": [
+        "test/Concurrency/"
+      ],
+      "keywords": [
+        "distributed actor",
+        "DistributedActor",
+        "distributed"
+      ]
+    },
+    {
+      "id": "embedded",
+      "kind": "conditional",
+      "text_may_seat": true,
+      "charter": "Embedded Swift restricted runtime, witness-table specialization, no-allocation paths, Wasm/WASI hooks.",
+      "stages": ["sil-opts", "irgen", "runtime"],
+      "neighbors": ["sil-optimizer", "irgen-abi", "generics"],
+      "primary": [
+        "test/embedded/",
+        "lib/Sema/TypeCheckEmbedded*",
+        "utils/swift_build_support/swift_build_support/products/wasm*",
+        "utils/swift_build_support/swift_build_support/products/wasi*",
+        "utils/swift_build_support/swift_build_support/products/emscripten*"
+      ],
+      "adjacent": [
+        "lib/SILOptimizer/Utils/Generics.cpp",
+        "lib/IRGen/"
+      ],
+      "keywords": [
+        "embedded Swift",
+        "embedded",
+        "wasi",
+        "wasm",
+        "-enable-experimental-feature Embedded"
+      ]
+    },
+    {
+      "id": "stdlib",
+      "kind": "conditional",
+      "charter": "Standard library public API, overlays, gyb-generated core types. Language-facing API changes need evolution.",
+      "stages": ["runtime"],
+      "neighbors": ["runtime", "library-evolution", "concurrency"],
+      "primary": [
+        "stdlib/",
+        "test/stdlib/",
+        "test/abi/",
+        "utils/gyb*",
+        "utils/availability-macros.def"
+      ],
+      "adjacent": [],
+      "keywords": [
+        "stdlib",
+        "standard library",
+        "Array",
+        "String",
+        "Optional"
+      ]
+    }
+  ]
+}

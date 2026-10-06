@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>swiftlang/swift#N</title>
+  <link rel="stylesheet" href="explainer.css">
+</head>
+<body>
+  <article class="wrap">
+    <header>
+      <p class="eyebrow">swiftlang/swift#N · stage</p>
+      <h1>Title in plain language</h1>
+      <p class="claim">One sentence: what goes wrong, for whom.</p>
+    </header>
+
+    <section id="program">
+      <h2>The program</h2>
+      <p>What the user wrote, reduced. What they expected.</p>
+      <pre><code>// reducer</code></pre>
+      <pre><code>$ command that fails
+output</code></pre>
+    </section>
+
+    <section id="rule">
+      <h2>The rule</h2>
+      <p>The language or compiler invariant this program is owed. Cite SE, the book, or a comment in tree.</p>
+    </section>
+
+    <section id="breaks">
+      <h2>What breaks</h2>
+      <p>Expected, then observed.</p>
+      <p class="fail">Quote the assert, diagnostic, or wrong SIL/IR.</p>
+    </section>
+
+    <section id="where">
+      <h2>Where</h2>
+      <p>Stage, then file and function this reducer enters, then the local lie.</p>
+      <figure class="fig">
+        <div class="fig-h"><span>Where it sits</span><span>schematic</span></div>
+        <div class="fig-b">
+          <!-- hand-built SVG, one claim. delete the figure if a sentence is enough. -->
+        </div>
+        <figcaption class="src">schematic: pipeline or value flow for this reducer only</figcaption>
+      </figure>
+    </section>
+
+    <section id="why">
+      <h2>Why</h2>
+      <p>The broken assumption. Why the existing code believed something false on this reducer.</p>
+    </section>
+
+    <section id="change">
+      <h2>What we intend to change</h2>
+      <p>Smallest restoration of the invariant. Likely files. What we will not change.</p>
+      <p>Plan panel: chair <code>verdict</code>.</p>
+    </section>
+
+    <section id="deeper">
+      <h2>Deeper</h2>
+      <details class="deep">
+        <summary>Panel, files opened, open questions</summary>
+        <pre><code>seating JSON</code></pre>
+        <ul>
+          <li>files opened, and the this-issue signal for each</li>
+        </ul>
+      </details>
+    </section>
+
+    <footer>Generated after plan panel. Not a patch. Not committed.</footer>
+  </article>
+</body>
+</html>

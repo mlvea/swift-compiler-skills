@@ -1,0 +1,46 @@
+name: probe-globs
+
+# Extra weekly run. GitHub disables scheduled workflows in a public
+# repo after 60 days with no commit, and a later commit does not turn
+# the schedule back on. The probe job in check.yml runs on every push
+# and pull request. This file is not the durable check.
+
+on:
+  schedule:
+    - cron: "0 15 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift
+          ref: main
+          path: swift
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            SwiftCompilerSources
+            apinotes
+            benchmark
+            docs
+            include
+            lib
+            stdlib
+            test
+            tools
+            unittests
+            utils
+            validation-test
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe seating globs on swift main
+        run: python3 swift-expert-panel/scripts/probe_globs.py --checkout swift

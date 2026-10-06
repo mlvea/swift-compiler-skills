@@ -1,0 +1,4 @@
+{
+  "notes": "PRs whose seating was scored before any brief or glob edit motivated by that PR. Empty until the next PR is scored. Do not add a rule in the same epoch as the first score. If you later tune on a case, move it to scorecard-corpus.json and say so in the edit log. score_pr.py --heldout prints the result and exits 0 on a miss. Title tags are scored by score_titles.py, which also only reports. Schema matches scorecard-corpus.json cases.",
+  "cases": []
+}

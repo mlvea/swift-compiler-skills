@@ -1,0 +1,19 @@
+{
+  "notes": "Copy this file to paths.json. Then edit the paths. paths.json is gitignored. export-env.py refuses a /path/to placeholder. wiki_checkout may be empty. $SUFFIX comes from the build_swift directory name. swift-macosx-arm64 yields test-macosx-arm64/lit.site.cfg. These names are the tested setup on macOS arm64. A Linux x86_64 tree uses the name swift-linux-x86_64. That suffix has not been run off macOS arm64. Set lit_platform only when the directory name is not swift-<os>-<arch>. wiki_checkout is optional. Set it to the case-notes repository, or leave it empty. It is not a Swift project checkout.",
+  "swiftlang_root": "/path/to/swift-project",
+  "swift_checkout": "/path/to/swift-project/swift",
+  "wiki_checkout": "",
+  "explainers_rel": "issues/explainers",
+  "build_swift": "/path/to/swift-project/build/Ninja-RelWithDebInfoAssert/swift-macosx-arm64",
+  "build_swift_secondary": "",
+  "build_llvm": "/path/to/swift-project/build/Ninja-RelWithDebInfoAssert/llvm-macosx-arm64",
+  "toolchains_dir": "/path/to/swift-project/toolchains",
+  "skills_kb": "knowledge-base",
+  "siblings": {
+    "llvm-project": "/path/to/swift-project/llvm-project",
+    "swift-driver": "/path/to/swift-project/swift-driver",
+    "swift-syntax": "/path/to/swift-project/swift-syntax",
+    "sourcekit-lsp": "/path/to/swift-project/sourcekit-lsp",
+    "indexstore-db": "/path/to/swift-project/indexstore-db"
+  }
+}

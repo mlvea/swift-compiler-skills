@@ -1,0 +1,115 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 420" role="img" aria-labelledby="title desc">
+  <title id="title">swift-compiler-skills suite and expert panel</title>
+  <desc id="desc">The flow is triage, locate, plan, an optional page, patch, and a pull request. Notes and the curator are optional. seat.py selects a chair brief and up to three briefs. The reviewer returns approve, request-changes, or block.</desc>
+  <defs>
+    <style>
+      .s { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
+      .m { font-family: ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace; }
+    </style>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto">
+      <path d="M0,1.4 L9,5 L0,8.6 z" fill="#111"/>
+    </marker>
+  </defs>
+
+  <rect width="1200" height="420" fill="#fff"/>
+
+  <!-- pipeline: issue, triage, locate, plan, explain, patch, PR, notes, curator -->
+  <g stroke="#111" stroke-width="1.2" fill="none">
+    <rect x="69" y="28" width="76" height="36" rx="2"/>
+    <rect x="161" y="28" width="82" height="36" rx="2"/>
+    <rect x="259" y="28" width="82" height="36" rx="2"/>
+    <rect x="357" y="28" width="72" height="36" rx="2" fill="#111"/>
+    <rect x="445" y="28" width="90" height="36" rx="2" stroke-dasharray="4 2.5"/>
+    <rect x="551" y="28" width="76" height="36" rx="2"/>
+    <rect x="643" y="28" width="64" height="36" rx="2" fill="#111"/>
+    <rect x="723" y="28" width="76" height="36" rx="2" stroke-dasharray="4 2.5"/>
+    <rect x="815" y="28" width="92" height="36" rx="2" stroke-dasharray="4 2.5"/>
+  </g>
+  <g class="s" font-size="13" font-weight="600" text-anchor="middle">
+    <text x="107" y="51" fill="#111">issue</text>
+    <text x="202" y="51" fill="#111">triage</text>
+    <text x="300" y="51" fill="#111">locate</text>
+    <text x="393" y="51" fill="#fff">plan</text>
+    <text x="490" y="51" fill="#111">explain</text>
+    <text x="589" y="51" fill="#111">patch</text>
+    <text x="675" y="51" fill="#fff">PR</text>
+    <text x="761" y="51" fill="#111">notes</text>
+    <text x="861" y="51" fill="#111">curator</text>
+  </g>
+  <g fill="none" stroke="#111" stroke-width="1.2" marker-end="url(#a)">
+    <path d="M145,46 H159"/>
+    <path d="M243,46 H257"/>
+    <path d="M341,46 H355"/>
+    <path d="M429,46 H443"/>
+    <path d="M535,46 H549"/>
+    <path d="M627,46 H641"/>
+    <path d="M707,46 H721"/>
+    <path d="M799,46 H813"/>
+  </g>
+
+  <!-- callout from the plan review and the PR review -->
+  <g fill="none" stroke="#111" stroke-width="1.2">
+    <path d="M393,64 V96"/>
+    <path d="M675,64 V96"/>
+    <path d="M393,96 H675"/>
+    <path d="M534,96 V114" marker-end="url(#a)"/>
+  </g>
+
+  <!-- seat.py -->
+  <rect x="474" y="122" width="120" height="80" rx="2" fill="none" stroke="#111" stroke-width="1.2"/>
+  <text x="534" y="144" text-anchor="middle" class="s" fill="#111" font-size="13" font-weight="600">seat.py</text>
+  <g fill="#111">
+    <rect x="498" y="156" width="72" height="5"/>
+    <rect x="498" y="168" width="24" height="5"/>
+    <rect x="498" y="180" width="24" height="5"/>
+    <rect x="498" y="192" width="24" height="5"/>
+  </g>
+
+  <!-- fan -->
+  <path d="M534,202 V222" fill="none" stroke="#111" stroke-width="1.2"/>
+  <g fill="none" stroke="#111" stroke-width="1.2">
+    <path d="M327,222 H741"/>
+    <path d="M327,222 V236" marker-end="url(#a)"/>
+    <path d="M465,222 V236" marker-end="url(#a)"/>
+    <path d="M603,222 V236" marker-end="url(#a)"/>
+    <path d="M741,222 V236" marker-end="url(#a)"/>
+  </g>
+
+  <rect x="267" y="236" width="120" height="44" rx="2" fill="#111"/>
+  <text x="327" y="264" text-anchor="middle" class="m" fill="#fff" font-size="14">chair</text>
+
+  <rect x="405" y="236" width="120" height="44" rx="2" fill="none" stroke="#111" stroke-width="1.2"/>
+  <text x="465" y="264" text-anchor="middle" class="m" fill="#111" font-size="14">brief</text>
+
+  <rect x="543" y="236" width="120" height="44" rx="2" fill="none" stroke="#111" stroke-width="1.2"/>
+  <text x="603" y="264" text-anchor="middle" class="m" fill="#111" font-size="14">brief</text>
+
+  <rect x="681" y="236" width="120" height="44" rx="2" fill="none" stroke="#111" stroke-width="1.2"/>
+  <text x="741" y="264" text-anchor="middle" class="m" fill="#111" font-size="14">brief</text>
+
+  <!-- briefs join into one verdict -->
+  <g fill="none" stroke="#111">
+    <path d="M327,280 V322 H534" stroke-width="1.2"/>
+    <path d="M465,280 V308 H534" stroke-width="1.2"/>
+    <path d="M603,280 V308 H534" stroke-width="1.2"/>
+    <path d="M741,280 V308 H534" stroke-width="1.2"/>
+    <path d="M534,322 V344" stroke-width="1.2"/>
+  </g>
+  <circle cx="534" cy="322" r="3.25" fill="#111"/>
+
+  <!-- verdicts -->
+  <g fill="none" stroke="#111" stroke-width="1.2" marker-end="url(#a)">
+    <path d="M534,344 V356 H404 V368"/>
+    <path d="M534,344 V368"/>
+    <path d="M534,344 V356 H664 V368"/>
+  </g>
+
+  <rect x="344" y="368" width="120" height="36" rx="2" fill="#111"/>
+  <text x="404" y="391" text-anchor="middle" class="s" fill="#fff" font-size="13" font-weight="600">approve</text>
+
+  <rect x="474" y="368" width="120" height="36" rx="2" fill="none" stroke="#111" stroke-width="1.2"/>
+  <text x="534" y="391" text-anchor="middle" class="s" fill="#111" font-size="11" font-weight="600">request-changes</text>
+
+  <rect x="604" y="368" width="120" height="36" rx="2" fill="none" stroke="#111" stroke-width="1.2"/>
+  <text x="664" y="391" text-anchor="middle" class="s" fill="#111" font-size="13" font-weight="600">block</text>
+</svg>

@@ -1,0 +1,63 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Repository checks
+        run: python3 scripts/check_repo.py
+      - name: Unit tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Seating regression corpus
+        run: python3 swift-expert-panel/scripts/score_pr.py --corpus
+      - name: Plan-time seating report
+        run: python3 swift-expert-panel/scripts/score_pr.py --sources-only
+      - name: Held-out corpus
+        run: python3 swift-expert-panel/scripts/score_pr.py --heldout
+
+  # Durable glob check. The weekly schedule in probe-globs.yml stops
+  # after 60 days with no commit, and a later commit does not restart it.
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: swiftlang/swift
+          ref: main
+          path: swift
+          fetch-depth: 1
+          filter: blob:none
+          sparse-checkout: |
+            SwiftCompilerSources
+            apinotes
+            benchmark
+            docs
+            include
+            lib
+            stdlib
+            test
+            tools
+            unittests
+            utils
+            validation-test
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Probe seating globs on swift main
+        run: python3 swift-expert-panel/scripts/probe_globs.py --checkout swift
